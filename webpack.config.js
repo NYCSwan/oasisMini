@@ -16,6 +16,9 @@ module.exports = {
     reasons: true,
     chunks: true
   },
+  devServer: {
+    publicPath: '/pubic/'
+  },
   module: {
     rules: [
       {
@@ -23,7 +26,7 @@ module.exports = {
         test:/\.jsx?$/,
         loader: 'eslint-loader',
         exclude: /node_modules/
-      }
+      },
       {
         test: /\.jsx?$/,
         loader: 'babel-loader'
