@@ -1,18 +1,22 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { HashRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Header from './Header.react';
+import Homepage from './Homepage.react';
+import NewGrow from './new_grow.react';
+
+const FourOhFour = () => <h1>404</h1>;
 
 const App = () => (
-    <HashRouter>
-        <div className="app">
-          <Route path="/" component={Header} />
-          <div>New Grow</div>
-          <div>Existing Grow</div>
-          <div>tutorials</div>
-        </div>
-    </HashRouter>
-)
+    <BrowserRouter>
+      <div className="app">
+        <Switch>
+          <Route exact path="/" component={Homepage} />
+          <Route exact path="/newgrow" component={NewGrow} />
+          <Route component={FourOhFour} />
+        </Switch>
+      </div>
+    </BrowserRouter>
+);
 
 render(<App />, document.getElementById('app'));
