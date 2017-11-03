@@ -9,6 +9,6 @@ public/*bundle*
 *.bundle.js
 _site/
 .sass-cache/
-.yarn-error.log
+yarn-error.log
 *.iml
 .idea/
