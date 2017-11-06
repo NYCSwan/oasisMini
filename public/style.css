@@ -1,3 +1,67 @@
 body {
   margin: 0 auto;
+  background-image: url(/public/img/BG.png);
+  background-size: cover;
+  background-position: center;
+
+}
+.app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.logo {
+  max-width:auto;
+  height: 75px;
+}
+.right {
+  display: flex;
+  flex-direction: row-reverse;
+  flex:1 1 1;
+}
+
+.right img {
+  max-width: 75px;
+  height: 75px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+/* iPhone6 Styling*/
+
+@media (max-width: 445px) {
+  .app {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1%;
+  }
+
+  .logo {
+    max-width:auto;
+    height: 30px;
+  }
+  .right {
+    display: flex;
+    flex-direction: row-reverse;
+    flex:1 1 1;
+  }
+
+  .right img {
+    max-width: 30px;
+    height: 30px;
+  }
+
 }

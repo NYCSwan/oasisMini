@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Homepage from './Homepage.react';
 import NewGrow from './new_grow.react';
 import ExistingGrow from './existing_grow.react';
+import Monitor from './monitor.react';
 
 const FourOhFour = () => <h1>404</h1>;
 
@@ -15,6 +16,8 @@ const App = () => (
           <Route exact path="/" component={Homepage} />
           <Route exact path="/newgrow" component={NewGrow} />
           <Route exact path="/existinggrow" component={ExistingGrow} />
+          <Route exact path="/existinggrow" component={ExistingGrow} />
+          <Route exact path="/monitor" component={Monitor} />
 
           <Route component={FourOhFour} />
         </Switch>
