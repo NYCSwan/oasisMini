@@ -34,8 +34,7 @@ class SiteHeader extends Component {
               href='#'>
               <img
                 src='./public/img/Support_Button.png'
-                responsive
-                className="img-responsive"
+                className="img-responsive responsive"
                 alt="support for your system"/>
             </NavItem>
             <NavItem
@@ -45,8 +44,7 @@ class SiteHeader extends Component {
               href="#">
               <img
                 src='./public/img/My_Account_Button.png'
-                responsive
-                className="img-responsive"
+                className="img-responsive responsive"
                 alt="my account information"/>
             </NavItem>
           </Nav>

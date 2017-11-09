@@ -19,11 +19,11 @@ class Monitor extends Component {
         <h1>Monitor</h1>
         <div className="container">
           <div className="filter">
-            <input 
-              value={this.state.chamber_id} 
-              onChange={this.handleChamberChange} 
-              type="text" 
-              placeholder="chamber id" 
+            <input
+              value={this.state.chamber_id}
+              onChange={this.handleChamberChange}
+              type="text"
+              placeholder="chamber id"
             />
           </div>
        <div className="D3Graph humidity">
@@ -31,17 +31,18 @@ class Monitor extends Component {
           {preload.sensor_data
             .filter(data => `${data.chamber_id}`.indexOf(this.state.chamber_id) >=0)
             .map( data => (
-
-            <Graph key={data.id} sensor={data.humidity} />
+            <Graph key={data.id} id={data.id} sensor={data.humidity} />
           ))}
         </div>
         <div className="d3Graph height">
           <h3>Plant Height (In.)</h3>
 
-          {preload.sensor_data.map( data => (
-            <Graph key={data.id} sensor={data.height} />
+          {preload.sensor_data
+            .filter(data => `${data.chamber_id}`.indexOf(this.state.chamber_id) >=0)
+            .map( data => (
+            <Graph key={data.id} id={data.id} sensor={data.height} />
           ))}
-        </div> 
+        </div>
     {/*    <div className="pH">
           {preload.sensor_data.map(data => <h3>pH: {data.pH}</h3>)}
         </div>
@@ -58,8 +59,10 @@ class Monitor extends Component {
     */}
          <div className="d3graph temperature">
           <h3>Temperature (*F)</h3>
-          {preload.sensor_data.map( data => (
-              <Graph key={data.id} sensor={data.temperature} />
+          {preload.sensor_data
+            .filter(data => `${data.chamber_id}`.indexOf(this.state.chamber_id) >=0)
+            .map( data => (
+              <Graph key={data.id} id={data.id} sensor={data.temperature} />
            ))}
          </div>
         </div>
