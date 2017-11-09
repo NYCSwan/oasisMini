@@ -1,17 +1,16 @@
 import React from 'react';
-import { Navbar, Nav, NavItem, Link, Image } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+
 const SiteHeader = () => (
  <div> 
-   <Navbar inverse staticTop className="fixed-top">
-    <Navbar.Header >
+   <Navbar inverse className="fixed-top">
+    <Navbar.Header>
       <Navbar.Brand>
-        <LinkContainer to="/home">
-          <img src='./public/img/logo.png' className='logo' responsive className="img-responsive center-block" alt="logo" />
+        <LinkContainer to="/">
+          <img src='./public/img/logo.png' className="logo img-responsive center-block" alt="logo" />
         </LinkContainer>
       </Navbar.Brand>
-    </Navbar.Header>
-    <Navbar>
       <Nav pullRight
         bsStyle="tabs"
         activeKey="1"
@@ -27,8 +26,8 @@ const SiteHeader = () => (
           </NavItem>
         </LinkContainer>
       </Nav>
+     </Navbar.Header>
     </Navbar>
-  </Navbar>
   </div>
 );
 

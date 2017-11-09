@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SiteHeader from './Header.react';
-import NewGrow from './new_grow.react';
-import ExistingGrow from './existing_grow.react';
-import Tutorials from './tutorials.react';
-
 
 const Homepage = () => (
   <div>
