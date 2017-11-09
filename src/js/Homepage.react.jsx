@@ -1,14 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+
 import SiteHeader from './Header.react';
 
 const Homepage = () => (
   <div>
     <SiteHeader />
     <div className="links">
-      <Link to='/NewGrow'>New Grow</Link>
-      <Link to='/ExistingGrow'>Existing Grow</Link>
-      <Link to='/Tutorials'>Tutorials</Link>
+      <Button bsStyle="primary" href="/NewGrow">New Grow</Button>
+      <Button bsStyle="primary" href="/ExistingGrow">Existing Grow</Button>
+      <Button bsStyle="primary" href="/Tutorials">Tutorials</Button>
     </div>
   </div>
 );

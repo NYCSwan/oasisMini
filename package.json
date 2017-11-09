@@ -57,6 +57,7 @@
     "nodemon": "1.12.1",
     "react-hot-loader": "^3.1.1",
     "react-test-render": "^1.1.1",
+    "react-test-renderer": "^16.1.0",
     "webpack-dev-server": "^2.9.4"
   }
 }
