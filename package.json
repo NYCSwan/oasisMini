@@ -9,12 +9,13 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 'js/**/*.{js,jsx}'",
+    "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"src/js/**/*.{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server",
     "test": "jest",
-    "test:update": "jest -u"
+    "test:update": "jest -u",
+    "test:coverage": "jest --coverage"
   },
   "jest": {
     "snapshotSerializers": [
@@ -33,6 +34,7 @@
     "d3-request": "^1.0.6",
     "lodash": "^4.17.4",
     "preact": "^8.2.6",
+    "preact-compat": "^3.17.0",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.5",
@@ -70,7 +72,7 @@
     "jest": "21.2.1",
     "jest-serializer-enzyme": "^1.0.0",
     "nodemon": "1.12.1",
-    "react-hot-loader": "^3.1.1",
+    "react-hot-loader": "^3.1.2",
     "react-test-render": "^1.1.1",
     "react-test-renderer": "^16.1.0",
     "webpack-dev-server": "^2.9.4"

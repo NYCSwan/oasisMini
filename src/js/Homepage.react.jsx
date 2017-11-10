@@ -7,9 +7,15 @@ const Homepage = () => (
   <div>
     <SiteHeader />
     <div className="links">
-      <Button bsStyle="primary" href="/NewGrow">New Grow</Button>
-      <Button bsStyle="primary" href="/ExistingGrow">Existing Grow</Button>
-      <Button bsStyle="primary" href="/Tutorials">Tutorials</Button>
+      <Button bsStyle="primary" href="/NewGrow">
+        New Grow
+      </Button>
+      <Button bsStyle="primary" href="/ExistingGrow">
+        Existing Grow
+      </Button>
+      <Button bsStyle="primary" href="/Tutorials">
+        Tutorials
+      </Button>
     </div>
   </div>
 );
