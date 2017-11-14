@@ -11,13 +11,13 @@ const FourOhFour = () => <h1>404</h1>;
 
 const App = () => (
   <BrowserRouter>
-    <div className="app">
+    <div className="appContainer">
       <Switch>
         <Route exact path="/" component={Homepage} />
-        <Route exact path="/newgrow" component={NewGrow} />
-        <Route exact path="/existinggrow" component={ExistingGrow} />
-        <Route exact path="/monitor" component={Monitor} />
-        <Route exact path="/tutorials" component={Tutorials} />
+        <Route path="/newgrow" component={NewGrow} />
+        <Route path="/existinggrow" component={ExistingGrow} />
+        <Route path="/monitor" component={Monitor} />
+        <Route path="/tutorials" component={Tutorials} />
         <Route component={FourOhFour} />
       </Switch>
     </div>

@@ -4,8 +4,7 @@ import App from './App.react';
 
 const renderApp = () => {
   render(<App />, document.getElementById('app'));
-};
-
+}
 renderApp();
 
 if (module.hot) {

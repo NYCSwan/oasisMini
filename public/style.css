@@ -1,9 +1,16 @@
+.Futura-Lig {
+	font-family: Futura-Lig;
+	font-weight: bold;
+	font-style: normal;
+}
+
 body {
   margin: 0 auto;
   background-image: url(/public/img/BG.png);
   background-size: cover;
   background-position: center;
-
+  color:#fff;
+  font-family: Future-Lig;
 }
 li {
   list-style-type:none;
@@ -40,5 +47,3 @@ img {
   display: flex;
   flex-direction: column;
 }
-
-
