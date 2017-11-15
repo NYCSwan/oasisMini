@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import findLastIndex from 'lodash/findLastIndex';
-import filter from 'lodash/filter';
+import pickBy from 'lodash/pickBy';
 import map from 'lodash/map';
+
 
 import { Col, Row } from 'react-bootstrap';
 
 import Header from './Header.react';
 import Graph from './graph.react';
+import { getFormattedDate } from './helpers/dates';
 
 class Monitor extends Component {
   state = {
@@ -20,11 +22,12 @@ class Monitor extends Component {
   };
 
   render() {
-    const plantByChamber = filter(this.props.plants, plant => (plant.chamber_id === this.state.chamber_id));
-    const lastPhReading = findLastIndex(this.props.data, sensor => sensor.pH != 'na');
-    const lastPpmReading = findLastIndex(this.props.data, sensor => sensor.PPM != 'na');
+    const plantByChamber = pickBy(this.props.plants, (plant, key) => plant.chamber_id === this.state.chamber_id);
+    const lastPhReading = findLastIndex(this.props.sensor_data, (sensor) => sensor.pH !== 'na');
+    const lastPpmReading = findLastIndex(this.props.sensor_data, (sensor) => sensor.PPM !== 'na');
     const today = new Date;
-    const weekAgoToday = today.setDate(today.getDate()-7);
+    const weekAgoToday = new Date().setDate(today.getDate() - 7);
+    const dataByChamber = pickBy(this.props.sensor_data, (data, key) => data.chamber_id === this.state.chamber_id);
 
     return (
       <div className="monitor container">
@@ -40,26 +43,21 @@ class Monitor extends Component {
               placeholder="chamber id"
             />
           </div>
-          <div className="D3Graph humidity">
+          <div className="d3Graph humidity">
             <h3>Humidity (%)</h3>
-
-              filter({this.props.data}, data => `${data.chamber_id}`.indexOf(this.state.chamber_id) >= 0)
-              map({this.props.data}, data => {
-                 <Graph
-                  key={data.id}
-                  id={data.id}
-                  sensor={data.humidity}
-                  startDate={today}
-                  endDate={weekAgoToday}
-                  />
-                })
-              }
+            map(dataByChamber, data => {
+               <Graph
+                key={data.id}
+                id={data.id}
+                sensor={data.humidity}
+                startDate={today}
+                endDate={weekAgoToday}
+                />
+              })
            </div>
           <div className="d3Graph height">
             <h3>Plant Height (In.)</h3>
-
-              filter({this.props.data}, data =>  `${data.chamber_id}`.indexOf(this.state.chamber_id) >= 0)
-              map({this.props.data}, data => {
+              map({dataByChamber}, data => {
                  <Graph
                   key={data.id}
                   id={data.id}
@@ -68,13 +66,10 @@ class Monitor extends Component {
                   endDate={weekAgoToday}
                 />
               })
-            }
           </div>
           <div className="d3graph temperature">
             <h3>Temperature (*F)</h3>
-
-              filter({this.props.data}, data => `${data.chamber_id}`.indexOf(this.state.chamber_id) >= 0)
-              map({this.props.data}, data => {
+              map({dataByChamber}, data => {
                  <Graph
                   key={data.id}
                   id={data.id}
@@ -83,7 +78,6 @@ class Monitor extends Component {
                   endDate={weekAgoToday}
                 />
               })
-            }
           </div>
         </div>
 
@@ -112,6 +106,8 @@ Monitor.propTypes = {
   sensor: PropTypes.string.isRequired,
   humidity: PropTypes.string.isRequired,
   plants: PropTypes.object.isRequired,
+  plant: PropTypes.object.isRequired,
+  chamber_id: PropTypes.string.isRequired,
   startDate: PropTypes.instanceOf(Date).isRequired,
   endDate: PropTypes.instanceOf(Date).isRequired
 

@@ -3,12 +3,10 @@
     "airbnb",
     "prettier",
     "prettier/react",
-    "plugin:jsx-a11y/recommended",
-    "plugin:flowtype/recommended"
+    "plugin:jsx-a11y/recommended"
   ],
   "plugins": [
     "lodash",
-    "flowtype",
     "prettier",
     "import",
     "jsx-a11y"

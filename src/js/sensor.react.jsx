@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import upperFirst from 'lodash/upperFirst';
+import filter from 'lodash/filter';
 
 import Header from './Header.react';
 import Graph from './graph.react';
@@ -15,10 +16,10 @@ class Sensor extends Component {
   };
 
       render() {
-        const { humidity, temperate, water, height } = props.sensor;
-        const { chamber_id, name } = props.plants;
-        const { title } = props.match.params.id;
-        const plantByChamber = props.plants.filter(plant => (plant.chamber_id === this.state.chamber_id));
+        const { humidity, temperate, water, height } = this.props.sensor;
+        const { chamber_id, name } = this.props.plants;
+        const { title } = this.props.match.params.id;
+        const plantByChamber = filter(this.props.plants, [this.props.plants.chamber_id === this.state.chamber_id]);
 
         return (
           <div className="sensor container">
