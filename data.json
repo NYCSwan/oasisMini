@@ -8596,5 +8596,35 @@
       "id": "3",
       "filled": "na"
     }
+  ],
+  "sensors": [
+    {
+      "name": "temperature",
+      "id": "001"
+    },
+    {
+      "name": "humidity",
+      "id": "002"
+    },
+    {
+      "name": "pH",
+      "id": "003"
+    },
+    {
+      "name": "PPM",
+      "id": "004"
+    },
+    {
+      "name": "height",
+      "id": "005"
+    },
+    {
+      "name": "photo",
+      "id": "006"
+    },
+    {
+      "name": "water",
+      "id": "007"
+    }
   ]
 }
