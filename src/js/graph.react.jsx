@@ -5,7 +5,7 @@ const Graph = (props) => (
   <div>
     <h3>Humidity (%)</h3>
     <div className="graph-detail container">
-      <h3 className={props.id}>data:{props.sensor}</h3>
+      <h3 className={props.id}>data:{props.humidity}</h3>
       <h4>{props.startDate}-{props.endDate}</h4>
     </div>
   </div>

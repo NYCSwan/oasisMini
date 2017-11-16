@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 import findLastIndex from 'lodash/findLastIndex';
 import pickBy from 'lodash/pickBy';
 import map from 'lodash/map';
-
-
+import toArray from 'lodash/toArray';
+import entries from 'lodash/entries';
+import forEach from 'lodash/forEach';
+import mergeWith from 'lodash/mergeWith';
+import isArray from 'lodash/isArray';
+import mapValues from 'lodash/mapValues';
 import { Col, Row } from 'react-bootstrap';
 
 import Header from './Header.react';
@@ -22,13 +26,17 @@ class Monitor extends Component {
   };
 
   render() {
-    const plantByChamber = pickBy(this.props.plants, (plant, key) => plant.chamber_id === this.state.chamber_id);
-    const lastPhReading = findLastIndex(this.props.sensor_data, (sensor) => sensor.pH !== 'na');
-    const lastPpmReading = findLastIndex(this.props.sensor_data, (sensor) => sensor.PPM !== 'na');
-    const today = new Date;
-    const weekAgoToday = new Date().setDate(today.getDate() - 7);
-    const dataByChamber = pickBy(this.props.sensor_data, (data, key) => data.chamber_id === this.state.chamber_id);
+    const { sensor_data, plants } = this.props;
 
+    const plantByChamber = pickBy(plants, (plant, key) => plant.chamber_id === this.state.chamber_id);
+    const lastPhReading = findLastIndex(sensor_data, (sensor) => sensor.pH !== 'na');
+    const lastPpmReading = findLastIndex(sensor_data, (sensor) => sensor.PPM !== 'na');
+    const today = new Date();
+    const weekAgo = new Date(today - (1000*60*60*24*7));
+    const dataByChamber = pickBy(sensor_data, (data, key) => data.chamber_id === this.state.chamber_id);
+    const humidityByChamber = map(dataByChamber, "humidity");
+    const timeChamber = map(dataByChamber, "time");
+debugger;
     return (
       <div className="monitor container">
         <Header />
@@ -45,39 +53,13 @@ class Monitor extends Component {
           </div>
           <div className="d3Graph humidity">
             <h3>Humidity (%)</h3>
-            map(dataByChamber, data => {
-               <Graph
-                key={data.id}
-                id={data.id}
-                sensor={data.humidity}
-                startDate={today}
-                endDate={weekAgoToday}
-                />
-              })
-           </div>
-          <div className="d3Graph height">
-            <h3>Plant Height (In.)</h3>
-              map({dataByChamber}, data => {
-                 <Graph
-                  key={data.id}
-                  id={data.id}
-                  sensor={data.height}
-                  startDate={today}
-                  endDate={weekAgoToday}
-                />
-              })
-          </div>
-          <div className="d3graph temperature">
-            <h3>Temperature (*F)</h3>
-              map({dataByChamber}, data => {
-                 <Graph
-                  key={data.id}
-                  id={data.id}
-                  sensor={data.temperature}
-                  startDate={today}
-                  endDate={weekAgoToday}
-                />
-              })
+            {map(sensor_data, (data) => {
+               return <Graph key={data.id}
+                        startDate={today.toLocaleString()}
+                        endDate={weekAgo.toLocaleString()}
+                        {...data}
+                      />
+            })}
           </div>
         </div>
 
@@ -87,7 +69,6 @@ class Monitor extends Component {
               <Row><h3>pH</h3></Row>
              </Col>
             <Col className="dayOfCycle">
-            {/* if state.chamber_id matches plant.chamber_id  <h3>{plant.day_of_cycle}</h3> */}
                <Row><h3>day {plantByChamber[0].day_of_cycle}</h3></Row>
             </Col>
             <Col className="PPM">
@@ -101,17 +82,15 @@ class Monitor extends Component {
 };
 
 Monitor.propTypes = {
-  data: PropTypes.string.isRequired,
+  sensor_data: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   sensor: PropTypes.string.isRequired,
   humidity: PropTypes.string.isRequired,
   plants: PropTypes.object.isRequired,
   plant: PropTypes.object.isRequired,
   chamber_id: PropTypes.string.isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
-  endDate: PropTypes.instanceOf(Date).isRequired
-
-
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.number.isRequired
 }
 
 export default Monitor;
