@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Graph = (props) => (
   <div>
-    <h3>{props.sensor} (%)</h3>
+    <h1>{this.props.match.params.id}</h1>
     <div className="graph-detail container">
       <h3 className={props.id}>data:{props.sensor}</h3>
       <h4>{props.startDate}-{props.endDate}</h4>

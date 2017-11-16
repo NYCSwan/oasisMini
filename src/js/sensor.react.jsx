@@ -35,7 +35,7 @@ class Sensor extends Component {
             </div>
             <h3>Humidity (%)</h3>
             {props.data
-              .filter(data => `${data.chamber_id}`.indexOf(this.state.chamber_id) >= 0)
+              .filter(data => `${chamber_id}`.indexOf(this.state.chamber_id) >= 0)
               .map(data => <Graph key={data.id} id={data.id} sensor={data.humidity} />)}
             <div className="graph-detail container">
               <h3 className={props.id}>data:{props.sensor}</h3>
@@ -54,6 +54,10 @@ Sensor.propTypes = {
   id: PropTypes.string.isRequired,
   sensor: PropTypes.string.isRequired,
   humidity: PropTypes.string.isRequired,
+  water: PropTypes.string.isRequired,
+  height: PropTypes.string.isRequired,
+  chamber_id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   startDate: PropTypes.instanceOf(Date).isRequired,
   endDate: PropTypes.instanceOf(Date).isRequired
 
