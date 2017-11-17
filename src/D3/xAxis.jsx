@@ -2,8 +2,8 @@ import React from 'react';
 import * as d3 from 'd3';
 
 
-class Xaxis extends Component {
+class XAxis extends Component {
 
 }
 
-export default Xaxis;
+export default XAxis;

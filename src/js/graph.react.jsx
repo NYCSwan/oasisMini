@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Graph = ( props ) => (
+  <div>
     <svg
-      width={props.graphWidth} height={props.graphHeight}>
+      width={props.graphWidth}
+      height={props.graphHeight}>
       {props.children}
     </svg>
+  </div>
 );
 
 

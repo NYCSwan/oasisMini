@@ -1,10 +1,11 @@
 import React from 'react';
-import * as d3 from 'd3';
+import PropTypes from 'prop-types';
 
 const Line = (props) => (
   <path
-    d={this.props.path}
-    stroke={this.props.color} strokeWidth={this.props.lineWidth}
+    d={props.path}
+    stroke={props.color}
+    strokeWidth={props.lineWidth}
     fill="none" />
 );
 
@@ -13,5 +14,11 @@ Line.defaultProps = {
   color: 'white',
   lineWidth: 2
 };
+
+Line.propTypes = {
+  color: PropTypes.string,
+  path: PropTypes.element,
+  lineWidth: PropTypes.number
+}
 
 export default Line;

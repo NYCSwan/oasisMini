@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import findLastIndex from 'lodash/findLastIndex';
 import pickBy from 'lodash/pickBy';
 import map from 'lodash/map';
+import forIn from 'lodash/forIn';
 
 import { Col, Row } from 'react-bootstrap';
 
@@ -30,6 +31,13 @@ class Monitor extends Component {
     const today = new Date(2017,8,4);
     const weekAgo = new Date(today - (1000*60*60*24*7));
     const dataByChamber = pickBy(sensor_data, (data) => data.chamber_id === this.state.chamber_id);
+    const tempData = [];
+    forIn(dataByChamber, function(value, key) {
+      let temp = value.sensors.temperature;
+      let time = value.time;
+      tempData.push([time, temp]);
+    });
+debugger;
 
     return (
       <div className="monitor container">
@@ -52,7 +60,7 @@ class Monitor extends Component {
                 key={data.id}
                 startDate={today.toLocaleString()}
                 endDate={weekAgo.toLocaleString()}
-                sensor_data={data.sensors.humidity}
+                sensor_data={data.sensors.temperature}
                 graphHeight={this.state.graphHeight}
                 graphWidth={this.state.graphWidth}
                 {...data}
