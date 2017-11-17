@@ -8,11 +8,13 @@ import map from 'lodash/map';
 import { Col, Row } from 'react-bootstrap';
 
 import Header from './Header.react';
-import Graph from './graph.react';
+import LineGraph from '../D3/lineGraph';
 
 class Monitor extends Component {
   state = {
-    chamber_id: '2'
+    chamber_id: '2',
+    graphWidth: 600,
+    graphHeight: 300
   };
 
   handleChamberChange = (event) => {
@@ -46,10 +48,13 @@ class Monitor extends Component {
           <div className="d3Graph humidity">
             <h3>Humidity (%)</h3>
             {map(dataByChamber, (data) => (
-              <Graph key={data.id}
+              <LineGraph
+                key={data.id}
                 startDate={today.toLocaleString()}
                 endDate={weekAgo.toLocaleString()}
-                sensor={data.sensors.humidity}
+                sensor_data={data.sensors.humidity}
+                graphHeight={this.state.graphHeight}
+                graphWidth={this.state.graphWidth}
                 {...data}
               />
             ))}
@@ -57,10 +62,13 @@ class Monitor extends Component {
           <div className="d3Graph height">
           <h3>Plant Height (In.)</h3>
           {map(dataByChamber, (data) => (
-            <Graph key={data.id}
+            <LineGraph
+              key={data.id}
               startDate={today.toLocaleString()}
               endDate={weekAgo.toLocaleString()}
-              sensor={data.sensors.height}
+              sensor_data={data.sensors.height}
+              graphHeight={this.state.graphHeight}
+              graphWidth={this.state.graphWidth}
               {...data}
             />
           ))}
@@ -68,10 +76,13 @@ class Monitor extends Component {
           <div className="d3graph temperature">
           <h3>Temperature (*F)</h3>
           {map(dataByChamber, (data) => (
-            <Graph key={data.id}
+            <LineGraph
+              key={data.id}
               startDate={today.toLocaleString()}
               endDate={weekAgo.toLocaleString()}
-              sensor={data.sensors.temperature}
+              sensor_data={data.sensors.temperature}
+              graphHeight={this.state.graphHeight}
+              graphWidth={this.state.graphWidth}
               {...data}
             />
           ))}
@@ -104,9 +115,9 @@ Monitor.propTypes = {
   plants: PropTypes.shape({
     plant: PropTypes.string.isRequired
   }).isRequired,
-  chamber_id: PropTypes.string.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired
+  graphWidth: PropTypes.number.isRequired,
+  graphHeight: PropTypes.number.isRequired,
+  chamber_id: PropTypes.string.isRequired
 }
 
 export default Monitor;

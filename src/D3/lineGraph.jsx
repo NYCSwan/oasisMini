@@ -1,64 +1,53 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import d3request from 'd3-request';
 
-import dataFile from '../../data.json';
+import Graph from '../js/graph.react';
+import DataSeries from './data_series';
 
-const width=900
-const height = 300;
+class LineGraph extends Component {
 
-d3.json('../../data.json', (err, data) => {
-  //   clean the data
-    data.sensor_data.forEach(d => {
-      d.date = d3.timeParse("%Y%m%d %I:%M")(d.time);
-      d.date = new Date(d.time);//x
-      ++d["temperature"]; //y
-    });
+  render() {
+    const { sensor_data, graphWidth, graphHeight, startDate, endDate } = this.props;
+    const size = { width: graphWidth, height: graphHeight };
+    {/* max/min */}
+    {/* hard coded temp temperary */}
+    const xExtent = d3.extent(sensor_data, d => d.time);
+    {/* const yExtent = d3.extent(sensor_data, d=> d.temperature); */}
 
-      // max/min
-  const xExtent = d3.extent(data.sensor_data, d => d.date);
-  const yExtent = d3.extent(data.sensor_data, d=> d.temperature);
+    {/* scales (y is the sensor data, x is the time (day, week, full)) */}
+    const yScale = d3.scaleLinear().domain([70, 90]).range([graphHeight, 0]);
+      {/* need to fix so axis is to nearest 10s above/below sensor */}
+    const xScale = d3.scaleTime().domain(xExtent).range([0, graphWidth]);
 
-  // scales
-  const yScale = d3.scaleLinear()
-    .domain([0, 90])
-    .range([height, 0]);
+    const path = d3.svg.line()
+      .x((d) => props.xScale(d.x))
+      .y((d) => props.yScale(d.y))
+      .interpolate(props.interpolate);
 
-  const yScaleLine = d3.scaleLinear()
-    .domain(yExtent).range([height, 0]);
+    return (
+      <Graph width={graphWidth} height={graphHeight}>
+        <DataSeries
+          sensor_data={sensor_data.temperature}
+          size={size}
+          xScale={xScale}
+          yScale={yScale}
+          path={path}
+          ref='temperature'
+          color="white"
+          {...sensor_data}
+        />
+      </Graph>
+    );
+  }
+};
 
-  const xScale = d3.scaleTime()
-    .domain(xExtent)
-    .range([40, width]);
+LineGraph.propTypes = {
+  graphWidth: PropTypes.number.isRequired,
+  graphHeight: PropTypes.number.isRequired,
+  sensor_data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  path: PropTypes.element.isRequired
+}
 
-  const yAxis = d3.axisLeft()
-    .scale(yScale);
-
-  const xAxis = d3.axisBottom()
-    .scale(xScale)
-    .tickFormat(d3.timeFormat('%a %I:%M %p'));
-
-  //       Append to svg
-  //       Temp line
-
-  const svg = d3.select('svg').append('g')
-    .attr('transform', 'translate(40, 20)');
-
-  const line = d3.line()
-    .x(d => xScale(d.date))
-    .y(d => yScale(d["temperature"]));
-
-  svg.selectAll('path')
-    .data([data.sensor_data]).enter().append('path')
-    .attr('d', line)
-    .attr('fill', 'none')
-    .attr('stroke', 'blue');
-
-  //     axes
-  svg.append('g')
-    .call(yAxis);
-
-  svg.append('g')
-    .attr('transform', 'translate('+[-40, (height)]+')')
-    .call(xAxis);
-
-});
+export default LineGraph;

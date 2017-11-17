@@ -26,6 +26,6 @@
     "jest": true
   },
   "rules": {
-    "allowTaggedTemplates": true
+    "allowTaggedTemplates": 0
   }
 }
