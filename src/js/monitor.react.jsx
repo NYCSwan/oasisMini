@@ -20,15 +20,6 @@ class Monitor extends Component {
     tempData: []
   };
 
-  componentDidMount() {
-    forIn(dataByChamber, (value) => {
-      const temp = value.sensors.temperature;
-      const time = value.time;
-      this.setState({
-        tempData: tempData.push([time, temp])
-      })
-    });
-  }
 
   handleChamberChange = (event) => {
     this.setState({ chamber_id: event.target.value });
@@ -43,6 +34,14 @@ class Monitor extends Component {
     const today = new Date(2017,8,4);
     const weekAgo = new Date(today - (1000*60*60*24*7));
     const dataByChamber = pickBy(sensor_data, (data) => data.chamber_id === this.state.chamber_id);
+    const tempData = [];
+    forIn(dataByChamber, (value) => {
+      const temp = value.sensors.temperature;
+      const time = value.time;
+
+      tempData.push([time, temp]);
+
+    });
 
     return (
       <div className="monitor container">
@@ -65,7 +64,7 @@ class Monitor extends Component {
                 key={data.id}
                 startDate={today.toLocaleString()}
                 endDate={weekAgo.toLocaleString()}
-                sensor_data={data.sensors.temperature}
+                sensor_data={tempData}
                 graphHeight={this.state.graphHeight}
                 graphWidth={this.state.graphWidth}
                 {...data}
