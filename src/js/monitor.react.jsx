@@ -21,11 +21,16 @@ class Monitor extends Component {
     currentData: []
   };
 
+  componentDidMount(){
+    this.updateChamberData()
+  }
+
   handleChamberChange = (event) => {
     this.setState({
       chamber_id: event.target.value
      });
   };
+
   handleChamberDataChange = () => {
     this.setState({
       currentData: this.updateChamberData()
@@ -33,10 +38,18 @@ class Monitor extends Component {
   }
 
   updateChamberData = () => {
-    forIn(props.dataByChamber, (value) => {
+    const dataByChamber = pickBy(this.props.sensor_data,
+      (data) => data.chamber_id === this.state.chamber_id);
+    let tempData = [];
+
+    forIn(dataByChamber, (value) => {
       const {temp} = value.sensors.temperature;
       const {time} = value.time;
-      this.state.currentData.push([time, temp]);
+      tempData.push([time, temp])
+    })
+
+    this.setState({
+      currentData: tempData
     })
   }
 
@@ -47,8 +60,7 @@ class Monitor extends Component {
     const lastPhReading = findLastIndex(sensor_data, (sensor) => sensor.pH !== 'na');
     const lastPpmReading = findLastIndex(sensor_data, (sensor) => sensor.PPM !== 'na');
     const today = new Date(2017,8,4);
-    const weekAgo = new Date(today - (1000*60*60*24*7));
-    const dataByChamber = pickBy(sensor_data, (data) => data.chamber_id === this.state.chamber_id);
+    const oneWeekAgo = new Date(today - (1000*60*60*24*7));
 
     return (
       <ErrorBoundary>
@@ -65,13 +77,13 @@ class Monitor extends Component {
                 placeholder="chamber id"
               />
             </div>
-            <div className="d3Graph humidity">
+          {/*  <div className="d3Graph humidity">
               <h3>Humidity (%)</h3>
               {map(dataByChamber, (data) => (
                 <LineGraph
                   key={data.id}
                   startDate={today.toLocaleString()}
-                  endDate={weekAgo.toLocaleString()}
+                  endDate={oneWeekAgo.toLocaleString()}
                   sensor_data={this.state.currentData}
                   graphHeight={this.state.graphHeight}
                   graphWidth={this.state.graphWidth}
@@ -85,7 +97,7 @@ class Monitor extends Component {
               <LineGraph
                 key={data.id}
                 startDate={today.toLocaleString()}
-                endDate={weekAgo.toLocaleString()}
+                endDate={oneWeekAgo.toLocaleString()}
                 sensor_data={data.sensors.height}
                 graphHeight={this.state.graphHeight}
                 graphWidth={this.state.graphWidth}
@@ -99,14 +111,19 @@ class Monitor extends Component {
               <LineGraph
                 key={data.id}
                 startDate={today.toLocaleString()}
-                endDate={weekAgo.toLocaleString()}
+                endDate={oneWeekAgo.toLocaleString()}
                 sensor_data={data.sensors.temperature}
                 graphHeight={this.state.graphHeight}
                 graphWidth={this.state.graphWidth}
                 {...data}
               />
             ))}
-            </div>
+            </div> */}
+            <LineGraph
+              data={this.state.currentData}
+              size={[this.state.graphWidth, this.state.graphHeight]}
+              dates={[today, oneWeekAgo]}
+             />
           </div>
 
           <div className="bottom container readings">

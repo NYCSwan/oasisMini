@@ -5,74 +5,49 @@ import { max } from 'd3-array';
 import { select } from 'd3-selection';
 
 class LineGraph extends Component {
-  state = {
-    xScale: scaleTime(),
-    yScale: scaleLinear()
-  }
 
-  componentDidMount() {
-    this.createLineGraph()
-  }
+        componentDidMount() {
+           this.createBarChart()
+        }
+        componentDidUpdate() {
+           this.createBarChart()
+        }
 
-  componentDidUpdate() {
-    this.createLineGraph()
-  }
+        createBarChart() {
+           const node = this.node
+           const dataMax = max(this.props.data)
+           const yScale = scaleLinear()
+              .domain([0, dataMax])
+              .range([0, this.props.size[1]])
 
-  createLineGraph() {
-    debugger;
-    const { node } = this.node;
-    const dataMax = max(props.tempData);
-    const yScale = scaleLinear()
-      .domain([70, dataMax])
-      .range([graphHeight, 0]);
-    const xScale = scaleTime()
-      .domeain(xExtent)
-      .range(props.graphWidth);
+        select(node)
+           .selectAll('rect')
+           .data(this.props.data)
+           .enter()
+           .append('rect')
 
-    select(node)
-      .selectAll('path')
-      .data(props.sensor_data)
-      .enter()
-      .append('g')
-      .attr('transform', 'translate(40, 20)');
+        select(node)
+           .selectAll('rect')
+           .data(this.props.data)
+           .exit()
+           .remove()
 
-    select(node)
-      .selectAll('path')
-      .data(props.sensor_data)
-      .exit()
-      .remove();
+           {/*debugger; */}
+        select(node)
+           .selectAll('rect')
+           .data(this.props.data)
+           .style('fill', '#fe9922')
+           .attr('x', (d,i) => i * 25)
+           .attr('y', d => yScale(d))
+           .attr('height', d => yScale(d))
+           .attr('width', 25)
+        }
 
-    select(node)
-      .selectAll('path')
-      .data(props.sensor_data)
-      .attr('d', props.line)
-      .attr('fill', 'none')
-      .attr('stroke', 'white');
-  }
-
-  render() {
-    const { sensor_data, graphWidth, graphHeight, tempData } = this.props;
-    const size = { width: graphWidth, height: graphHeight };
-    {/* max/min */}
-
-    {/* scales (y is the sensor data, x is the time (day, week, full)) */}
-      {/* yscale=
-        const xExtent = extent(d, d => d.time);
-        const yExtent = extent(d, d=> d.temperature);
-
-        const xScale = d3.scaleTime().domain(xExtent).range([0, graphWidth]);
-
-        const path = d3.svg.line()
-        .x((data) => xScale(data.x))
-        .y((data) => yScale(data.y))
-        .interpolate(interpolate);
-        need to fix so axis is to nearest 10s above/below sensor */}
-
-    return (
-      <svg ref={node => this.node === node}
-        width={size.graphWidth} height={size.graphHeight} />
-    );
-  }
+     render() {
+           return <svg ref={node => this.node = node}
+           width={500} height={500}>
+           </svg>
+      }
 };
 
 
