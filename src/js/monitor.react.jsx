@@ -11,19 +11,34 @@ import { Col, Row } from 'react-bootstrap';
 
 import Header from './Header.react';
 import LineGraph from '../D3/lineGraph';
+import ErrorBoundary from './helpers/error_boundary.react';
 
 class Monitor extends Component {
   state = {
     chamber_id: '2',
     graphWidth: 600,
     graphHeight: 300,
-    tempData: []
+    currentData: []
   };
-
 
   handleChamberChange = (event) => {
-    this.setState({ chamber_id: event.target.value });
+    this.setState({
+      chamber_id: event.target.value
+     });
   };
+  handleChamberDataChange = () => {
+    this.setState({
+      currentData: this.updateChamberData()
+    });
+  }
+
+  updateChamberData = () => {
+    forIn(props.dataByChamber, (value) => {
+      const {temp} = value.sensors.temperature;
+      const {time} = value.time;
+      this.state.currentData.push([time, temp]);
+    })
+  }
 
   render() {
     const { sensor_data, plants } = this.props;
@@ -34,87 +49,81 @@ class Monitor extends Component {
     const today = new Date(2017,8,4);
     const weekAgo = new Date(today - (1000*60*60*24*7));
     const dataByChamber = pickBy(sensor_data, (data) => data.chamber_id === this.state.chamber_id);
-    const tempData = [];
-    forIn(dataByChamber, (value) => {
-      const temp = value.sensors.temperature;
-      const time = value.time;
-
-      tempData.push([time, temp]);
-
-    });
 
     return (
-      <div className="monitor container">
-        <Header />
-        <h1>Monitor</h1>
+      <ErrorBoundary>
+        <div className="monitor container">
+          <Header />
+          <h1>Monitor</h1>
 
-        <div className="graphs container">
-          <div className="filter">
-            <input
-              value={this.state.chamber_id}
-              onChange={this.handleChamberChange}
-              type="text"
-              placeholder="chamber id"
-            />
-          </div>
-          <div className="d3Graph humidity">
-            <h3>Humidity (%)</h3>
+          <div className="graphs container">
+            <div className="filter">
+              <input
+                value={this.state.chamber_id}
+                onChange={this.handleChamberChange}
+                type="text"
+                placeholder="chamber id"
+              />
+            </div>
+            <div className="d3Graph humidity">
+              <h3>Humidity (%)</h3>
+              {map(dataByChamber, (data) => (
+                <LineGraph
+                  key={data.id}
+                  startDate={today.toLocaleString()}
+                  endDate={weekAgo.toLocaleString()}
+                  sensor_data={this.state.currentData}
+                  graphHeight={this.state.graphHeight}
+                  graphWidth={this.state.graphWidth}
+                  {...data}
+                />
+              ))}
+            </div>
+            <div className="d3Graph height">
+            <h3>Plant Height (In.)</h3>
             {map(dataByChamber, (data) => (
               <LineGraph
                 key={data.id}
                 startDate={today.toLocaleString()}
                 endDate={weekAgo.toLocaleString()}
-                sensor_data={tempData}
+                sensor_data={data.sensors.height}
                 graphHeight={this.state.graphHeight}
                 graphWidth={this.state.graphWidth}
                 {...data}
               />
             ))}
+            </div>
+            <div className="d3graph temperature">
+            <h3>Temperature (*F)</h3>
+            {map(dataByChamber, (data) => (
+              <LineGraph
+                key={data.id}
+                startDate={today.toLocaleString()}
+                endDate={weekAgo.toLocaleString()}
+                sensor_data={data.sensors.temperature}
+                graphHeight={this.state.graphHeight}
+                graphWidth={this.state.graphWidth}
+                {...data}
+              />
+            ))}
+            </div>
           </div>
-          <div className="d3Graph height">
-          <h3>Plant Height (In.)</h3>
-          {map(dataByChamber, (data) => (
-            <LineGraph
-              key={data.id}
-              startDate={today.toLocaleString()}
-              endDate={weekAgo.toLocaleString()}
-              sensor_data={data.sensors.height}
-              graphHeight={this.state.graphHeight}
-              graphWidth={this.state.graphWidth}
-              {...data}
-            />
-          ))}
-          </div>
-          <div className="d3graph temperature">
-          <h3>Temperature (*F)</h3>
-          {map(dataByChamber, (data) => (
-            <LineGraph
-              key={data.id}
-              startDate={today.toLocaleString()}
-              endDate={weekAgo.toLocaleString()}
-              sensor_data={data.sensors.temperature}
-              graphHeight={this.state.graphHeight}
-              graphWidth={this.state.graphWidth}
-              {...data}
-            />
-          ))}
-          </div>
-        </div>
 
-        <div className="bottom container readings">
-            <Col className="ph">
-             <Row><h3>{lastPhReading} </h3></Row>
-              <Row><h3>pH</h3></Row>
-             </Col>
-            <Col className="dayOfCycle">
-               <Row><h3>day {plantByChamber[0].day_of_cycle}</h3></Row>
-            </Col>
-            <Col className="PPM">
-              <Row><h3>{lastPpmReading}</h3></Row>
-              <Row><h3>PPM</h3></Row>
-            </Col>
-          </div>
-      </div>
+          <div className="bottom container readings">
+              <Col className="ph">
+               <Row><h3>{lastPhReading} </h3></Row>
+                <Row><h3>pH</h3></Row>
+               </Col>
+              <Col className="dayOfCycle">
+                 <Row><h3>day {plantByChamber[0].day_of_cycle}</h3></Row>
+              </Col>
+              <Col className="PPM">
+                <Row><h3>{lastPpmReading}</h3></Row>
+                <Row><h3>PPM</h3></Row>
+              </Col>
+            </div>
+        </div>
+      </ErrorBoundary>
     );
   }
 };
@@ -127,6 +136,7 @@ Monitor.propTypes = {
   plants: PropTypes.shape({
     plant: PropTypes.string.isRequired
   }).isRequired,
+  currentData: PropTypes.arrayOf(PropTypes.array).isRequired,
   graphWidth: PropTypes.number.isRequired,
   graphHeight: PropTypes.number.isRequired,
   chamber_id: PropTypes.string.isRequired
