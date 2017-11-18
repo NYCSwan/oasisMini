@@ -15,11 +15,9 @@ class LineGraph extends Component {
     const { sensor_data, graphWidth, graphHeight, data } = this.props;
     const size = { width: graphWidth, height: graphHeight };
     {/* max/min */}
-    {/* hard coded temp temperary */}
 
-    {/*
       const xExtent = d3.extent(data, d => d.time);
-      const yExtent = d3.extent(sensor_data, d=> d.temperature); */}
+      const yExtent = d3.extent(sensor_data.sesors, d=> d.temperature);
     {/* scales (y is the sensor data, x is the time (day, week, full)) */}
     const yScale = d3.scaleLinear().domain([70, 90]).range([graphHeight, 0]);
       {/* yscale=

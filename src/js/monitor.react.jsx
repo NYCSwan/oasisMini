@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import * as d3 from 'd3';
 
 import findLastIndex from 'lodash/findLastIndex';
 import pickBy from 'lodash/pickBy';
@@ -15,8 +16,19 @@ class Monitor extends Component {
   state = {
     chamber_id: '2',
     graphWidth: 600,
-    graphHeight: 300
+    graphHeight: 300,
+    tempData: []
   };
+
+  componentDidMount() {
+    forIn(dataByChamber, (value) => {
+      const temp = value.sensors.temperature;
+      const time = value.time;
+      this.setState({
+        tempData: tempData.push([time, temp])
+      })
+    });
+  }
 
   handleChamberChange = (event) => {
     this.setState({ chamber_id: event.target.value });
@@ -31,13 +43,6 @@ class Monitor extends Component {
     const today = new Date(2017,8,4);
     const weekAgo = new Date(today - (1000*60*60*24*7));
     const dataByChamber = pickBy(sensor_data, (data) => data.chamber_id === this.state.chamber_id);
-    const tempData = [];
-    forIn(dataByChamber, function(value, key) {
-      let temp = value.sensors.temperature;
-      let time = value.time;
-      tempData.push([time, temp]);
-    });
-debugger;
 
     return (
       <div className="monitor container">
