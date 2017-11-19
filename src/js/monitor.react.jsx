@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import findLastIndex from 'lodash/findLastIndex';
 import pickBy from 'lodash/pickBy';
 import forIn from 'lodash/forIn';
+import toPairsIn from 'lodash/toPairsIn';
+import forEach from 'lodash/forEach';
 
 import { Col, Row } from 'react-bootstrap';
 
-import Header from './Header.react';
+import SiteHeader from './Header.react';
 import LineGraph from '../D3/lineGraph';
 import ErrorBoundary from './helpers/error_boundary.react';
 
@@ -23,8 +25,8 @@ class Monitor extends Component {
     this.updateChamberData();
   }
 
-  handleChamberChange = () => {
-    this.handleChamberIdChange();
+  handleChamberChange = (event) => {
+    this.handleChamberIdChange(event);
     this.updateChamberData();
   }
 
@@ -32,23 +34,24 @@ class Monitor extends Component {
     this.setState({
       chamberId: event.target.value
      });
-  };
+  }
 
   updateChamberData = () => {
     const dataByChamber = pickBy(this.props.sensor_data,
-      (data) => data.chamberId === this.state.chamberId);
+      (data) =>
+      data.chamberId === this.state.chamberId);
     const tempData = [];
 
     forIn(dataByChamber, (value) => {
       const {temperature} = value.sensors.temperature;
       const {time} = value.time;
       tempData.push([time, temperature])
-      console.log(tempData)
     })
 
     this.setState({
-      currentData: tempData
+      currentData: this.tempData
     })
+    console.log(tempData)
   }
 
   render() {
@@ -59,13 +62,26 @@ class Monitor extends Component {
     const lastPpmReading = findLastIndex(sensor_data, (sensor) => sensor.PPM !== 'na');
     const today = new Date(2017,8,4);
     const oneWeekAgo = new Date(today - (1000*60*60*24*7));
-    const dayOfCycle = plantByChamber[0].day_of_cycle;
+
+    const plantByChamberArray=[];
+    forIn(plantByChamber, (value) => {
+      plantByChamberArray.push(toPairsIn(value));
+    });
+
+    const dayOfCycle = [];
+    forEach(plantByChamberArray,
+       (plantInfo, index) => {
+         if (plantInfo[index][0] === plantInfo[index].day_of_cycle) {
+           dayOfCycle.push(plantInfo[index].day_of_cycle)
+        }
+        return this.dayOfCycle;
+    })
+    console.log(this.state.currentData)
 
     return (
       <ErrorBoundary>
         <div className="monitor container">
-          <Header />
-          <h1>Monitor</h1>
+          <SiteHeader title="Monitor"/>
 
           <div className="graphs container">
             <div className="filter">
@@ -75,9 +91,9 @@ class Monitor extends Component {
                 type="text"
                 placeholder="Which chamber?"
               />
+              <p>{JSON.stringify(currentData)}</p>
             </div>
 
-          {/*  data to sub out for currentData */}
             <LineGraph
               size={[graphWidth, graphHeight]}
               data={currentData}
@@ -92,7 +108,7 @@ class Monitor extends Component {
                 <Row><h3>pH</h3></Row>
                </Col>
               <Col className="dayOfCycle">
-                 <Row><h3>day {dayOfCycle}</h3></Row>
+                <Row><h3>day {dayOfCycle}</h3></Row>
               </Col>
               <Col className="PPM">
                 <Row><h3>{lastPpmReading}</h3></Row>
@@ -116,7 +132,8 @@ Monitor.propTypes = {
   graphWidth: PropTypes.number.isRequired,
   graphHeight: PropTypes.number.isRequired,
   match: PropTypes.string.isRequired,
-  chamberId: PropTypes.string.isRequired
+  chamberId: PropTypes.string.isRequired,
+  plantByChamberArray: PropTypes.arrayOf(PropTypes.array).isRequired
 }
 
 export default Monitor;

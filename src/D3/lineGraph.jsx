@@ -35,15 +35,15 @@ class LineGraph extends Component {
         createLineGraph() {
           const { node } = this.node;
           const drawLine = line()
-          .x((d) => this.xScale(d.dates) )
-          .y((d) => this.yScale(d.temperature) )
+            .x((d) => this.xScale(d.dates) )
+            .y((d) => this.yScale(d.temperature) );
 
           select(node)
              .selectAll('path')
              .data(this.props.data)
              .enter()
              .append('path')
-             .attr('d', this.drawLine)
+             .attr('d', drawLine)
 
 
           select(node)
@@ -74,7 +74,7 @@ class LineGraph extends Component {
 
 LineGraph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.array).isRequired,
-  size: PropTypes.arrayOf(PropTypes.string).isRequired
+  size: PropTypes.arrayOf(PropTypes.numbers).isRequired
 }
 
 export default LineGraph;
