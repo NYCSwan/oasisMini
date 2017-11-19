@@ -37,21 +37,17 @@ class Monitor extends Component {
   }
 
   updateChamberData = () => {
-    const dataByChamber = pickBy(this.props.sensor_data,
-      (data) =>
-      data.chamberId === this.state.chamberId);
+    const  dataByChamber = pickBy(this.props.sensor_data,
+      (data) => data.chamber_id === this.state.chamberId)
     const tempData = [];
 
     forIn(dataByChamber, (value) => {
-      const {temperature} = value.sensors.temperature;
-      const {time} = value.time;
-      tempData.push([time, temperature])
+      tempData.push([value.time, value.sensors.temperature]);
     })
 
     this.setState({
-      currentData: this.tempData
+      currentData: tempData
     })
-    console.log(tempData)
   }
 
   render() {
@@ -62,13 +58,16 @@ class Monitor extends Component {
     const lastPpmReading = findLastIndex(sensor_data, (sensor) => sensor.PPM !== 'na');
     const today = new Date(2017,8,4);
     const oneWeekAgo = new Date(today - (1000*60*60*24*7));
-
     const plantByChamberArray=[];
+    const dayOfCycle = [];
+
     forIn(plantByChamber, (value) => {
-      plantByChamberArray.push(toPairsIn(value));
+      if (value != null) {
+        plantByChamberArray.push(toPairsIn(value));
+      }
+      return plantByChamberArray;
     });
 
-    const dayOfCycle = [];
     forEach(plantByChamberArray,
        (plantInfo, index) => {
          if (plantInfo[index][0] === plantInfo[index].day_of_cycle) {
@@ -76,7 +75,6 @@ class Monitor extends Component {
         }
         return this.dayOfCycle;
     })
-    console.log(this.state.currentData)
 
     return (
       <ErrorBoundary>
@@ -91,7 +89,7 @@ class Monitor extends Component {
                 type="text"
                 placeholder="Which chamber?"
               />
-              <p>{JSON.stringify(currentData)}</p>
+              <p>{currentData}</p>
             </div>
 
             <LineGraph

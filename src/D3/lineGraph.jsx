@@ -32,7 +32,7 @@ class LineGraph extends Component {
             .range([this.props.size[1], 0])
         }
 
-        createLineGraph() {
+        createLineGraph = () => {
           const { node } = this.node;
           const drawLine = line()
             .x((d) => this.xScale(d.dates) )
