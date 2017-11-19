@@ -1,52 +1,83 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { scaleLinear, scaleTime } from 'd3-scale';
-import { max } from 'd3-array';
+import { max, extent } from 'd3-array';
 import { select } from 'd3-selection';
+import { line } from 'd3-shape';
 
 class LineGraph extends Component {
 
         componentDidMount() {
-           this.createBarChart()
+           this.createLineGraph();
+           this.updateLineData();
         }
         componentDidUpdate() {
-           this.createBarChart()
+           this.createLineGraph();
+           this.updateLineData();
         }
 
-        createBarChart() {
-           const node = this.node
-           const dataMax = max(this.props.data)
-           const yScale = scaleLinear()
-              .domain([0, dataMax])
-              .range([0, this.props.size[1]])
+        updateLineData = () => {
+          line()
+            .x((d) => this.xScale(d.dates) )
+            .y((d) => this.yScale(d.temperature) )
+        }
 
-        select(node)
-           .selectAll('rect')
-           .data(this.props.data)
-           .enter()
-           .append('rect')
+        xExtent = () => {
+          extent(this.props.data, d => d.dates);
+        }
 
-        select(node)
-           .selectAll('rect')
-           .data(this.props.data)
-           .exit()
-           .remove()
+        yExtent = () => {
+          extent(this.props.data, d => d.temperature)
+        }
 
-           {/*debugger; */}
-        select(node)
-           .selectAll('rect')
-           .data(this.props.data)
-           .style('fill', '#fe9922')
-           .attr('x', (d,i) => i * 25)
-           .attr('y', d => yScale(d))
-           .attr('height', d => yScale(d))
-           .attr('width', 25)
+        xScale = () => {
+          scaleTime()
+            .domain(this.xExtent())
+            .range([0, this.props.size[2]]);
+
+        }
+
+        yScale = () => {
+          scaleLinear()
+            .domain(this.yExtent())
+            .range([this.props.size[1], 0])
+        }
+
+        createLineGraph() {
+          const { node } = this.node;
+          const dataMax = max(this.props.data);
+
+
+          select(node)
+             .selectAll('path')
+             .data(this.props.data)
+             .enter()
+             .append('path')
+             .attr('d', this.line())
+
+          select(node)
+             .selectAll('path')
+             .data(this.props.data)
+             .exit()
+             .remove()
+
+             {/* debugger; */}
+          select(node)
+             .selectAll('path')
+             .data(this.props.data)
+             .style('fill', 'none')
+             .attr('stroke', '#fff')
         }
 
      render() {
-           return <svg ref={node => this.node = node}
-           width={500} height={500}>
-           </svg>
+       return (
+          <svg
+            ref={node => this.node = node}
+            width={500}
+            height={500}
+            {...props}
+          />
+        )
       }
 };
 
@@ -56,7 +87,7 @@ LineGraph.propTypes = {
   graphWidth: PropTypes.number.isRequired,
   graphHeight: PropTypes.number.isRequired,
   sensor_data: PropTypes.arrayOf(PropTypes.string).isRequired,
-  tempData: PropTypes.arrayOf(PropTypes.array).isRequired
+  data: PropTypes.arrayOf(PropTypes.array).isRequired
 }
 
 export default LineGraph;

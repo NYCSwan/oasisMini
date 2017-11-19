@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as d3 from 'd3';
 
 import findLastIndex from 'lodash/findLastIndex';
 import pickBy from 'lodash/pickBy';
-import map from 'lodash/map';
 import forIn from 'lodash/forIn';
 
 import { Col, Row } from 'react-bootstrap';
@@ -22,10 +20,19 @@ class Monitor extends Component {
   };
 
   componentDidMount(){
-    this.updateChamberData()
+    this.updateChamberData();
   }
 
-  handleChamberChange = (event) => {
+  componentDidUpdate() {
+    this.updateChamberData();
+  }
+
+  handleChamberChange = () => {
+    handleChamberIdChange();
+    handleChamberDataChange();
+  }
+
+  handleChamberIdChange = (event) => {
     this.setState({
       chamber_id: event.target.value
      });
@@ -40,7 +47,7 @@ class Monitor extends Component {
   updateChamberData = () => {
     const dataByChamber = pickBy(this.props.sensor_data,
       (data) => data.chamber_id === this.state.chamber_id);
-    let tempData = [];
+    const tempData = [];
 
     forIn(dataByChamber, (value) => {
       const {temp} = value.sensors.temperature;
@@ -73,56 +80,18 @@ class Monitor extends Component {
               <input
                 value={this.state.chamber_id}
                 onChange={this.handleChamberChange}
+
                 type="text"
                 placeholder="chamber id"
               />
             </div>
-          {/*  <div className="d3Graph humidity">
-              <h3>Humidity (%)</h3>
-              {map(dataByChamber, (data) => (
-                <LineGraph
-                  key={data.id}
-                  startDate={today.toLocaleString()}
-                  endDate={oneWeekAgo.toLocaleString()}
-                  sensor_data={this.state.currentData}
-                  graphHeight={this.state.graphHeight}
-                  graphWidth={this.state.graphWidth}
-                  {...data}
-                />
-              ))}
-            </div>
-            <div className="d3Graph height">
-            <h3>Plant Height (In.)</h3>
-            {map(dataByChamber, (data) => (
-              <LineGraph
-                key={data.id}
-                startDate={today.toLocaleString()}
-                endDate={oneWeekAgo.toLocaleString()}
-                sensor_data={data.sensors.height}
-                graphHeight={this.state.graphHeight}
-                graphWidth={this.state.graphWidth}
-                {...data}
-              />
-            ))}
-            </div>
-            <div className="d3graph temperature">
-            <h3>Temperature (*F)</h3>
-            {map(dataByChamber, (data) => (
-              <LineGraph
-                key={data.id}
-                startDate={today.toLocaleString()}
-                endDate={oneWeekAgo.toLocaleString()}
-                sensor_data={data.sensors.temperature}
-                graphHeight={this.state.graphHeight}
-                graphWidth={this.state.graphWidth}
-                {...data}
-              />
-            ))}
-            </div> */}
+
+          {/*  data to sub out for currentData */}
             <LineGraph
-              data={this.state.currentData}
+              key={this.props.id}
+              data={currentData}
               size={[this.state.graphWidth, this.state.graphHeight]}
-              dates={[today, oneWeekAgo]}
+              dates={[{today}, {oneWeekAgo}]}
              />
           </div>
 
