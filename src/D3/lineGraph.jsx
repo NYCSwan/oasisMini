@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { scaleLinear, scaleTime } from 'd3-scale';
-import { max, extent } from 'd3-array';
+import { extent } from 'd3-array';
 import { select } from 'd3-selection';
 import { line } from 'd3-shape';
 
@@ -9,17 +9,6 @@ class LineGraph extends Component {
 
         componentDidMount() {
            this.createLineGraph();
-           this.updateLineData();
-        }
-        componentDidUpdate() {
-           this.createLineGraph();
-           this.updateLineData();
-        }
-
-        updateLineData = () => {
-          line()
-            .x((d) => this.xScale(d.dates) )
-            .y((d) => this.yScale(d.temperature) )
         }
 
         xExtent = () => {
@@ -45,15 +34,17 @@ class LineGraph extends Component {
 
         createLineGraph() {
           const { node } = this.node;
-          const dataMax = max(this.props.data);
-
+          const drawLine = line()
+          .x((d) => this.xScale(d.dates) )
+          .y((d) => this.yScale(d.temperature) )
 
           select(node)
              .selectAll('path')
              .data(this.props.data)
              .enter()
              .append('path')
-             .attr('d', this.line())
+             .attr('d', this.drawLine)
+
 
           select(node)
              .selectAll('path')
@@ -61,7 +52,6 @@ class LineGraph extends Component {
              .exit()
              .remove()
 
-             {/* debugger; */}
           select(node)
              .selectAll('path')
              .data(this.props.data)
@@ -72,10 +62,9 @@ class LineGraph extends Component {
      render() {
        return (
           <svg
-            ref={node => this.node = node}
-            width={500}
-            height={500}
-            {...props}
+            ref= { node => {this.node = node} }
+            width={this.props.size[0]}
+            height={this.props.size[1]}
           />
         )
       }
@@ -84,10 +73,8 @@ class LineGraph extends Component {
 
 
 LineGraph.propTypes = {
-  graphWidth: PropTypes.number.isRequired,
-  graphHeight: PropTypes.number.isRequired,
-  sensor_data: PropTypes.arrayOf(PropTypes.string).isRequired,
-  data: PropTypes.arrayOf(PropTypes.array).isRequired
+  data: PropTypes.arrayOf(PropTypes.array).isRequired,
+  size: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default LineGraph;
