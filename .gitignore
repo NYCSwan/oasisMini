@@ -1,4 +1,6 @@
 public/bundle.js
+public/0.*
+public/*.hot-update.json
 node_modules/
 .eslintcache
 coverage/
@@ -9,6 +11,6 @@ public/*bundle*
 *.bundle.js
 _site/
 .sass-cache/
-.yarn-error.log
+yarn-error.log
 *.iml
 .idea/

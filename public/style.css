@@ -1,0 +1,49 @@
+.Futura-Lig {
+	font-family: Futura-Lig;
+	font-weight: bold;
+	font-style: normal;
+}
+
+body {
+  margin: 0 auto;
+  background-image: url(/public/img/BG.png);
+  background-size: cover;
+  background-position: center;
+  color:#fff;
+  font-family: Future-Lig;
+}
+li {
+  list-style-type:none;
+}
+img {
+  max-width:250px;
+}
+.app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.logo {
+  width:auto;
+  max-height: 75px;
+}
+.right {
+  display: flex;
+  flex-direction: row-reverse;
+  flex:1 1 1;
+}
+
+.right img {
+  max-width: 75px;
+  height: 75px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
