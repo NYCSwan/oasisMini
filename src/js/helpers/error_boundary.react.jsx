@@ -30,7 +30,6 @@ class ErrorBoundary extends React.Component {
         </div>
       );
     }
-    // Normally, just render children
     return this.props.children;
   }
 }

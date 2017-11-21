@@ -6,7 +6,7 @@ module.exports = {
   context: __dirname,
   entry: [
   'react-hot-loader/patch',
-  'webpack-dev-server/client?http://localhost:8080',
+  'webpack-dev-server/client?http://0.0.0.0:8080',
   'webpack/hot/only-dev-server',
   './src/js/ClientApp.jsx',
   ],
@@ -31,7 +31,12 @@ module.exports = {
   devServer: {
     hot: true,
     publicPath: '/pubic/',
-    historyApiFallback: true
+    historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+    }
   },
   module: {
     rules: [
