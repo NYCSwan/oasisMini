@@ -35,7 +35,7 @@ class Monitor extends Component {
     console.log('componentWillReceiveProps monitor');
     if (nextProps.sensor_data && nextProps.sensor_data.length > 0) {
       this.updateChamberData(nextProps);
-      console.log(nextProps);
+      console.log(`nextProps: ${nextProps}`);
     }
   }
 
@@ -81,7 +81,7 @@ class Monitor extends Component {
     this.setState({
       currentTemperatureData: tempData
     })
-    console.log(`temperature: ${tempData}`);
+    console.log(`temperature: ${tempData[0]}`);
     return tempData;
   }
   updateHumidityChamberData = () => {
@@ -95,7 +95,7 @@ class Monitor extends Component {
     this.setState({
       currentHumidityData: tempData
     })
-    console.log(`humidity: ${tempData}`);
+    console.log(`humidity: ${tempData[0]}`);
     return tempData;
   }
 
@@ -110,7 +110,7 @@ class Monitor extends Component {
     this.setState({
       currentHeightData: tempData
     })
-    console.log(`height: ${tempData}`);
+    console.log(`height: ${tempData[0]}`);
     return tempData;
   }
 
@@ -146,6 +146,7 @@ class Monitor extends Component {
             temperatureLineGraphComponent = <LineGraph
                           graphWidth={this.state.graphWidth} graphHeight={this.state.graphHeight}
                           curentData={this.state.currentTemperatureData}
+                          panelText='Temperature (*F)'
                           sensor={this.state.sensor1}
                           endDate={today}
                           startDate={oneWeekAgo}
@@ -162,6 +163,7 @@ class Monitor extends Component {
                         sensor={this.state.sensor2}
                         curentData={this.state.currentHumidityData}
                         endDate={today}
+                        panelText='Humidity (%)'
                         startDate={oneWeekAgo}
                         {...this.props}
                        />
@@ -176,6 +178,7 @@ class Monitor extends Component {
                           sensor={this.state.sensor3}
                           curentData={this.state.currentHeightData}
                           endDate={today}
+                          panelText='Plant Height (In.)'
                           startDate={oneWeekAgo}
                           {...this.props}
                          />
@@ -219,7 +222,10 @@ class Monitor extends Component {
 Monitor.propTypes = {
   sensor_data: PropTypes.arrayOf(PropTypes.object).isRequired,
   plants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  match: PropTypes.objectOf(PropTypes.string).isRequired
+  match: PropTypes.shape({
+    params: PropTypes.object,
+    isExact: PropTypes.bool
+  }).isRequired
 }
 
 export default Monitor;

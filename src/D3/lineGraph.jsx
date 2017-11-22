@@ -36,7 +36,7 @@ class LineGraph extends Component {
     }
 
     componentDidUpdate() {
-      console.log('componentDidUpdate');
+      console.log('componentDidUpdate linegraph');
       if (this.state.initialized === true) {
         this.update();
       }
@@ -45,18 +45,23 @@ class LineGraph extends Component {
     extractSize = () => {
       console.log('extractSize');
       const { margin, graphWidth, graphHeight } = this.props;
-      debugger;
-      let widthWithMargin;
-      let heightWithMargin;
+      let widthWithMargin=0;
+      let heightWithMargin=0;
       if(this.state.shouldUpdateSize  === true) {
-        this.widthWithMargin = graphWidth - margin.left - margin.right;
-        this.heightWithMargin = graphHeight - margin.top - margin.bottom;
+        widthWithMargin = graphWidth - margin.left - margin.right;
+        heightWithMargin = graphHeight - margin.top - margin.bottom;
       }
+      console.log(`w ${widthWithMargin} h ${heightWithMargin}`);
     }
 
     extractMaxMin = () => {
       console.log('extractMaxMin');
-      const { currentData, dates } = this.props;
+      const { currentData, startDate, endDate } = this.props;
+      const dates = [];
+      dates.push(startDate);
+      dates.push(endDate);
+      console.log(dates);
+
       const tempMaxX = max(dates, (d) => d.time);
       const tempMaxY = max(currentData, (d) => d.value);
       const tempMinX = min(dates, (d) => d.time);
@@ -82,20 +87,20 @@ class LineGraph extends Component {
 
     updateSize = () => {
       console.log('updateSize');
-      const { margin, size } = this.props;
-
+      const { margin } = this.props;
+      this.extractSize()
       {/* resize/re-align root nodes */}
       this.rootNode
-       .attr('width', widthWithMargin)
-       .attr('height', heightWithMargin);
+       .attr('width', this.widthWithMargin)
+       .attr('height', this.heightWithMargin);
 
       this.lineGroup
        .attr('transform',
          `translate(${margin.left},${margin.top})`);
 
       {/* set domain for axis */}
-      const xScale = scaleTime().range([0, widthWithMargin]);
-      const yScale = scaleLinear().range([heightWithMargin, 0]);
+      const xScale = scaleTime().range([0, this.widthWithMargin]);
+      const yScale = scaleLinear().range([this.heightWithMargin, 0]);
 
       this.extractMaxMin()
       {/* Scale the range of the data */}
@@ -104,15 +109,15 @@ class LineGraph extends Component {
       debugger
      // Update the X Axis
        this.axisBottomGroup.transition()
-         .attr('transform', `translate(0,${heightWithMargin})`)
-         .call(axisBottom(xScale).ticks(widthWithMargin > 500 ? Math.floor(widthWithMargin / 80) : 4)); // prevent from having too much ticks on small screens
+         .attr('transform', `translate(0, ${this.heightWithMargin})`)
+         .call(axisBottom(xScale).ticks(this.widthWithMargin > 500 ? Math.floor(this.widthWithMargin / 80) : 4)); // prevent from having too much ticks on small screens
 
        // Update the Y Axis
        this.axisLeftGroup.transition()
          .call(axisLeft(yScale));
 
        // this.line is not called directy since it's used as a callback and is re-assigned. It is wrapped inside this.lineReference
-       this.line = line() // .interpolate("monotone")
+       this.lineGroup = line() // .interpolate("monotone")
          .x(d => xScale(d.x))
          .y(d => yScale(d.y));
       }
@@ -120,18 +125,18 @@ class LineGraph extends Component {
      updateData = () => {
        console.log('updateData');
        const { currentData } = this.props;
-       const drawLine = this.line;
+       const drawLine = this.lineGroup;
        // generate line paths
-       const lines = this.lineGroup.selectAll('.line').data(currentData);
+       this.lineGroup.selectAll('line').data(currentData);
 
        // [Update] transition from previous paths to new paths
-       this.lineGroup.selectAll('.line')
+       this.lineGroup.selectAll('line')
          .transition()
          .style('stroke', '#fff')
          .attr('d', drawLine);
 
        // [Enter] any new data
-       lines.enter()
+       this.lineGroup.enter()
          .append('path')
          .attr('class', 'line')
          .style('stroke-width', '2px')
@@ -140,7 +145,7 @@ class LineGraph extends Component {
          .attr('d', drawLine);
 
        // [Exit]
-       lines.exit()
+       this.lineGroup.exit()
          .remove();
      }
 
@@ -161,6 +166,7 @@ class LineGraph extends Component {
             />
             <h4>{this.props.currentData}</h4>
             <p>{this.props.sensor}</p>
+            <p>{this.props.panelText}</p>
           </div>
         )
       }
@@ -177,13 +183,17 @@ LineGraph.defaultProps = {
 
 
 LineGraph.propTypes = {
-  currentData: PropTypes.arrayOf(PropTypes.array).isRequired,
+  currentData: PropTypes.arrayOf(PropTypes.object).isRequired,
   graphWidth: PropTypes.number.isRequired,
   graphHeight: PropTypes.number.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
-  margin: PropTypes.number,
-  sensor: PropTypes.string.isRequired
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  endDate: PropTypes.instanceOf(Date).isRequired,
+  margin: PropTypes.shape({
+    params:PropTypes.number,
+    isExact: PropTypes.bool
+  }),
+  sensor: PropTypes.string.isRequired,
+  panelText: PropTypes.string.isRequired
 }
 
 export default LineGraph;
