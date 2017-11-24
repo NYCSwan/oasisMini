@@ -58,8 +58,8 @@ class LineGraph extends Component {
     extractSize = () => {
       console.log('extractSize');
       const { margin, graphWidth, graphHeight } = this.props;
-      const tempWidth = graphWidth - margin.left - margin.right;
-      const tempHeight = graphHeight - margin.top - margin.bottom;
+      const tempWidth = graphWidth + margin.left + margin.right;
+      const tempHeight = graphHeight + margin.top + margin.bottom;
 
       this.setState({
         widthWithMargin: tempWidth,
@@ -92,6 +92,7 @@ class LineGraph extends Component {
 
     init = () => {
       console.log('init');
+      console.log(this.rootNode)
       this.lineGroup = this.rootNode.append('g');
       this.axisLeftGroup = this.lineGroup.append('g');
       this.axisBottomGroup = this.lineGroup.append('g');
@@ -121,7 +122,7 @@ class LineGraph extends Component {
       const { margin } = this.props;
       {/* set range and domain for axis */}
       const xScale = scaleTime().domain([this.state.minX, this.state.maxX]).range([0, this.state.widthWithMargin]);
-      const yScale = scaleLinear().domain([0, this.state.maxY]).range([this.state.heightWithMargin, 0]);
+      const yScale = scaleLinear().domain([0, this.state.maxY]).range([0, this.state.heightWithMargin]);
 
       {/* resize/re-align root nodes */}
 
@@ -150,8 +151,8 @@ class LineGraph extends Component {
      // Update the X Axis
        this.axisBottomGroup.transition()
          .attr('class', 'axis axis-x')
-         .attr('transform', `translate(0, ${this.state.heightWithMargin})`)
-         .call(axisBottom(xScale).ticks(5)) // prevent from having too much ticks on small screens with .ticks(width > 500 ? Math.floor(width / 80) : 4)); // prevent from having too much ticks on small screens
+         .attr('transform', `translate([${this.state.widthWithMargin}, ${this.state.heightWithMargin}])`)
+         .call(axisBottom(xScale))// prevent from having too much ticks on small screens with .ticks(width > 500 ? Math.floor(width / 80) : 4)); // prevent from having too much ticks on small screens
 
        // Update the Y Axis
        this.axisLeftGroup.transition()
@@ -165,16 +166,16 @@ class LineGraph extends Component {
        const { currentData } = this.state;
        const drawLine = this.line(currentData);
        // generate line path
-       const linePath = this.lineGroup.selectAll('.line').datum(currentData);
+       const linePath = this.lineGroup.selectAll('line').data([currentData]);
 
        // [Update] transition from previous paths to new paths
-       this.lineGroup.selectAll('.line')
+       this.lineGroup.selectAll('line')
          .transition()
          .style('stroke', '#fff')
          .attr('d', drawLine);
 
        // [Enter] any new data
-       linePath.enter()
+       linePath.selectAll('line').enter()
          .append('path')
          .attr('d', drawLine)
          .attr('class', 'line')
@@ -206,7 +207,7 @@ console.log(`w ${this.state.widthWithMargin} h ${this.state.heightWithMargin}`);
        return (
          <div>
             <svg ref={ (node) => { this.rootNode = select(node) } } />
-
+            <p>{JSON.stringify(this.state.currentData)}</p>
           </div>
         )
       }

@@ -16,7 +16,7 @@ import FilterButtonGroup from './filter_button.react';
 class Monitor extends Component {
   state = {
     chamberId: '2',
-    graphWidth: 600,
+    graphWidth: 500,
     graphHeight: 300,
     sensor1: 'temperature',
     sensor2: 'humidity',
@@ -82,7 +82,7 @@ class Monitor extends Component {
     console.log('render')
     return (
       <div className="monitor container">
-      
+
         <SiteHeader title="Monitor"/>
         <div className="graphs container">
           <FilterButtonGroup
