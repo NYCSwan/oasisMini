@@ -82,6 +82,7 @@ class Monitor extends Component {
     console.log('render')
     return (
       <div className="monitor container">
+      
         <SiteHeader title="Monitor"/>
         <div className="graphs container">
           <FilterButtonGroup
@@ -96,7 +97,7 @@ class Monitor extends Component {
             endDate={today}
             startDate={oneWeekAgo}
           />
-          <LineGraph
+        <LineGraph
             chamberId={this.state.chamberId}
             sensorData={this.props.sensorData}
             graphHeight={this.state.graphHeight}
@@ -114,6 +115,7 @@ class Monitor extends Component {
             startDate={oneWeekAgo}
             sensor={this.state.sensor3}
           />
+
         </div>
 
         <Row className="bottom container readings">

@@ -13,7 +13,6 @@ import pickBy from 'lodash/pickBy';
 
 class LineGraph extends Component {
     state = {
-      initialized: false,
       shouldUpdateSize: true,
       maxX: null,
       minX: null,
@@ -27,6 +26,7 @@ class LineGraph extends Component {
     componentDidMount() {
       console.log('comonpent mounted linegraph');
         this.init();
+
     }
 
     componentWillReceiveProps({ margin, graphWidth, graphHeight, sensorData, chamberId, endDate, startDate, sensor }) {
@@ -51,8 +51,8 @@ class LineGraph extends Component {
       console.log('componentDidUpdate linegraph');
       if(this.state.widthWithMargin === this.props.graphWidth || this.state.heightWithMargin === this.props.graphHeight) {
         this.extractSize();
+        this.update();
       }
-      this.update();
     }
 
     extractSize = () => {
@@ -63,10 +63,7 @@ class LineGraph extends Component {
 
       this.setState({
         widthWithMargin: tempWidth,
-        heightWithMargin: tempHeight,
-        shouldUpdateSize: false
-      }, () => {
-        this.updateSize();
+        heightWithMargin: tempHeight
       });
     }
 
@@ -95,11 +92,9 @@ class LineGraph extends Component {
 
     init = () => {
       console.log('init');
-
       this.lineGroup = this.rootNode.append('g');
       this.axisLeftGroup = this.lineGroup.append('g');
       this.axisBottomGroup = this.lineGroup.append('g');
-      this.setState({ initialized: true })
       this.updateCurrentData();
     }
 
@@ -110,12 +105,12 @@ class LineGraph extends Component {
       const tempData = [];
       forIn(dataByChamber, (value) => {
         tempData.push({time: value.time, value: value.sensors.temperature});
-      }) // to array of objects [{time, temp}]
+      }) // to array of objects [{time, temp}] NEEDS TO CHANGE BASED ON SENSOR
 
       this.setState({
         currentData: tempData
       }, () => {
-        console.log(`currentData: ${tthis.state.currentData[0]}`);
+        console.log(`currentData: ${this.state.currentData[0]}`);
       })
 
     }
@@ -124,56 +119,56 @@ class LineGraph extends Component {
     updateSize = () => {
       console.log('updateSize');
       const { margin } = this.props;
-      {/* resize/re-align root nodes */}
-      this.rootNode
-       .attr('width', this.state.widthWithMargin)
-       .attr('height', this.state.heightWithMargin);
-debugger
-      this.lineGroup
-       .attr('transform',
-         `translate(${margin.left}, ${margin.top})`);
-      if(this.state.currentData.length < 1) {
-        this.updateCurrentData()
-      } else {
-        this.extractMaxMin()
-      }
-      {/* set domain for axis */}
+      {/* set range and domain for axis */}
       const xScale = scaleTime().domain([this.state.minX, this.state.maxX]).range([0, this.state.widthWithMargin]);
       const yScale = scaleLinear().domain([0, this.state.maxY]).range([this.state.heightWithMargin, 0]);
 
-      {/* Scale the range of the data */}
-      xScale;
-      yScale;
+      {/* resize/re-align root nodes */}
+
+      this.rootNode
+      .attr('width', this.state.widthWithMargin)
+      .attr('height', this.state.heightWithMargin);
+
+      this.lineGroup
+      .attr('transform',
+      `translate(${margin.left}, ${margin.top})`);
+
+      if(this.state.currentData.length < 1) {
+        this.updateCurrentData();
+        this.extractMaxMin();
+      } else {
+        this.extractMaxMin();
+      }
+
+      this.line = line() //
+      .x( (d) => xScale(d.time) )
+      .y( (d) => yScale(d.value) )
+
+      this.setState({ shouldUpdateSize: false });
+
 
      // Update the X Axis
        this.axisBottomGroup.transition()
+         .attr('class', 'axis axis-x')
          .attr('transform', `translate(0, ${this.state.heightWithMargin})`)
-         .call(axisBottom(xScale).ticks(5)) // prevent from having too much ticks on small screens
+         .call(axisBottom(xScale).ticks(5)) // prevent from having too much ticks on small screens with .ticks(width > 500 ? Math.floor(width / 80) : 4)); // prevent from having too much ticks on small screens
 
        // Update the Y Axis
        this.axisLeftGroup.transition()
+         .attr('class', 'axis axis-y')
          .call(axisLeft(yScale));
        // this.line is not called directy since it's used as a callback and is re-assigned. It is wrapped inside this.lineReference
-       this.lineGroup = line() //
-         .x( (d) => xScale(d.time) )
-         .y( (d) => yScale(d.value) );
-
-       console.log(this.lineGroup.y( (d) => yScale(d.value) ))
-
-       this.setState({ shouldUpdateSize: false });
-
       }
 
      updateLine = () => {
-       console.log('updateCurrentData');
+       console.log('update line');
        const { currentData } = this.state;
-       const drawLine = this.lineGroup;
-       // generate line paths
-
-       const linePath = this.lineGroup.selectAll('path').data(currentData);
+       const drawLine = this.line(currentData);
+       // generate line path
+       const linePath = this.lineGroup.selectAll('.line').datum(currentData);
 
        // [Update] transition from previous paths to new paths
-       linePath.selectAll('path')
+       this.lineGroup.selectAll('.line')
          .transition()
          .style('stroke', '#fff')
          .attr('d', drawLine);
@@ -181,17 +176,17 @@ debugger
        // [Enter] any new data
        linePath.enter()
          .append('path')
+         .attr('d', drawLine)
          .attr('class', 'line')
          .style('stroke-width', '2px')
          .style('fill', 'none')
-         .style('stroke', 'white')
-         .attr('d', drawLine);
+         .style('stroke', '#fff')
 
        // [Exit]
        linePath.exit()
          .remove();
-     }
 
+     }
      update = () => {
        console.log('update');
        // only call this.updateSize() if some props involving size have changed (check is done on componentWillReceiveProps)
@@ -207,11 +202,11 @@ debugger
 
 console.log('render lineGraph');
 console.log(`w ${this.state.widthWithMargin} h ${this.state.heightWithMargin}`);
+
        return (
          <div>
-            <svg ref={ (node) => { this.rootNode = select(node) } }/>
-            <p>{this.props.sensor}</p>
-            <p>{JSON.stringify(this.state.currentData)}</p>
+            <svg ref={ (node) => { this.rootNode = select(node) } } />
+
           </div>
         )
       }

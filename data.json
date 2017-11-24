@@ -6465,7 +6465,7 @@
       "id": "470",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6507,7 +6507,7 @@
       "id": "473",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "79",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6521,7 +6521,7 @@
       "id": "474",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6535,7 +6535,7 @@
       "id": "475",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6549,7 +6549,7 @@
       "id": "476",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "76",
         "humidity": "52",
         "pH": "5.9",
         "PPM": "345",
@@ -6563,7 +6563,7 @@
       "id": "477",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "78",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6647,7 +6647,7 @@
       "id": "483",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6689,7 +6689,7 @@
       "id": "486",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "73",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6703,7 +6703,7 @@
       "id": "487",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "75",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6717,7 +6717,7 @@
       "id": "488",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "75",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6745,7 +6745,7 @@
       "id": "490",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "5.8",
         "PPM": "na",
@@ -6759,7 +6759,7 @@
       "id": "491",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6773,7 +6773,7 @@
       "id": "492",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
