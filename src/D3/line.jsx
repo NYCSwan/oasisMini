@@ -1,24 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
 const Line = (props) => (
   <path
-    d={props.path}
-    stroke={props.color}
-    strokeWidth={props.lineWidth}
-    fill="none" />
+    d={props.d}
+    height={props.height}
+    width={props.width}
+  />
 );
 
-Line.defaultProps = {
-  path: '',
-  color: 'white',
-  lineWidth: 2
-};
-
 Line.propTypes = {
-  color: PropTypes.string,
-  path: PropTypes.element,
-  lineWidth: PropTypes.number
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  d: PropTypes.string.isRequired,
+  ref: PropTypes.string.isRequired
 }
 
 export default Line;

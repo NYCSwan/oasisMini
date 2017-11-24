@@ -7,64 +7,79 @@ import { line } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import 'd3-transition';
 
+import forIn from 'lodash/forIn';
+import pickBy from 'lodash/pickBy';
+
+
 class LineGraph extends Component {
     state = {
       initialized: false,
-      shouldUpdateSize: false,
+      shouldUpdateSize: true,
       maxX: null,
       minX: null,
-      maxY: null
+      maxY: null,
+      widthWithMargin:this.props.graphWidth,
+      heightWithMargin:this.props.graphHeight,
+      currentData: []
+
     };
 
     componentDidMount() {
       console.log('comonpent mounted linegraph');
-      this.init();
-      {/* the code bellow is to trigger componentDidUpdate (which is not called at first render) */}
-        setTimeout(() => {
-          this.setState({
-            initialized: true
-          });
-        });
+        this.init();
     }
 
-    componentWillReceiveProps({ margin, graphWidth, graphHeight }) {
+    componentWillReceiveProps({ margin, graphWidth, graphHeight, sensorData, chamberId, endDate, startDate, sensor }) {
       console.log('componentWillReceiveProps linegraph');
       if (margin !== this.props.margin || graphWidth !== this.props.graphWidth || graphHeight !== this.props.graphHeight) {
         console.log('change size');
-        this.setState({ shouldUpdateSize: true })
+        this.setState({ shouldUpdateSize: true });
+        this.extractSize();
+        this.extractMaxMin();
+      }
+      if (sensorData !== this.props.sensorData && this.props.sensorData.length >0 || sensor !== this.props.sensor || chamberId !== this.props.chamberId) {
+        console.log('change data, data, sensor or chamber changed');
+        this.updateCurrentData();
+      }
+      if (endDate !== this.props.endDate || startDate !== this.props.startDate) {
+        console.log('change data, dates changed');
+        this.updateCurrentData();
       }
     }
 
     componentDidUpdate() {
       console.log('componentDidUpdate linegraph');
-      if (this.state.initialized === true) {
-        this.update();
+      if(this.state.widthWithMargin === this.props.graphWidth || this.state.heightWithMargin === this.props.graphHeight) {
+        this.extractSize();
       }
+      this.update();
     }
 
     extractSize = () => {
       console.log('extractSize');
       const { margin, graphWidth, graphHeight } = this.props;
-      let widthWithMargin=0;
-      let heightWithMargin=0;
-      if(this.state.shouldUpdateSize  === true) {
-        widthWithMargin = graphWidth - margin.left - margin.right;
-        heightWithMargin = graphHeight - margin.top - margin.bottom;
-      }
-      console.log(`w ${widthWithMargin} h ${heightWithMargin}`);
+      const tempWidth = graphWidth - margin.left - margin.right;
+      const tempHeight = graphHeight - margin.top - margin.bottom;
+
+      this.setState({
+        widthWithMargin: tempWidth,
+        heightWithMargin: tempHeight,
+        shouldUpdateSize: false
+      }, () => {
+        this.updateSize();
+      });
     }
 
     extractMaxMin = () => {
       console.log('extractMaxMin');
-      const { currentData, startDate, endDate } = this.props;
+      const { startDate, endDate } = this.props;
       const dates = [];
       dates.push(startDate);
       dates.push(endDate);
-      console.log(dates);
 
-      const tempMaxX = max(dates, (d) => d.time);
-      const tempMaxY = max(currentData, (d) => d.value);
-      const tempMinX = min(dates, (d) => d.time);
+      const tempMaxX = max(dates);
+      const tempMaxY = max(this.state.currentData, (d) => d.value);
+      const tempMinX = min(dates);
       console.log(`tempMaxX: ${tempMaxX}, tempMinX ${tempMinX}, tempMaxY: ${tempMaxY}`)
 
       if (tempMaxX !== this.state.maxX) {
@@ -80,63 +95,91 @@ class LineGraph extends Component {
 
     init = () => {
       console.log('init');
+
       this.lineGroup = this.rootNode.append('g');
       this.axisLeftGroup = this.lineGroup.append('g');
       this.axisBottomGroup = this.lineGroup.append('g');
+      this.setState({ initialized: true })
+      this.updateCurrentData();
     }
+
+    updateCurrentData = () => {
+      console.log('updateCurrentData lineGraph');
+      const dataByChamber = pickBy(this.props.sensorData,
+        (data) => data.chamber_id === this.props.chamberId);
+      const tempData = [];
+      forIn(dataByChamber, (value) => {
+        tempData.push({time: value.time, value: value.sensors.temperature});
+      }) // to array of objects [{time, temp}]
+
+      this.setState({
+        currentData: tempData
+      }, () => {
+        console.log(`currentData: ${tthis.state.currentData[0]}`);
+      })
+
+    }
+
 
     updateSize = () => {
       console.log('updateSize');
       const { margin } = this.props;
-      this.extractSize()
       {/* resize/re-align root nodes */}
       this.rootNode
-       .attr('width', this.widthWithMargin)
-       .attr('height', this.heightWithMargin);
-
+       .attr('width', this.state.widthWithMargin)
+       .attr('height', this.state.heightWithMargin);
+debugger
       this.lineGroup
        .attr('transform',
-         `translate(${margin.left},${margin.top})`);
-
+         `translate(${margin.left}, ${margin.top})`);
+      if(this.state.currentData.length < 1) {
+        this.updateCurrentData()
+      } else {
+        this.extractMaxMin()
+      }
       {/* set domain for axis */}
-      const xScale = scaleTime().range([0, this.widthWithMargin]);
-      const yScale = scaleLinear().range([this.heightWithMargin, 0]);
+      const xScale = scaleTime().domain([this.state.minX, this.state.maxX]).range([0, this.state.widthWithMargin]);
+      const yScale = scaleLinear().domain([0, this.state.maxY]).range([this.state.heightWithMargin, 0]);
 
-      this.extractMaxMin()
       {/* Scale the range of the data */}
-      xScale.domain([this.state.minX, this.state.maxX]);
-      yScale.domain([0, this.state.maxY]);
-      debugger
+      xScale;
+      yScale;
+
      // Update the X Axis
        this.axisBottomGroup.transition()
-         .attr('transform', `translate(0, ${this.heightWithMargin})`)
-         .call(axisBottom(xScale).ticks(this.widthWithMargin > 500 ? Math.floor(this.widthWithMargin / 80) : 4)); // prevent from having too much ticks on small screens
+         .attr('transform', `translate(0, ${this.state.heightWithMargin})`)
+         .call(axisBottom(xScale).ticks(5)) // prevent from having too much ticks on small screens
 
        // Update the Y Axis
        this.axisLeftGroup.transition()
          .call(axisLeft(yScale));
-
        // this.line is not called directy since it's used as a callback and is re-assigned. It is wrapped inside this.lineReference
-       this.lineGroup = line() // .interpolate("monotone")
-         .x(d => xScale(d.x))
-         .y(d => yScale(d.y));
+       this.lineGroup = line() //
+         .x( (d) => xScale(d.time) )
+         .y( (d) => yScale(d.value) );
+
+       console.log(this.lineGroup.y( (d) => yScale(d.value) ))
+
+       this.setState({ shouldUpdateSize: false });
+
       }
 
-     updateData = () => {
-       console.log('updateData');
-       const { currentData } = this.props;
+     updateLine = () => {
+       console.log('updateCurrentData');
+       const { currentData } = this.state;
        const drawLine = this.lineGroup;
        // generate line paths
-       this.lineGroup.selectAll('line').data(currentData);
+
+       const linePath = this.lineGroup.selectAll('path').data(currentData);
 
        // [Update] transition from previous paths to new paths
-       this.lineGroup.selectAll('line')
+       linePath.selectAll('path')
          .transition()
          .style('stroke', '#fff')
          .attr('d', drawLine);
 
        // [Enter] any new data
-       this.lineGroup.enter()
+       linePath.enter()
          .append('path')
          .attr('class', 'line')
          .style('stroke-width', '2px')
@@ -145,28 +188,30 @@ class LineGraph extends Component {
          .attr('d', drawLine);
 
        // [Exit]
-       this.lineGroup.exit()
+       linePath.exit()
          .remove();
      }
 
      update = () => {
        console.log('update');
        // only call this.updateSize() if some props involving size have changed (check is done on componentWillReceiveProps)
-       if (this.shouldUpdateSize === true) {
+       this.updateCurrentData();
+       if (this.state.shouldUpdateSize === true) {
          this.updateSize();
-         this.shouldUpdateSize = false;
+         this.setState({ shouldUpdateSize: false })
        }
-       this.updateData();
+       this.updateLine();
      }
 
      render() {
+
+console.log('render lineGraph');
+console.log(`w ${this.state.widthWithMargin} h ${this.state.heightWithMargin}`);
        return (
          <div>
-            <svg ref={(node) => {this.rootNode = select(node)}}
-            />
-            <h4>{this.props.currentData}</h4>
+            <svg ref={ (node) => { this.rootNode = select(node) } }/>
             <p>{this.props.sensor}</p>
-            <p>{this.props.panelText}</p>
+            <p>{JSON.stringify(this.state.currentData)}</p>
           </div>
         )
       }
@@ -183,7 +228,7 @@ LineGraph.defaultProps = {
 
 
 LineGraph.propTypes = {
-  currentData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
   graphWidth: PropTypes.number.isRequired,
   graphHeight: PropTypes.number.isRequired,
   startDate: PropTypes.instanceOf(Date).isRequired,
@@ -193,7 +238,7 @@ LineGraph.propTypes = {
     isExact: PropTypes.bool
   }),
   sensor: PropTypes.string.isRequired,
-  panelText: PropTypes.string.isRequired
+  chamberId: PropTypes.string.isRequired
 }
 
 export default LineGraph;

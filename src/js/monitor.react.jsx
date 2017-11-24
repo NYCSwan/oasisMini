@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import findLastIndex from 'lodash/findLastIndex';
-import pickBy from 'lodash/pickBy';
 import forIn from 'lodash/forIn';
 import toPairsIn from 'lodash/toPairsIn';
 import forEach from 'lodash/forEach';
+import pickBy from 'lodash/pickBy';
 
 import { Col, Row } from 'react-bootstrap';
 
@@ -18,9 +18,6 @@ class Monitor extends Component {
     chamberId: '2',
     graphWidth: 600,
     graphHeight: 300,
-    currentTemperatureData: [],
-    currentHumidityData: [],
-    currentHeightData: [],
     sensor1: 'temperature',
     sensor2: 'humidity',
     sensor3: 'height'
@@ -28,25 +25,18 @@ class Monitor extends Component {
 
   componentDidMount(){
     console.log('componentDidMount monitor');
-    this.updateChamberData();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps({sensorData}) {
     console.log('componentWillReceiveProps monitor');
-    if (nextProps.sensor_data && nextProps.sensor_data.length > 0) {
-      this.updateChamberData(nextProps);
-      console.log(`nextProps: ${nextProps}`);
+    if (sensorData !== this.props.sensorData ) {
+      console.log(`nextProps: ${sensorData}`);
+
     }
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate monitor');
-  }
-
-  handleChamberChange = (event) => {
-    console.log('handleChamberChange monitor');
-    this.handleChamberIdChange(event);
-    this.updateChamberData();
   }
 
   handleChamberIdChange = (newChamber) => {
@@ -63,62 +53,11 @@ class Monitor extends Component {
      })
   }
 
-  updateChamberData = () => {
-    console.log('updateChamberData monitor');
-    this.updateTemperatureChamberData();
-    this.updateHumidityChamberData();
-    this.updateHeightChamberData()
-  }
-
-  updateTemperatureChamberData = () => {
-    const dataByChamber = pickBy(this.props.sensor_data,
-      (data) => data.chamber_id === this.state.chamberId);
-    const tempData = [];
-    forIn(dataByChamber, (value) => {
-      tempData.push({time: value.time, value: value.sensors.temperature});
-    }) // to array of objects [{time, temp}]
-
-    this.setState({
-      currentTemperatureData: tempData
-    })
-    console.log(`temperature: ${tempData[0]}`);
-    return tempData;
-  }
-  updateHumidityChamberData = () => {
-    const dataByChamber = pickBy(this.props.sensor_data,
-      (data) => data.chamber_id === this.state.chamberId)
-    const tempData = [];
-    forIn(dataByChamber, (value) => {
-      tempData.push({time: value.time, value: value.sensors.humidity});
-    }) // to array of objects [{time, humidity}]
-
-    this.setState({
-      currentHumidityData: tempData
-    })
-    console.log(`humidity: ${tempData[0]}`);
-    return tempData;
-  }
-
-  updateHeightChamberData = () => {
-    const  dataByChamber = pickBy(this.props.sensor_data,
-      (data) => data.chamber_id === this.state.chamberId);
-    const tempData = [];
-    forIn(dataByChamber, (value) => {
-      tempData.push({time: value.time, value: value.sensors.height});
-    }) // to array of objects [{time, plant height}]
-
-    this.setState({
-      currentHeightData: tempData
-    })
-    console.log(`height: ${tempData[0]}`);
-    return tempData;
-  }
-
   render() {
-    const { sensor_data, plants } = this.props;
+    const { sensorData, plants } = this.props;
     const plantByChamber = pickBy(plants, (plant) => plant.chamber_id === this.state.chamberId);
-    const lastPhReading = findLastIndex(sensor_data, (sensor) => sensor.pH !== 'na');
-    const lastPpmReading = findLastIndex(sensor_data, (sensor) => sensor.PPM !== 'na');
+    const lastPhReading = findLastIndex(sensorData, (sensor) => sensor.pH !== 'na');
+    const lastPpmReading = findLastIndex(sensorData, (sensor) => sensor.PPM !== 'na');
     const today = new Date(2017,8,4);
     const oneWeekAgo = new Date(today - (1000*60*60*24*7));
     const plantByChamberArray=[];
@@ -140,65 +79,41 @@ class Monitor extends Component {
         }
         return dayOfCycle;
     })
-
-    let temperatureLineGraphComponent;
-        if(this.state.currentTemperatureData !== undefined) {
-            temperatureLineGraphComponent = <LineGraph
-                          graphWidth={this.state.graphWidth} graphHeight={this.state.graphHeight}
-                          curentData={this.state.currentTemperatureData}
-                          panelText='Temperature (*F)'
-                          sensor={this.state.sensor1}
-                          endDate={today}
-                          startDate={oneWeekAgo}
-                          {...this.props}
-                         />
-        } else {
-            temperatureLineGraphComponent = null
-        }
-
-    let humidityLineGraphComponent;
-      if(this.state.currentHumidityData !== undefined) {
-          humidityLineGraphComponent = <LineGraph
-                        graphWidth={this.state.graphWidth} graphHeight={this.state.graphHeight}
-                        sensor={this.state.sensor2}
-                        curentData={this.state.currentHumidityData}
-                        endDate={today}
-                        panelText='Humidity (%)'
-                        startDate={oneWeekAgo}
-                        {...this.props}
-                       />
-      } else {
-          humidityLineGraphComponent = null
-      }
-
-      let heightLineGraphComponent;
-        if(this.state.currentHeightData !== undefined) {
-            heightLineGraphComponent = <LineGraph
-                          graphWidth={this.state.graphWidth} graphHeight={this.state.graphHeight}
-                          sensor={this.state.sensor3}
-                          curentData={this.state.currentHeightData}
-                          endDate={today}
-                          panelText='Plant Height (In.)'
-                          startDate={oneWeekAgo}
-                          {...this.props}
-                         />
-        } else {
-            heightLineGraphComponent = null
-        }
-
+    console.log('render')
     return (
       <div className="monitor container">
         <SiteHeader title="Monitor"/>
         <div className="graphs container">
-          <FilterButtonGroup onChange={this.handleChamberChange} chamberId={this.state.chamberId} value={this.state.chamberId}/>
-          {/*  <input
-              type="text"
-              placeholder="Which chamber?"
-            /> */}
-            <p>{this.state.sensor_data}</p>
-          {temperatureLineGraphComponent}
-          {humidityLineGraphComponent}
-          {heightLineGraphComponent}
+          <FilterButtonGroup
+            onChange={this.handleChamberChange} chamberId={this.state.chamberId} value={this.state.chamberId} />
+          <p>{plantByChamber.name}</p>
+          <LineGraph
+            chamberId={this.state.chamberId}
+            sensorData={this.props.sensorData}
+            sensor={this.state.sensor1}
+            graphHeight={this.state.graphHeight}
+            graphWidth={this.state.graphWidth}
+            endDate={today}
+            startDate={oneWeekAgo}
+          />
+          <LineGraph
+            chamberId={this.state.chamberId}
+            sensorData={this.props.sensorData}
+            graphHeight={this.state.graphHeight}
+            graphWidth={this.state.graphWidth}
+            endDate={today}
+            startDate={oneWeekAgo}
+            sensor={this.state.sensor2}
+          />
+          <LineGraph
+            chamberId={this.state.chamberId}
+            sensorData={this.props.sensorData}
+            graphHeight={this.state.graphHeight}
+            graphWidth={this.state.graphWidth}
+            endDate={today}
+            startDate={oneWeekAgo}
+            sensor={this.state.sensor3}
+          />
         </div>
 
         <Row className="bottom container readings">
@@ -220,12 +135,8 @@ class Monitor extends Component {
 };
 
 Monitor.propTypes = {
-  sensor_data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  plants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.object,
-    isExact: PropTypes.bool
-  }).isRequired
+  sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  plants: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 export default Monitor;
