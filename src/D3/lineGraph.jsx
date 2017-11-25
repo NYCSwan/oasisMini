@@ -5,6 +5,7 @@ import { min, max } from 'd3-array';
 import { select } from 'd3-selection';
 import { line } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
+import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
 import forIn from 'lodash/forIn';
@@ -17,6 +18,7 @@ class LineGraph extends Component {
       maxX: null,
       minX: null,
       maxY: null,
+      minY: null,
       widthWithMargin:this.props.graphWidth,
       heightWithMargin:this.props.graphHeight,
       currentData: []
@@ -58,8 +60,8 @@ class LineGraph extends Component {
     extractSize = () => {
       console.log('extractSize');
       const { margin, graphWidth, graphHeight } = this.props;
-      const tempWidth = graphWidth + margin.left + margin.right;
-      const tempHeight = graphHeight + margin.top + margin.bottom;
+      const tempWidth = graphWidth - margin.left - margin.right;
+      const tempHeight = graphHeight - margin.top - margin.bottom;
 
       this.setState({
         widthWithMargin: tempWidth,
@@ -77,6 +79,8 @@ class LineGraph extends Component {
       const tempMaxX = max(dates);
       const tempMaxY = max(this.state.currentData, (d) => d.value);
       const tempMinX = min(dates);
+      const tempMinY = min(this.state.currentData, (d) => d.value);
+
       console.log(`tempMaxX: ${tempMaxX}, tempMinX ${tempMinX}, tempMaxY: ${tempMaxY}`)
 
       if (tempMaxX !== this.state.maxX) {
@@ -87,6 +91,9 @@ class LineGraph extends Component {
       }
       if (tempMinX !== this.state.minX) {
         this.setState({ minX: tempMinX })
+      }
+      if (tempMinY !== this.state.minY) {
+        this.setState({ minY: tempMinY })
       }
     }
 
@@ -111,7 +118,7 @@ class LineGraph extends Component {
       this.setState({
         currentData: tempData
       }, () => {
-        console.log(`currentData: ${this.state.currentData[0]}`);
+        console.log(`currentData: ${this.state.currentData[0][0]}`);
       })
 
     }
@@ -120,9 +127,10 @@ class LineGraph extends Component {
     updateSize = () => {
       console.log('updateSize');
       const { margin } = this.props;
-      {/* set range and domain for axis */}
+
+      {/* set range and domain for axis when domain is hard coded it shows ticks */}
       const xScale = scaleTime().domain([this.state.minX, this.state.maxX]).range([0, this.state.widthWithMargin]);
-      const yScale = scaleLinear().domain([0, this.state.maxY]).range([0, this.state.heightWithMargin]);
+      const yScale = scaleLinear().domain([this.state.minY, this.state.maxY]).range([this.state.heightWithMargin, 0]);
 
       {/* resize/re-align root nodes */}
 
@@ -147,18 +155,25 @@ class LineGraph extends Component {
 
       this.setState({ shouldUpdateSize: false });
 
-
-     // Update the X Axis
+      // Update the X Axis (time)
        this.axisBottomGroup.transition()
          .attr('class', 'axis axis-x')
-         .attr('transform', `translate([${this.state.widthWithMargin}, ${this.state.heightWithMargin}])`)
-         .call(axisBottom(xScale))// prevent from having too much ticks on small screens with .ticks(width > 500 ? Math.floor(width / 80) : 4)); // prevent from having too much ticks on small screens
+         .attr('transform', `translate(0, ${this.props.graphHeight})`)
+         .call(axisBottom(xScale))
+         {/* / prevent from having too much ticks on small screens with .ticks(width > 500 ? Math.floor(width / 80) : 4)); // prevent from having too much ticks on small screens
+             try:
+         xScale.ticks(5).tickFormat(timeFormat("%a"))
+         yscale.ticks(5)
+ */}
 
        // Update the Y Axis
+
        this.axisLeftGroup.transition()
          .attr('class', 'axis axis-y')
-         .call(axisLeft(yScale));
-       // this.line is not called directy since it's used as a callback and is re-assigned. It is wrapped inside this.lineReference
+         .call(axisLeft(yScale))
+      //  // this.line is not called directy since it's used as a callback and is re-assigned. It is wrapped inside this.lineReference
+
+
       }
 
      updateLine = () => {
@@ -207,7 +222,6 @@ console.log(`w ${this.state.widthWithMargin} h ${this.state.heightWithMargin}`);
        return (
          <div>
             <svg ref={ (node) => { this.rootNode = select(node) } } />
-            <p>{JSON.stringify(this.state.currentData)}</p>
           </div>
         )
       }
