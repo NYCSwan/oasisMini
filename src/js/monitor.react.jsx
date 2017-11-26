@@ -18,25 +18,35 @@ class Monitor extends Component {
     chamberId: '2',
     graphWidth: 500,
     graphHeight: 300,
-    sensor1: 'temperature',
-    sensor2: 'humidity',
-    sensor3: 'height'
+    sensor1: 'Temp (*F)',
+    sensor2: 'Humidity',
+    sensor3: 'Plant Height (In)',
+    currentData: []
   };
 
   componentDidMount(){
     console.log('componentDidMount monitor');
+    if (this.props.sensorData) {
+      console.log('sensordata present')
+      this.updateCurrentData()
+    }
   }
 
   componentWillReceiveProps({sensorData}) {
     console.log('componentWillReceiveProps monitor');
     if (sensorData !== this.props.sensorData ) {
       console.log(`nextProps: ${sensorData}`);
+      this.updateCurrentData();
 
     }
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate monitor');
+    if(this.state.currentData.length === 0) {
+      console.log('current data empty');
+      this.updateCurrentData();
+    }
   }
 
   handleChamberIdChange = (newChamber) => {
@@ -52,6 +62,7 @@ class Monitor extends Component {
       chamberId: tempChamber
      })
   }
+
 
   render() {
     const { sensorData, plants } = this.props;
@@ -79,7 +90,8 @@ class Monitor extends Component {
         }
         return dayOfCycle;
     })
-    console.log('render')
+
+    console.log('render monitor')
     return (
       <div className="monitor container">
 
@@ -90,7 +102,7 @@ class Monitor extends Component {
           <p>{plantByChamber.name}</p>
           <LineGraph
             chamberId={this.state.chamberId}
-            sensorData={this.props.sensorData}
+            currentData={this.state.currentData}
             sensor={this.state.sensor1}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
@@ -99,7 +111,7 @@ class Monitor extends Component {
           />
         <LineGraph
             chamberId={this.state.chamberId}
-            sensorData={this.props.sensorData}
+            currentData={this.state.currentData}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}
@@ -108,7 +120,7 @@ class Monitor extends Component {
           />
           <LineGraph
             chamberId={this.state.chamberId}
-            sensorData={this.props.sensorData}
+            currentData={this.state.currentData}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}
