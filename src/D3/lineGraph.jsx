@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { scaleLinear, scaleTime } from 'd3-scale';
-import { min, max } from 'd3-array';
+import { min, max, extent } from 'd3-array';
 import { select } from 'd3-selection';
 import { line } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { timeFormat } from 'd3-time-format';
+import { timeDay } from 'd3-time';
+
 import 'd3-transition';
 
 import forIn from 'lodash/forIn';
@@ -73,9 +75,17 @@ class LineGraph extends Component {
       console.log('extractMaxMin');
       const { startDate, endDate } = this.props;
       const dates = [];
+
       dates.push(startDate);
       dates.push(endDate);
 
+    {/*  // const parseTime = timeParse("%Y%m%d");
+      //
+      // dates.forEach(date => {
+      //   parseTime(date);
+      //   console.log(parseTime(date));
+      // });
+    */}
       const tempMaxX = max(dates);
       const tempMaxY = max(this.state.currentData, (d) => d.value);
       const tempMinX = min(dates);
@@ -99,7 +109,7 @@ class LineGraph extends Component {
 
     init = () => {
       console.log('init');
-      console.log(this.rootNode)
+      console.log(`rootNode ${this.rootNode}`);
       this.lineGroup = this.rootNode.append('g');
       this.axisLeftGroup = this.lineGroup.append('g');
       this.axisBottomGroup = this.lineGroup.append('g');
@@ -111,6 +121,7 @@ class LineGraph extends Component {
       const dataByChamber = pickBy(this.props.sensorData,
         (data) => data.chamber_id === this.props.chamberId);
       const tempData = [];
+
       forIn(dataByChamber, (value) => {
         tempData.push({time: value.time, value: value.sensors.temperature});
       }) // to array of objects [{time, temp}] NEEDS TO CHANGE BASED ON SENSOR
@@ -129,8 +140,16 @@ class LineGraph extends Component {
       const { margin } = this.props;
 
       {/* set range and domain for axis when domain is hard coded it shows ticks */}
-      const xScale = scaleTime().domain([this.state.minX, this.state.maxX]).range([0, this.state.widthWithMargin]);
+      let x = scaleTime()
+        .range([0, this.state.widthWithMargin])
+        .domain([this.state.minX, this.state.maxX]);
+
+      let xAxis = axisBottom(x)
+        .tickFormat(timeFormat("%a %d"));
+      // const xScale = scaleTime().range([0, this.state.widthWithMargin]).domain([this.state.minX, this.state.maxX]);
       const yScale = scaleLinear().domain([this.state.minY, this.state.maxY]).range([this.state.heightWithMargin, 0]);
+
+      // xScale;
 
       {/* resize/re-align root nodes */}
 
@@ -140,7 +159,7 @@ class LineGraph extends Component {
 
       this.lineGroup
       .attr('transform',
-      `translate(${margin.left}, ${margin.top})`);
+      `translate(${margin.left}, -${margin.top})`);
 
       if(this.state.currentData.length < 1) {
         this.updateCurrentData();
@@ -150,27 +169,26 @@ class LineGraph extends Component {
       }
 
       this.line = line() //
-      .x( (d) => xScale(d.time) )
+      .x( (d) => x(d.time) )
       .y( (d) => yScale(d.value) )
 
       this.setState({ shouldUpdateSize: false });
 
-      // Update the X Axis (time)
-       this.axisBottomGroup.transition()
+      // // Update the X Axis (time)
+      // const xAxis = axisBottom(xScale)
+      //   .ticks(5)
+      //   .tickFormat(timeFormat("%a"));
+
+       this.axisBottomGroup
          .attr('class', 'axis axis-x')
          .attr('transform', `translate(0, ${this.props.graphHeight})`)
-         .call(axisBottom(xScale))
-         {/* / prevent from having too much ticks on small screens with .ticks(width > 500 ? Math.floor(width / 80) : 4)); // prevent from having too much ticks on small screens
-             try:
-         xScale.ticks(5).tickFormat(timeFormat("%a"))
-         yscale.ticks(5)
- */}
+         .call(xAxis)
 
        // Update the Y Axis
 
        this.axisLeftGroup.transition()
          .attr('class', 'axis axis-y')
-         .call(axisLeft(yScale))
+         .call(axisLeft(yScale).ticks(5))
       //  // this.line is not called directy since it's used as a callback and is re-assigned. It is wrapped inside this.lineReference
 
 
@@ -181,22 +199,22 @@ class LineGraph extends Component {
        const { currentData } = this.state;
        const drawLine = this.line(currentData);
        // generate line path
-       const linePath = this.lineGroup.selectAll('line').data([currentData]);
+       const linePath = this.lineGroup.selectAll('.line').data([currentData]);
 
        // [Update] transition from previous paths to new paths
-       this.lineGroup.selectAll('line')
-         .transition()
+       this.lineGroup.selectAll('.line')
+         // .transition()
          .style('stroke', '#fff')
          .attr('d', drawLine);
 
        // [Enter] any new data
-       linePath.selectAll('line').enter()
+       linePath.enter()
          .append('path')
-         .attr('d', drawLine)
          .attr('class', 'line')
          .style('stroke-width', '2px')
          .style('fill', 'none')
          .style('stroke', '#fff')
+         .attr('d', drawLine);
 
        // [Exit]
        linePath.exit()
