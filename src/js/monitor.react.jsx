@@ -16,37 +16,21 @@ import FilterButtonGroup from './filter_button.react';
 class Monitor extends Component {
   state = {
     chamberId: '2',
-    graphWidth: 500,
+    graphWidth: 300,
     graphHeight: 300,
-    sensor1: 'Temp (*F)',
-    sensor2: 'Humidity',
-    sensor3: 'Plant Height (In)',
-    currentData: []
+    sensor1: 'temperature',
+    sensor2: 'humidity',
+    sensor3: 'height'
   };
 
   componentDidMount(){
     console.log('componentDidMount monitor');
-    if (this.props.sensorData) {
-      console.log('sensordata present')
-      this.updateCurrentData()
-    }
-  }
 
-  componentWillReceiveProps({sensorData}) {
-    console.log('componentWillReceiveProps monitor');
-    if (sensorData !== this.props.sensorData ) {
-      console.log(`nextProps: ${sensorData}`);
-      this.updateCurrentData();
-
-    }
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate monitor');
-    if(this.state.currentData.length === 0) {
-      console.log('current data empty');
-      this.updateCurrentData();
-    }
+
   }
 
   handleChamberIdChange = (newChamber) => {
@@ -70,6 +54,7 @@ class Monitor extends Component {
     const lastPhReading = findLastIndex(sensorData, (sensor) => sensor.pH !== 'na');
     const lastPpmReading = findLastIndex(sensorData, (sensor) => sensor.PPM !== 'na');
     const today = new Date(2017,8,4);
+    const yesterday = new Date(today - (1000*60*60*24*1));
     const oneWeekAgo = new Date(today - (1000*60*60*24*7));
     const plantByChamberArray=[];
     let dayOfCycle;
@@ -92,6 +77,7 @@ class Monitor extends Component {
     })
 
     console.log('render monitor')
+
     return (
       <div className="monitor container">
 
@@ -102,25 +88,25 @@ class Monitor extends Component {
           <p>{plantByChamber.name}</p>
           <LineGraph
             chamberId={this.state.chamberId}
-            currentData={this.state.currentData}
+            sensorData={this.props.sensorData}
             sensor={this.state.sensor1}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}
-            startDate={oneWeekAgo}
+            startDate={yesterday}
           />
         <LineGraph
             chamberId={this.state.chamberId}
-            currentData={this.state.currentData}
+            sensorData={this.props.sensorData}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}
-            startDate={oneWeekAgo}
+            startDate={yesterday}
             sensor={this.state.sensor2}
           />
           <LineGraph
             chamberId={this.state.chamberId}
-            currentData={this.state.currentData}
+            sensorData={this.props.sensorData}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}

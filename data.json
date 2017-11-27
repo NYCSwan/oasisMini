@@ -72,7 +72,7 @@
         "humidity": "50",
         "pH": "5.9",
         "PPM": "345",
-        "height": "6",
+        "height": "5",
         "water": "85",
         "photo": "na"
       }
@@ -6172,7 +6172,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "55",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6186,7 +6186,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "54",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6297,7 +6297,7 @@
       "id": "458",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "76",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6311,7 +6311,7 @@
       "id": "459",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6325,7 +6325,7 @@
       "id": "460",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "77",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6353,7 +6353,7 @@
       "id": "462",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "79",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6368,7 +6368,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "56",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6382,7 +6382,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "55",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6410,7 +6410,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "55",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6451,7 +6451,7 @@
       "id": "469",
       "chamber_id": "2",
       "sensors": {
-        "temperature": "80",
+        "temperature": "72",
         "humidity": "52",
         "pH": "na",
         "PPM": "na",
@@ -6466,7 +6466,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "77",
-        "humidity": "52",
+        "humidity": "55",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6480,7 +6480,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "54",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6494,7 +6494,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "50",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6553,7 +6553,7 @@
         "humidity": "52",
         "pH": "5.9",
         "PPM": "345",
-        "height": "6",
+        "height": "4",
         "water": "85",
         "photo": "na"
       }
@@ -6648,7 +6648,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "77",
-        "humidity": "52",
+        "humidity": "50",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6718,7 +6718,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "75",
-        "humidity": "52",
+        "humidity": "56",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6732,7 +6732,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "80",
-        "humidity": "52",
+        "humidity": "56",
         "pH": "na",
         "PPM": "na",
         "height": "na",
@@ -6746,7 +6746,7 @@
       "chamber_id": "2",
       "sensors": {
         "temperature": "77",
-        "humidity": "52",
+        "humidity": "55",
         "pH": "5.8",
         "PPM": "na",
         "height": "na",
