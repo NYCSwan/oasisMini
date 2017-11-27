@@ -26,6 +26,10 @@
     "jest": true
   },
   "rules": {
-    "allowTaggedTemplates": true
+    "allowTaggedTemplates": 0,
+    "no-debugger": 0,
+    "no-console": 0,
+    "no-lone-blocks": 0,
+    "no-unused-expressions": 0
   }
 }

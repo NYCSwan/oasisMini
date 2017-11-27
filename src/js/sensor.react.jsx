@@ -1,45 +1,44 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import upperFirst from 'lodash/upperFirst';
-import filter from 'lodash/filter';
 
 import Header from './Header.react';
-import Graph from './graph.react';
+
+{/* import filter from 'lodash/filter'; */}
+
 
 class Sensor extends Component {
     state = {
-        chamber_id: '2'
+        chamberId: '2'
     };
 
     handleChamberChange = (event) => {
-    this.setState({ chamber_id: event.target.value });
-  };
+      this.setState({ chamberId: event.target.value });
+    };
 
       render() {
-        const { humidity, temperate, water, height } = this.props.sensor;
-        const { chamber_id, name } = this.props.plants;
+        const { sensor, plants } = this.props;
         const { title } = this.props.match.params.id;
-        const plantByChamber = filter(this.props.plants, [this.props.plants.chamber_id === this.state.chamber_id]);
+        const plantName = upperFirst(plants[1].name);
 
         return (
           <div className="sensor container">
-            <Header />
-            <h1>{ upperFirst(title) }</h1>
+            <Header title={title}/>
+            <h1> {plantName} </h1>
             <div className="filter">
               <input
-                value={this.state.chamber_id}
+                value={this.state.chamberId}
                 onChange={this.handleChamberChange}
                 type="text"
                 placeholder="chamber id"
               />
             </div>
-            <h3>Humidity (%)</h3>
-            {props.data
-              .filter(data => `${chamber_id}`.indexOf(this.state.chamber_id) >= 0)
-              .map(data => <Graph key={data.id} id={data.id} sensor={data.humidity} />)}
+            {/* this.props.data
+              .filter(data => `${chamberId}`.indexOf(this.state.chamberId) >= 0)
+              .map(data => <Graph key={data.id} id={data.id} sensor={data.humidity} />) */}
             <div className="graph-detail container">
-              <h3 className={props.id}>data:{props.sensor}</h3>
-              <h4>{props.startDate}-{props.endDate}</h4>
+              <h3 className={`${sensor} chamber${this.state.chamberId}`}>data:{sensor}</h3>
+              <h4>{this.props.startDate}-{this.props.endDate}</h4>
             </div>
             {/*
             <Graph data={data} title={title} startDate={new Date()} endDate={new Date()}/>
@@ -49,15 +48,19 @@ class Sensor extends Component {
   }
 };
 
+{/*  data: PropTypes.string.isRequired, */}
 Sensor.propTypes = {
-  data: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   sensor: PropTypes.string.isRequired,
-  humidity: PropTypes.string.isRequired,
-  water: PropTypes.string.isRequired,
-  height: PropTypes.string.isRequired,
-  chamber_id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  plants: PropTypes.shape({
+    chamberId: PropTypes.string.isRequired,
+    plant: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.string.isRequired
+  }).isRequired,
   startDate: PropTypes.instanceOf(Date).isRequired,
   endDate: PropTypes.instanceOf(Date).isRequired
 

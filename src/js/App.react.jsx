@@ -20,14 +20,12 @@ const App = () => (
         <Route path="/existinggrow" component={ExistingGrow} />
         <Route
           path="/monitor"
-          component={(props) => <Monitor sensor_data={Preload.sensor_data} plants={Preload.plants} {...props} />}
+          component={(props) => <Monitor sensorData={Preload.sensor_data} plants={Preload.plants} {...props} />}
         />
         <Route
           path="/sensors/:id"
-          component={(props) => {
-            const selectedSensor = Preload.sensor_data;
-            return <Sensor sensor={selectedSensor} plants={Preload.plants} {...props} />;
-          }}
+          component={(props) =>
+            <Sensor sensor={Preload.sensor_data} plants={Preload.plants} {...props} />}
         />
         <Route path="/tutorials" component={Tutorials} />
         <Route component={FourOhFour} />
