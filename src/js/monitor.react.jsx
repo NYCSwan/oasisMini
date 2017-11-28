@@ -17,10 +17,11 @@ class Monitor extends Component {
   state = {
     chamberId: '2',
     graphWidth: 300,
-    graphHeight: 300,
+    graphHeight: 200,
     sensor1: 'temperature',
     sensor2: 'humidity',
-    sensor3: 'height'
+    sensor3: 'height',
+    optionsForFilter: [1,2,3]
   };
 
   componentDidMount(){
@@ -75,7 +76,6 @@ class Monitor extends Component {
         }
         return dayOfCycle;
     })
-
     console.log('render monitor')
 
     return (
@@ -84,8 +84,9 @@ class Monitor extends Component {
         <SiteHeader title="Monitor"/>
         <div className="graphs container">
           <FilterButtonGroup
-            onChange={this.handleChamberChange} chamberId={this.state.chamberId} value={this.state.chamberId} />
-          <p>{plantByChamber.name}</p>
+            onChange={this.handleChamberIdChange}
+            chamberId={this.state.chamberId}
+            options={this.state.optionsForFilter} />
           <LineGraph
             chamberId={this.state.chamberId}
             sensorData={this.props.sensorData}
@@ -112,6 +113,7 @@ class Monitor extends Component {
             endDate={today}
             startDate={oneWeekAgo}
             sensor={this.state.sensor3}
+
           />
 
         </div>
@@ -122,7 +124,8 @@ class Monitor extends Component {
             <h4>pH</h4>
           </Col>
           <Col className="dayOfCycle half-circle" xs={4} sm={4} md={4}>
-            <h4>day {dayOfCycle}</h4>
+            <h4>Day</h4>
+            <h4>{dayOfCycle}</h4>
           </Col>
           <Col className="PPM" xs={4} sm={4} md={4}>
             <h2 className="xBigFont">{lastPpmReading}</h2>

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { AreaChart, Area, XAxis, YAxis, LabelList } from 'recharts';
 import { max, min } from 'd3-array';
-import { timeFormat } from 'd3-time-format';
+
+import moment from 'moment';
 
 import forIn from 'lodash/forIn';
 import pickBy from 'lodash/pickBy';
@@ -95,10 +96,21 @@ class LineGraph extends Component {
     const { graphHeight, graphWidth, margin, sensor} = this.props;
     const dataMinRound = (Math.round(this.state.minY / 10) * 10);
     const dataMaxRound = (Math.round(this.state.maxY / 10) * 10);
-    const dateFormat = (time) => { return timeFormat('%I')(time) };
+    const dateFormat = (time) => {
+      if( this.props.endDate - this.props.startDate === 8640000) {
+        return moment(time).format('hA')
+      } else if (this.props.endDate - this.props.startDate === 604800000 ){
+        return moment(time).format('dd')
+      } else if (this.props.endDate - this.props.startDate > 604800000){
+        return moment(time).format('dd')
+      } else {  // eslint-disable-line
+        return moment(time).format('dd')
+      }
+    };  // eslint-disable-line
 
     return (
       <div>
+
         <AreaChart
           width={graphWidth}
           height={graphHeight}
@@ -111,11 +123,12 @@ class LineGraph extends Component {
               <stop offset="95%" stopColor="#fff" stopOpacity={0}/>
             </linearGradient>
           </defs>
-          <XAxis dataKey="time" label="Date" tick={{stroke: '#fff', strokeWidth: 2 }} tickCount={5} tickLine={false} tickFormatter={dateFormat} />
-          <YAxis label={{ value: sensor, angle: -90, position: 'insideLeft' }} domain={[dataMinRound, dataMaxRound]} tick={{stroke: '#fff', strokeWidth: 1 }} tickCount={3} tickLine={false} />
+          <XAxis dataKey="time" label={{ value: sensor, position: 'outside'}} tickCount={3} tick={{ stroke:'#fff', strokeWidth: 1 }} tickLine={false} tickFormatter={dateFormat} stroke='#fff' />
+          <YAxis domain={[dataMinRound, dataMaxRound]} tick={{ stroke:'#fff', strokeWidth: 1 }} tickCount={3} tickLine={false} stroke='#fff' />
           <LabelList dataKey={sensor} position="bottom center" />
           <Area type='monotone' dataKey='value' stroke='#fff' fillOpacity={1} fill="url(#valueColor)"/>
         </AreaChart>
+
       </div>
     )
   }
@@ -145,6 +158,7 @@ LineGraph.propTypes = {
   }),
   sensor: PropTypes.string.isRequired,
   chamberId: PropTypes.string.isRequired
+
 }
 
 export default LineGraph;

@@ -8,8 +8,9 @@ body {
   background-image: url(/public/img/BG.png);
   background-size: cover;
   background-position: center;
-  color: #191717;
+  color: #fff;
   font-family: Future-Lig;
+
 }
 
 li {
@@ -67,6 +68,15 @@ img {
   border:0;
   margin: 20px;
 }
+/* Header */
+/***********/
+.backImage {
+  display: none;
+}
+.headerLinks {
+  max-width: 175px;
+  height: auto;
+}
 /* NAVBAR MENU*/
 /***************/
 .navbar {
@@ -75,6 +85,8 @@ img {
   border-left: 0;
   border-right: 0;
   border-bottom: 2px solid white;
+  margin: 0;
+  padding: 0;
 }
 .nav.navbar.navbar-inverse {
   display: inline-block;
@@ -168,7 +180,8 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
 /*MONITOR*/
 /**********/
 
-.bottom.container.readings {
+div.bottom.container.readings.row {
+  position: relative;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -176,6 +189,48 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
 
 .ph, .PPM, .half-circle {
   text-align: center;
-  padding: 0;
-  margin-bottom: 0;
+}
+
+.dayOfCycle.half-circle.col-md-4.col-sm-4.col-xs-4 {
+  bottom: 0;
+  position: absolute;
+}
+
+/* Charts */
+/************/
+
+
+
+
+/* Filter Nav By Chamber */
+/*************************/
+div.filter.row {
+  background-color: transparent;
+  vertical-align: middle;
+  display: inline-block;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.filterById {
+  background-color: transparent;
+  text-align: center;
+  max-width: 150px;
+  border-top: '#fff';
+}
+
+div.filterById.btn-group.btn-group-justified {
+  display: inline;
+  width: 100%;
+}
+button.btn.btn-default {
+  background-color: transparent;
+  padding: 10px;
+  border-top: #fff;
+  color: #fff;
+}
+.chamber1, .chamber2, .chamber3 {
+  position: relative;
+  display: inline;
+  border: none;
+  padding: 25px;
 }
