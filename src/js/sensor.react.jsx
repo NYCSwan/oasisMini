@@ -42,7 +42,6 @@ class Sensor extends Component {
         return (
           <div className="sensor container">
             <Header title={upperFirst(this.props.match.params.id)} />
-            <h2> {plantName} </h2>
             <div className="filter">
               <FilterButtonGroup
                 onChange={this.handleChamberIdChange} chamberId={this.state.chamberId}

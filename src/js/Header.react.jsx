@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
@@ -18,7 +19,7 @@ class SiteHeader extends Component {
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
         <Navbar.Header>
               <Navbar.Brand className="brandLogo" id="navbarbrand">
-                <a href="/"><img src="../public/img/logo.png" className="logo img-responsive center-block" alt="logo" /></a>
+                <Link to="/" href="/" className="logo img-responsive center-block" />
                 <PagerBack />
               </Navbar.Brand>
           <Navbar.Toggle />

@@ -1,29 +1,30 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { ButtonGroup, Button, Col, Row } from 'react-bootstrap';
+import { ButtonGroup, Button } from 'react-bootstrap';
 
 const FilterButtonGroup = (props) => (
-      <Row className="filter">
         <ButtonGroup justified
           type="radio"
           name="filterById"
-          className="filterById"
+          className="filterById filter flex-row row"
           options={props.options}
           onChange={props.onChange}
+          sm={12} md={12} lg={12}
         >
         { props.options.map(option => { // eslint-disable-line
 
           return ( // eslint-disable-line
-          <Col className={`chamber${option}`}>
             <Button
               key={option.toString()}
               value={option}
-              checked={props.chamberId === option}>Chamber {option}</Button>
-          </Col>
+              className={`chamber-${option}`}
+              checked={props.chamberId === option}
+            >
+                Chamber {option}
+            </Button>
         );
       })}
         </ButtonGroup>
-      </Row>
     )
 
 FilterButtonGroup.propTypes = {

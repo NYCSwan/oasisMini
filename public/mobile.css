@@ -11,10 +11,10 @@ and (max-device-width : 480px) {
         width:64px;
         height:auto;
     }
-    .brandLogo {
+    .logo {
       display: none;
     }
-    .backImage {
+    div.backImage {
       display: inline;
     }
     .headerLinks {
@@ -22,20 +22,24 @@ and (max-device-width : 480px) {
     }
     /* Filter Nav By Chamber */
     /*************************/
-    div.filter.row {
-      padding-left: 25px;
-      padding-right: 25px;
-    }
-    .filterById {
-      max-width: 150px;
-    }
-    button.btn.btn-default {
-      padding: 10px;
-    }
-    .chamber1, .chamber2, .chamber3 {
-      padding: 5px;
-    }
+    div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
+      width: 100%;
+      padding:0;
 
+    }
+    button.chamber-1.btn.btn-default, button.chamber-2.btn.btn-default, button.chamber-3.btn.btn-default {
+      padding: 0;
+      width: auto;
+      align-self: baseline;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    button.chamber-2.btn.btn-default {
+      border-left: 2px solid #fff;
+      border-right: 2px solid #fff;
+    }
 }
 
 /* Smartphones (landscape) ----------- */
@@ -60,9 +64,7 @@ and (min-width : 321px) {
 @media only screen
 and (max-width : 320px) {
 /* Styles */
-.backImage {
-  display: inline;
-}
+
 /* Filter Nav By Chamber */
 /*************************/
 div.filter.row {
@@ -108,7 +110,7 @@ button.btn.btn-default {
       padding-right: 25px;
     }
     .filterById {
-      max-width: 150px;
+      /* max-width: 150px; */
     }
     button.btn.btn-default {
       padding: 10px;
@@ -158,7 +160,7 @@ button.btn.btn-default {
       padding-right: 25px;
     }
     .filterById {
-      max-width: 150px;
+      /* max-width: 150px; */
     }
     button.btn.btn-default {
       padding: 10px;
@@ -207,7 +209,7 @@ button.btn.btn-default {
       padding-right: 25px;
     }
     .filterById {
-      max-width: 150px;
+      /* max-width: 150px; */
     }
     button.btn.btn-default {
       padding: 10px;
@@ -251,19 +253,7 @@ button.btn.btn-default {
     }
     /* Filter Nav By Chamber */
     /*************************/
-    div.filter.row {
-      padding-left: 25px;
-      padding-right: 25px;
-    }
-    .filterById {
-      max-width: 150px;
-    }
-    button.btn.btn-default {
-      padding: 10px;
-    }
-    .chamber1, .chamber2, .chamber3 {
-      padding: 5px;
-    }
+
 }
 
 /* Landscape */
@@ -298,19 +288,7 @@ button.btn.btn-default {
     }
     /* Filter Nav By Chamber */
     /*************************/
-    div.filter.row {
-      padding-left: 25px;
-      padding-right: 25px;
-    }
-    .filterById {
-      max-width: 150px;
-    }
-    button.btn.btn-default {
-      padding: 10px;
-    }
-    .chamber1, .chamber2, .chamber3 {
-      padding: 5px;
-    }
+
 }
 
 /* Landscape */
