@@ -31,6 +31,7 @@ class Monitor extends Component {
 
   componentDidUpdate() {
     console.log('componentDidUpdate monitor');
+    this.handleChamberIdChange();
 
   }
 
@@ -54,7 +55,7 @@ class Monitor extends Component {
     const plantByChamber = pickBy(plants, (plant) => plant.chamber_id === this.state.chamberId);
     const lastPhReading = findLastIndex(sensorData, (sensor) => sensor.pH !== 'na');
     const lastPpmReading = findLastIndex(sensorData, (sensor) => sensor.PPM !== 'na');
-    const today = new Date(2017,8,4);
+    const today = new Date(2017,7,4);
     const yesterday = new Date(today - (1000*60*60*24*1));
     const oneWeekAgo = new Date(today - (1000*60*60*24*7));
     const plantByChamberArray=[];
@@ -82,7 +83,6 @@ class Monitor extends Component {
       <div className="monitor container">
 
         <SiteHeader title="Monitor"/>
-        <div className="graphs container">
           <FilterButtonGroup
             onChange={this.handleChamberIdChange}
             chamberId={this.state.chamberId}
@@ -115,8 +115,6 @@ class Monitor extends Component {
             sensor={this.state.sensor3}
 
           />
-
-        </div>
 
         <Row className="bottom container readings">
           <Col className="ph" xs={4} sm={4} md={4}>

@@ -31,9 +31,9 @@ class Sensor extends Component {
     }
 
       render() {
-        const { sensorData, plants } = this.props;
-        const plantName = upperFirst(plants[1].name);
-        const today = new Date(2017,8,4);
+        const { sensorData } = this.props;
+        // const plantName = upperFirst(plants[1].name);
+        const today = new Date(2017,7,4);
         const yesterday = new Date(today - (1000*60*60*24*1));
         const oneWeekAgo = new Date(today - (1000*60*60*24*7));
         const full = new Date(today - (1000*60*60*24*8));
@@ -92,7 +92,6 @@ class Sensor extends Component {
 
 Sensor.propTypes = {
   sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  plants: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.shape({
     params: PropTypes.object
   }).isRequired

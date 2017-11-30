@@ -2,7 +2,8 @@
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
-/* Styles */
+/* Header Styles */
+/*****************/
     navItem {
         width:64px;
         height:auto;
@@ -15,8 +16,24 @@ and (max-device-width : 480px) {
       display: none;
     }
     div.backImage {
-      display: inline;
+      display: inline-block;
+      display: none;
+      position: relative;
+      background-image: url(/public/img/white_back_button.png);
+      background-repeat:no-repeat;
+      background-size: 100% 100%;
+      z-index: 1;
+      min-width: 150px;
+      height: auto;
     }
+
+    ul.pager, li.previous {
+      display: none;
+      z-index: 200;
+      position: absolute;
+      bottom: 0;
+    }
+
     .headerLinks {
       width: 30px;
     }
