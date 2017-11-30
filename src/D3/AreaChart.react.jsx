@@ -54,10 +54,9 @@ class ChartArea extends Component {
     console.log('extractOneDayOfData');
     const { startDate, sensor, currentData } = this.props;
     let oneDayOfDataPoints = [];
-    if (sensor === 'humidity' || sensor === 'temperature') {
+    if (sensor === 'humidity' && currentData.length > 0|| sensor === 'temperature' && currentData.length > 0) {
       // narrow currentData to the past 24 hours
       const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-
       const oneDateData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate === modifiedStartDate}); // eslint-disable-line
       // slice by 7 data points
       const chunkedData = chunk(oneDateData, 7);

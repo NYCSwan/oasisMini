@@ -26,13 +26,16 @@ class Monitor extends Component {
 
   componentDidMount(){
     console.log('componentDidMount monitor');
-
+    this.handleChamberIdChange();
   }
 
+  shouldComponentUpdate (newProps, newState) {
+    console.log('shouldComponentUpdate lineGraph');
+    return this.props.sensorData !== newProps.sensorData || this.state.chamberId !== newState.chamberId || this.state.graphWidth !== newState.graphWidth || this.state.graphHeight !== newState.graphHeight
+  }
+  
   componentDidUpdate() {
     console.log('componentDidUpdate monitor');
-    this.handleChamberIdChange();
-
   }
 
   handleChamberIdChange = (newChamber) => {
