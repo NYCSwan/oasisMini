@@ -155,17 +155,17 @@ class ChartArea extends Component {
     // if (this.state.oneDay === null) {
     //   this.extractOneDayOfData();
     // } else
-    const tempData = [];
+    let tempData = [];
     if( endDate - startDate === 86400000 && this.state.oneDay>0) {
 
-      tempData.push(this.state.oneDay);
+      tempData = this.state.oneDay;
       console.log(`data: ${tempData}`);
       this.setState({ dataSeries: tempData });
     } else if (endDate - startDate === 604800000 && this.state.oneWeek>0){
-      tempData.push(this.state.oneWeek);
+      tempData = this.state.oneWeek;
       this.setState({ dataSeries: tempData });
     } else if (this.state.oneMonth != null){
-      tempData.push(this.state.oneMonth);
+      tempData = this.state.oneMonth;
       this.setState({ dataSeries: tempData });
     }  // eslint-disable-line
 
