@@ -63,8 +63,9 @@ class LineGraph extends Component {
     forIn(dataByChamber, (value) => {
       // pick out sensor vals
         const tempValue = get(value.sensors, sensor)
-        tempData.push({time: new Date(value.time), value: parseInt(tempValue, 10), key: value.id , formattedDate: moment(value.time).format('YYYY-MM-DD')});
-
+        if (tempValue !== 'na') {
+        tempData.push({time: new Date(value.time), value: parseFloat(tempValue, 10), key: value.id , formattedDate: moment(value.time).format('YYYY-MM-DD')});
+      }
     })
     // to array of objects [{time, sensor}]
     this.setState({
@@ -120,7 +121,6 @@ class LineGraph extends Component {
           sensor={sensor}
           maxY={this.state.maxY}
           minY={this.state.minY}
-
           {...this.props}
         />
       </div>

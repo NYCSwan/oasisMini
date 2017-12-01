@@ -30,10 +30,10 @@ class Monitor extends Component {
   }
 
   shouldComponentUpdate (newProps, newState) {
-    console.log('shouldComponentUpdate lineGraph');
+    console.log('shouldComponentUpdate monitor');
     return this.props.sensorData !== newProps.sensorData || this.state.chamberId !== newState.chamberId || this.state.graphWidth !== newState.graphWidth || this.state.graphHeight !== newState.graphHeight
   }
-  
+
   componentDidUpdate() {
     console.log('componentDidUpdate monitor');
   }
