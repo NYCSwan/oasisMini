@@ -74,7 +74,7 @@ button.btn.btn-default {
 .links a {
   background-color: rgba(255,255,255, 0.3);
   border-radius: 50%;
-  width: 200px;
+  width: 100px;
   border:0;
   margin: 20px;
 }
@@ -105,7 +105,7 @@ div.backImage {
   background-repeat:no-repeat;
   background-size: 100% 100%;
   z-index: 1;
-  min-width: 150px;
+  width: 150px;
   height: auto;
 }
 
@@ -213,7 +213,8 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
   display: inline-block;
 }
 
-.title {
+h1.title.Futura-Lig {
+  margin-top: 0;
   text-align: center;
 }
 
@@ -221,10 +222,17 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
   max-width: 175px;
   height: auto;
   margin-left: 0;
+  padding:0;
   display: inline-block;
 }
 
+ul.pager {
+  display: none;
+}
 
+div.backImage {
+  margin-left: 10px;
+}
 /*MONITOR*/
 /**********/
 
@@ -296,4 +304,9 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
 
 .startedOn {
   vertical-align: middle;
+}
+
+.center {
+  vertical-align: center;
+
 }

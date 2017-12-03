@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { AreaChart, Area, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { ComposedChart, Area, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import moment from 'moment';
 
 import takeRightWhile from 'lodash/takeRightWhile';
@@ -195,30 +195,29 @@ class ChartArea extends Component {
       }
   }
 
+
+  dateFormatter = (tick) => { // eslint-disable-line
+    console.log(tick);
+    const { endDate, startDate } = this.props;
+    if( endDate - startDate === 86400000) {
+      return moment(tick).format('h');
+    } else if (endDate - startDate === 604800000 ){
+      return moment(tick).format('dd');
+    } else if (endDate - startDate > 604800000){
+      return moment(tick).format('dd');
+    }
+  };
+
   render() {
     console.log('render areaChart');
-    const { graphHeight, graphWidth, margin, sensor, startDate, endDate, minY, maxY } = this.props;
-
-    const dateFormat = (time) => {
-      if( endDate - startDate === 8640000) {
-        return moment(time).format('hA');
-      } else if (endDate - startDate === 604800000 ){
-        return moment(time).format('dd');
-      } else if (endDate - startDate > 604800000){
-        return moment(time).format('dd');
-      } else {  // eslint-disable-line
-        return moment(time).format('dd');
-      }
-    };  // eslint-disable-line
+    const { graphHeight, graphWidth, margin, minY, maxY } = this.props;
 
     const dataMinRound = (Math.round(minY / 10) * 10);
     const dataMaxRound = (Math.round(maxY / 10) * 10);
 
-    console.log(`1 day ${this.state.oneDay}`);
-    console.log(`dataSeries ${this.state.dataSeries}`);
 
     return (
-      <AreaChart
+      <ComposedChart
         width={graphWidth}
         height={graphHeight}
         data={this.state.dataSeries}
@@ -233,11 +232,12 @@ class ChartArea extends Component {
         </defs>
         <XAxis
           dataKey="time"
-          label={{ value: sensor, position:'outside'}} tickCount={3}
+          label={{ value: this.timeLabel, position:'outside'}} tickCount={3}
           tick={{ stroke:'#fff', strokeWidth: 1 }}
           tickLine={false}
-          tickFormatter={dateFormat}
-          stroke='#fff' />
+          tickFormatter={this.dateFormatter}
+          stroke='#fff'
+        />
         <YAxis
           domain={[dataMinRound, dataMaxRound]}
           tick={{ stroke:'#fff', strokeWidth: 1 }}
@@ -245,18 +245,17 @@ class ChartArea extends Component {
           tickLine={false}
           stroke='#fff' />
         <Tooltip />
-
         <Area
           type='monotone'
           dataKey='value'
           stroke='#fff'
           fillOpacity={1}
           fill='url(#valueColor)' />
-          <Line
-            type='monotone'
-            dataKey='value'
-            stroke='#fff' />
-      </AreaChart>
+        <Line
+          type='monotone'
+          dataKey='value'
+          stroke='#fff' />
+      </ComposedChart>
     )
   }
 }

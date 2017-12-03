@@ -64,7 +64,7 @@ class LineGraph extends Component {
       // pick out sensor vals
         const tempValue = get(value.sensors, sensor)
         if (tempValue !== 'na') {
-        tempData.push({time: new Date(value.time), value: parseFloat(tempValue, 10), key: value.id , formattedDate: moment(value.time).format('YYYY-MM-DD')});
+        tempData.push({time: new Date(value.time).toString(), value: parseFloat(tempValue, 10), key: value.id , formattedDate: moment(value.time).format('YYYY-MM-DD')});
       }
     })
     // to array of objects [{time, sensor}]
@@ -112,17 +112,19 @@ class LineGraph extends Component {
 
     return (
       <div className="areaChart container">
-        <ChartArea graphWidth={graphWidth}
-          graphHeight={graphHeight}
-          currentData={this.state.currentData}
-          margin={{ top: margin.top, right: margin.right, bottom: margin.bottom, left: margin.left }}
-          endDate={endDate}
-          startDate={startDate}
-          sensor={sensor}
-          maxY={this.state.maxY}
-          minY={this.state.minY}
-          {...this.props}
-        />
+        <a href={`/sensors/${sensor}`} alt={`${sensor} details`}>
+          <ChartArea graphWidth={graphWidth}
+            graphHeight={graphHeight}
+            currentData={this.state.currentData}
+            margin={{ top: margin.top, right: margin.right, bottom: margin.bottom, left: margin.left }}
+            endDate={endDate}
+            startDate={startDate}
+            sensor={sensor}
+            maxY={this.state.maxY}
+            minY={this.state.minY}
+
+          />
+        </a>
       </div>
     )
   }

@@ -17,25 +17,30 @@ and (max-device-width : 480px) {
     }
     div.backImage {
       display: inline-block;
-      display: none;
       position: relative;
       background-image: url(/public/img/white_back_button.png);
       background-repeat:no-repeat;
       background-size: 100% 100%;
       z-index: 1;
-      min-width: 150px;
-      height: auto;
+      width: 90px;
+      height: 75px;
     }
 
-    ul.pager, li.previous {
-      display: none;
+    ul.pager {
+      visibility: hidden;
+    }
+
+    li.previous {
+      visibility: hidden;
       z-index: 200;
-      position: absolute;
       bottom: 0;
     }
 
     .headerLinks {
       width: 30px;
+    }
+    button.navbar-toggle.collapsed {
+      margin-top: 15px;
     }
     /* Filter Nav By Chamber */
     /*************************/

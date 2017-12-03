@@ -94,7 +94,7 @@ class Sensor extends Component {
             />
 
             <Row className="bottom container readings">
-              <Col className="startedOn half-circle center" xs={4} sm={4} md={4}>
+              <Col className="startedOn half-circle center" xs={6} xsOffset={3} sm={6} smOffset={3} md={6} mdOffset={3}>
                 <h4> Started</h4>
                 <h4>{startedOnMonth.toString()} {startedOnDay.toString()}</h4>
               </Col>
