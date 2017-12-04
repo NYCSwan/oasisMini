@@ -20,7 +20,9 @@ class SiteHeader extends Component {
         <Navbar.Header>
               <Navbar.Brand className="brandLogo" id="navbarbrand">
                 <Link to="/" href="/" className="logo img-responsive center-block" />
-                <PagerBack />
+                <div className='backImage'>
+                  <PagerBack />
+                </div>
               </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

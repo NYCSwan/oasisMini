@@ -2,11 +2,9 @@ import React from 'react';
 import { Pager } from 'react-bootstrap';
 
 const PagerBack = () => (
-  <div className='backImage'>
-    <Pager>
+    <Pager className="glyphicon glyphicon-chevron-left">
       <Pager.Item previous href="#" />
     </Pager>
-  </div>
 );
 
 export default PagerBack;

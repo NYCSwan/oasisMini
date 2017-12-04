@@ -65,6 +65,7 @@ img {
                                   /************/
 button {
   align-items: stretch;
+  font-family: Futura-Lig;
 }
 
 button.btn.btn-default {
@@ -75,12 +76,37 @@ button.btn.btn-default {
   color: #fff;
 }
 
+/* Header buttons */
 button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active, button.chamber-3.btn.btn-default:active, button.chamber-1.btn.btn-default:focus, button.chamber-2.btn.btn-default:focus, button.chamber-3.btn.btn-default:focus  {
   background:linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.1));
   color: #fff;
   font-weight: bolder;
   border:0;
 }
+
+.homepage.link.Futura-Lig, .temperate.link, .custom.link, .tropical.link {
+  background-color: rgba(115,115,115,0.3);
+  min-width: 150px;
+  height: auto;
+  margin: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 24px;
+  /*border styles*/
+  border: 0;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+}
+
+.homepage.link.Futura-Lig:active, .temperate.link:active, .custom.link:active, .tropical.link:active  {
+  /*border styles*/
+  border-top: solid 2px rgba(115,115,115,0.5);
+  border-bottom: solid 1px rgba(115,115,115,0.3);
+  border-right: solid 1px rgba(115,115,115,0.5);
+  border-left: solid 1px rgba(115,115,115,0.5);
+}
+
 
                                   /* Header */
                                   /***********/
@@ -230,8 +256,8 @@ ul.pager {
 div.backImage {
   margin-left: 10px;
 }
-/*MONITOR*/
-/**********/
+                                      /*MONITOR*/
+                                      /**********/
 
 div.bottom.container.readings.row {
   position: relative;
@@ -249,8 +275,8 @@ div.bottom.container.readings.row {
   position: absolute;
 }
 
-/* Charts */
-/************/
+                                  /* Charts */
+                                  /************/
 svg.recharts-surface {
   width: 100%;
 }
@@ -318,25 +344,29 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   margin-top: 20px;
 }
 
-.homepage.link.Futura-Lig {
-  background-color: rgba(115,115,115,0.3);
-  min-width: 150px;
-  height: auto;
-  margin: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-size: 24px;
-  /*border styles*/
-  border: 0;
-	-moz-border-radius: 30px;
-	-webkit-border-radius: 30px;
-	border-radius: 30px;
+
+                                  /*New Grow*/
+                                  /***********/
+.basil, .bellPepper, .broccoli, .cilantro, .greenBeans, .lettuce, .tomato, .kale, .temperate.link, .custom.link, .tropical.link {
+  font-family: Futura-Lig;
 }
 
-.homepage.link.Futura-Lig:active {
-  /*border styles*/
-  border-top: solid 2px rgba(115,115,115,0.5);
-  border-bottom: solid 1px rgba(115,115,115,0.3);
-  border-right: solid 1px rgba(115,115,115,0.5);
-  border-left: solid 1px rgba(115,115,115,0.5);
+.basil {
+  background-image: url(/public/img/Basil_Button.png);
+}
+
+.bellPepper {
+  background-image: url(/public/img/Bell_Pepper_Button.png);
+}
+
+.broccoli {
+  background-image: url(/public/img/Broccoli_Button.png);
+}
+
+.cilantro {
+  background-image: url(/public/img/Cilantro_Button.png);
+}
+
+.text.Futura-Lig.center h3{
+  font-size: 20px;
 }
