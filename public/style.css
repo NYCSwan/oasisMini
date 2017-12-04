@@ -1,3 +1,6 @@
+                                  /*Universal Styling*/
+                                  /*****************/
+
 .Futura-Lig {
 	font-family: Futura-Lig;
 	font-weight: normal;
@@ -58,8 +61,8 @@ img {
   text-align: center;
 }
 
-/* BUTTONS */
-/************/
+                                  /* BUTTONS GENERAL*/
+                                  /************/
 button {
   align-items: stretch;
 }
@@ -71,13 +74,7 @@ button.btn.btn-default {
   font-size: 16px;
   color: #fff;
 }
-.links a {
-  background-color: rgba(255,255,255, 0.3);
-  border-radius: 50%;
-  width: 100px;
-  border:0;
-  margin: 20px;
-}
+
 button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active, button.chamber-3.btn.btn-default:active, button.chamber-1.btn.btn-default:focus, button.chamber-2.btn.btn-default:focus, button.chamber-3.btn.btn-default:focus  {
   background:linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.1));
   color: #fff;
@@ -85,8 +82,8 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
   border:0;
 }
 
-/* Header */
-/***********/
+                                  /* Header */
+                                  /***********/
 .brandLogo {
   margin-left: 0;
   width: 100%;
@@ -123,8 +120,8 @@ img.headerLinks.img-responsive {
 h1.title.Futura-Lig {
   font-weight: bolder;
 }
-/* NAVBAR MENU*/
-/***************/
+                                /* NAVBAR MENU*/
+                                /***************/
 .navbar {
   background-color: rgba(255,255,255,0.0);
   border-top:0;
@@ -260,8 +257,8 @@ svg.recharts-surface {
 
 
 
-/* Filter Nav By Chamber */
-/*************************/
+                                  /* Filter Nav By Chamber */
+                                  /*************************/
 .flex-row {
   display: flex;
   flex-wrap: wrap;
@@ -299,8 +296,8 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   border: none;
 }
 
-/* Sensor */
-/***********/
+                                  /* Sensor */
+                                  /***********/
 
 .startedOn {
   vertical-align: middle;
@@ -309,4 +306,37 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
 .center {
   vertical-align: center;
 
+}
+
+                                  /*Homepage*/
+                                  /************/
+
+.homepage.links.container {
+  vertical-align: center;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.homepage.link.Futura-Lig {
+  background-color: rgba(115,115,115,0.3);
+  min-width: 150px;
+  height: auto;
+  margin: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 24px;
+  /*border styles*/
+  border: 0;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+}
+
+.homepage.link.Futura-Lig:active {
+  /*border styles*/
+  border-top: solid 2px rgba(115,115,115,0.5);
+  border-bottom: solid 1px rgba(115,115,115,0.3);
+  border-right: solid 1px rgba(115,115,115,0.5);
+  border-left: solid 1px rgba(115,115,115,0.5);
 }

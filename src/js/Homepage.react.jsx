@@ -6,14 +6,14 @@ import SiteHeader from './Header.react';
 const Homepage = () => (
   <div>
     <SiteHeader title="Homepage"/>
-    <div className="links">
-      <Button bsStyle="primary" href="/NewGrow">
+    <div className="homepage links container">
+      <Button bsStyle="primary" className="homepage link Futura-Lig" href="/NewGrow">
         New Grow
       </Button>
-      <Button bsStyle="primary" href="/ExistingGrow">
+      <Button bsStyle="primary" className="homepage link Futura-Lig" href="/ExistingGrow">
         Existing Grow
       </Button>
-      <Button bsStyle="primary" href="/Tutorials">
+      <Button bsStyle="primary" className="homepage link Futura-Lig" href="/Tutorials">
         Tutorials
       </Button>
     </div>
