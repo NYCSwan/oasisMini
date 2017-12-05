@@ -16,7 +16,10 @@ const App = () => (
     <div className="appContainer">
       <Switch>
         <Route exact path="/" component={Homepage} />
-        <Route path="/newgrow" component={NewGrow} />
+        <Route
+          path="/newgrow"
+          component={(props) => <NewGrow presets={Preload.climates} chambers={Preload.chambers} climates={Preload.climates} {...props} />}
+        />
         <Route path="/existinggrow" component={ExistingGrow} />
         <Route
           path="/monitor"
