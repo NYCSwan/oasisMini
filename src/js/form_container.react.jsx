@@ -1,78 +1,101 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Form, FormGroup, Radio } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
-import PlantPresetFormGroup from './plant_preset_form_group.react';
+import FormGrouping from './form_group.react';
 
 class FormContainer extends Component {
-  state = {
-    selectedChamber: '',
-    selectedPlant:'',
-    selectedPreset:''
+
+  componentWillReceiveProps({ onPlantRadioClick, onPresetRadioClick, onChamberRadioClick, chamberOptions, plantTypes, presetOptions }) {
+    console.log('componentWillReceiveProps form container');
+
+    if (onPlantRadioClick !== this.props.onPlantRadioClick) {
+      console.log('chamber function changed');
+      this.handlePlantRadioClick();
+    } else if (onPresetRadioClick !== this.props.onPresetRadioClick) {
+      console.log('preset function changed');
+
+      this.handlePresetRadioClick();
+    } else if (onChamberRadioClick !== this.props.onChamberRadioClick) {
+      console.log('chamber function changed');
+      this.handleChamberRadioClick();
+    } else if (chamberOptions !== this.props.chamberOptions || presetOptions !== this.props.presetOptions || plantTypes !== this.props.plantTypes) {
+      console.log('chamber, plants, presets changed');
+    }
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate form container');
-    this.handleRadioChange();
   }
+
   handleRadioChange = (e) => {
-    this.handlePlantRadioChange(e);
-    this.handlePresetRadioChange(e);
-    this.handleChamberRadioChange(e);
+    console.log('handle radio click form container');
+    this.handlePlantRadioClick(e);
+    this.handlePresetRadioClick(e);
+    this.handleChamberRadioClick(e);
+  }
+  handleChamberRadioClick = (e) => {
+    console.log('handle chamber click form container');
+
+    this.props.onChamberRadioClick(e);
   }
 
-  handlePlantRadioChange = (e) => {
-    e.preventDefault();
-    console.log(`handlePlantRadioChange: ${e.target.nextSibling}`);
-    debugger
-    this.setState({ selectedPlant: e.target.nextSibling.data })
+  handlePlantRadioClick = (e) => {
+    console.log('handleplant click form container');
+
+    this.props.onPlantRadioClick(e);
   }
 
-  handlePresetRadio = (e) => {
-    e.preventDefault();
-    this.setState({ selectedPreset: e.target.nextSibling.data })
-    console.log(`handlePresetRadio: ${e.target.nextSibling.data}`);
-  }
+  handlePresetRadioClick = (e) => {
+    console.log('handlepreset click form container');
 
-  handleChamberRadio = (e) => {
-    e.preventDefault();
-    console.log(`handleChamberRadio: ${e.target.nextSibling.data}`);
-    this.setState({ selectedChamber: e.target.nextSibling.data });
+    this.props.onPresetRadioClick(e);
   }
-
   render() {
-
-    const chamberOptions = this.props.chamberOptions.map(chamber => { // eslint-disable-line
-      return (
-        <Radio name='radioGroup3' key={chamber} className={`${chamber} link`} onChange={this.handleRadioChange} inline-block>
-          {chamber}
-        </Radio>
-      )
-    });
-
-
+    console.log('form_container render');
     return (
-      <Form>
-        { this.state.selectedPlant === '' && this.state.selectedPreset === '' ?
-          <PlantPresetFormGroup
-            presetOptions={this.props.presetOptions}
-            plantTypes={this.props.plantTypes}
-            onChange={(e) => this.handleRadioChange(e)}/> : <div>hi</div> }
-        <div className={`${this.state.selectedPreset} controls`}>
-          Slider here
-        </div>
-        <FormGroup>
-          {chamberOptions}
-        </FormGroup>
-      </Form>
+      // <Form>
+      //   <div>
+      //     <FormGrouping
+      //       options={this.props.plantTypes} onClick={this.handlePlantRadioClick} />
+      //     <FormGrouping
+      //       options={this.props.presetOptions} onClick={this.handlePresetRadioClick} />
+      //   </div>
+      //   {/* props.selectedPlant
+      //     ?
+      //     <PlantPresetFormGroup
+      //       presetOptions={this.props.presetOptions}
+      //       plantTypes={this.props.plantTypes}
+      //       onPresetClick={this.handlePresetRadioClick}
+      //       onPlantClick={this.handlePlantRadioClick}
+      //     />
+      //     :
+      //     <div>hi</div>
+      //   */}
+      //   <div className='controls'>
+      //     Slider here
+      //   </div>
+      //   {/* (this.props.selectedPlant.length > 1 && this.props.selectedChamber === '')
+      //     ? */}
+      //     <FormGrouping
+      //       options={this.props.chamberOptions}
+      //       onClick={this.handleChamberRadioClick} />
+      //     {/*  :
+      //     <div>oh oh</div>
+      //   */}
+      // </Form>
     )
   }
 }
+
 FormContainer.propTypes = {
   plantTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   chamberOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  presetOptions: PropTypes.arrayOf(PropTypes.string).isRequired
+  presetOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onPlantRadioClick: PropTypes.func.isRequired,
+  onPresetRadioClick: PropTypes.func.isRequired,
+  onChamberRadioClick: PropTypes.func.isRequired
 }
 
 export default FormContainer;
