@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { form } from 'react-bootstrap';
+import upperFirst from 'lodash/upperFirst';
+import pickBy from 'lodash/pickBy';
+import findIndex from 'lodash/findIndex';
 
 import SiteHeader from './Header.react';
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import FormGrouping from './form_group.react';
+import PresetSensors from './preset_sensors.react';
 
 class NewGrow extends Component {
   static propTypes = {
@@ -23,21 +27,17 @@ class NewGrow extends Component {
       'broccoli',
       'cilantro',
       'bell Pepper',
-      'green Beans'
+      'green Beans',
+      'customize'
     ],
     chamberOptions: [
       'chamber 1',
       'chamber 2',
       'chamber 3'
     ],
-    presets: [
-      'tropical',
-      'temperate',
-      'custom'
-    ],
-    selectedChamber:'',
     selectedPlant:'',
-    selectedPreset:''
+    selectedPreset:'',
+    selectedChamber:''
   }
   componentDidMount() {
     console.log('component did mount new grow');
@@ -51,29 +51,32 @@ class NewGrow extends Component {
 
   componentDidUpdate() {
     console.log('componentDidUpdate new grow');
-    this.handleRadioChange();
-  }
-
-  handleRadioChange = (e) => {
-    this.handlePlantRadioChange(e);
-    this.handlePresetRadioChange(e);
-    this.handleChamberRadioChange(e);
+    this.handlePresetSelection();
   }
 
   handlePlantRadioClick = (e) => {
-    console.log(`handlePlantRadioClick: ${e}`, this);
-    this.setState({ selectedPlant: e });
+    console.log(`handlePlantRadioClick: ${e.target.labels[0].innerText}`, this);
+    this.setState({ selectedPlant: e.target.labels[0].innerText}, () => {
+      this.handlePresetSelection();
+    });
   }
 
-  handlePresetRadioClick = (e) => {
-    this.setState({ selectedPreset: e });
-    console.log(`handlePresetRadio: ${e}`, this);
+  handlePresetSelection = () => {
+    console.log('handlePresetSelection');
+    const { presets } = this.props;
+    const currentPlantState = upperFirst(this.state.selectedPlant);
+    const idx = findIndex(presets, (plant) => plant.name === currentPlantState);
+    const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
+
+      if (currentPlantState === currentPlantType[idx].name) {
+        console.log('setstate');
+        this.setState({ selectedPreset: currentPlantType[idx].climate_id });
+      }
   }
 
   handleChamberRadioClick = (e) => {
-    console.log(`handleChamberRadio: ${e}`, this);
-    debugger
-    this.setState({ selectedChamber: e });
+    console.log(`handleChamberRadio: ${e.target.labels[0].innerText}`, this);
+    this.setState({ selectedChamber: e.target.labels[0].innerText });
   }
 
   render() {
@@ -82,34 +85,43 @@ class NewGrow extends Component {
       <div className="newGrow container">
         <SiteHeader title="New Grow" />
 
-        <form>
-            <FormGrouping
-              options={this.state.plantTypes} onClick={this.handlePlantRadioClick}
-              />
-            <FormGrouping
-              options={this.state.presets} onClick={this.handlePresetRadioClick} />
-          {/* props.selectedPlant
+        <form className='new_grow_form'>
+          { (this.state.selectedPlant === '')
             ?
-            <PlantPresetFormGroup
-              presetOptions={this.props.presetOptions}
-              plantTypes={this.props.plantTypes}
-              onPresetClick={this.handlePresetRadioClick}
-              onPlantClick={this.handlePlantRadioClick}
-            />
+            <div className='selectedPlant'>
+              <h3>Select A Plant</h3>
+              <h3>OR</h3>
+              <h3>Customize Your Own Settings</h3>
+              <FormGrouping
+                id={1}
+                options={this.state.plantTypes} onClick={this.handlePlantRadioClick}
+                />
+              </div>
             :
-            <div>hi</div>
-          */}
-          <div className='controls'>
-            Slider here
-          </div>
-          {/* (this.props.selectedPlant.length > 1 && this.props.selectedChamber === '')
-            ? */}
+            ''
+          }
+
+          { (this.state.selectedPlant === 'customize' && this.state.selectedChamber === '')
+            ?
+          // <CustomizeSensors />
+          <div> Customized Here </div>
+            :
+          <PresetSensors
+            presets={this.props.presets}
+            climates={this.props.climates}
+            selectedPlant={this.state.selectedPlant}
+            selectedPreset={this.state.selectedPreset}
+            />
+          }
+          { (this.state.selectedChamber === '' && this.state.selectedPlant !== '')
+            ?
           <FormGrouping
+            id={2}
             options={this.state.chamberOptions}
             onClick={this.handleChamberRadioClick} />
-            {/*  :
-            <div>oh oh</div>
-          */}
+             :
+            ''
+          }
         </form>
         <PagerBack />
         <PagerFwd />
@@ -118,5 +130,4 @@ class NewGrow extends Component {
   }
 }
 
-NewGrow
 export default NewGrow;

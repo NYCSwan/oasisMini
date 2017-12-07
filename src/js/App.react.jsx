@@ -18,17 +18,17 @@ const App = () => (
         <Route exact path="/" component={Homepage} />
         <Route
           path="/newgrow"
-          component={(props) => <NewGrow presets={Preload.climates} chambers={Preload.chambers} climates={Preload.climates} {...props} />}
+          component={(props) => <NewGrow presets={Preload.plantTypes} chambers={Preload.chambers} climates={Preload.climates} {...props} />}
         />
         <Route path="/existinggrow" component={ExistingGrow} />
         <Route
           path="/monitor"
-          component={(props) => <Monitor sensorData={Preload.sensor_data} plants={Preload.plants} {...props} />}
+          component={(props) => <Monitor sensorData={Preload.sensor_data} plants={Preload.growing_plants} {...props} />}
         />
         <Route
           path="/sensors/:id"
           component={(props) =>
-            <Sensor sensorData={Preload.sensor_data} plants={Preload.plants} {...props} />}
+            <Sensor sensorData={Preload.sensor_data} plants={Preload.growing_plants} {...props} />}
         />
         <Route path="/tutorials" component={Tutorials} />
         <Route component={FourOhFour} />

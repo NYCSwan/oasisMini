@@ -6,7 +6,8 @@ import upperFirst from 'lodash/upperFirst';
 class FormGrouping extends Component {
   static propTypes = {
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    id: PropTypes.number.isRequired
   }
 
   componentWillReceiveProps({onClick}) {
@@ -15,6 +16,7 @@ class FormGrouping extends Component {
       this.handleClick();
     }
   }
+  
   handleClick = (e) => {
     console.log('handle click form group');
     this.props.onClick(e);
@@ -25,12 +27,11 @@ class FormGrouping extends Component {
     // debugger
     const radioBtns = this.props.options.map(value => {  // eslint-disable-line
        return <Radio
-         name='radioGroup'
+         name={`radioGroup${this.props.id}`}
          key={value}
          className={`${value} link`}
          onChange={this.handleClick}
-         inline>
-         {value}
+         >
          { upperFirst(value) }
        </Radio>
      })
