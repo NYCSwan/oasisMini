@@ -432,3 +432,10 @@ label {
 input[type=radio] {
   display: none;
 }
+
+											/* Slider */
+											/**********/
+.slider {
+	width: 500px;
+  margin-left: 20px;
+}

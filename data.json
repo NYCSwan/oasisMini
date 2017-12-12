@@ -28,7 +28,7 @@
     },
     {
       "id": "2",
-      "name": "Tomatoes",
+      "name": "Tomato",
       "climate_id": "1",
       "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
       "pH": "5.6",
@@ -111,26 +111,38 @@
     {
       "id": "1",
       "type": "tropical",
-      "temperature": "77",
-      "humidity": "48",
-      "pH": "5.7",
-      "PPM": "345"
+      "temperatureMin": "75",
+      "temperatureMax": "95",
+      "humidityMin": "45",
+      "humidityMax": "70",
+      "phMin": "5.4",
+      "phMax": "6.0",
+      "PPMMin": "300",
+      "PPMMax": "400"
     },
     {
       "id": "2",
       "type": "temperate",
-      "temperature": "74",
-      "humidity": "40",
-      "pH": "5.7",
-      "PPM": "345"
+      "temperatureMin": "75",
+      "temperatureMax": "95",
+      "humidityMin": "45",
+      "humidityMax": "70",
+      "phMin": "5.4",
+      "phMax": "6.0",
+      "PPMMin": "300",
+      "PPMMax": "400"
     },
     {
       "id": "3",
       "type": "customize",
-      "temperature": "0",
-      "humidity": "0",
-      "pH": "0",
-      "PPM": "0"
+      "temperatureMin": "75",
+      "temperatureMax": "95",
+      "humidityMin": "45",
+      "humidityMax": "70",
+      "phMin": "5.4",
+      "phMax": "6.0",
+      "PPMMin": "300",
+      "PPMMax": "400"
     }
   ],
   "sensor_data": [
