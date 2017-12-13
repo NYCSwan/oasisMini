@@ -5,7 +5,7 @@ import SiteHeader from './Header.react';
 
 const Homepage = () => (
   <div>
-    <SiteHeader />
+    <SiteHeader title="Homepage"/>
     <div className="links">
       <Button bsStyle="primary" href="/NewGrow">
         New Grow

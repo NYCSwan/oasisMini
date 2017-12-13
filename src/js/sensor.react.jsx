@@ -1,70 +1,114 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import upperFirst from 'lodash/upperFirst';
+import { Row, Col } from 'react-bootstrap';
 
-import Header from './Header.react';
-
-{/* import filter from 'lodash/filter'; */}
+import SiteHeader from './Header.react';
+import LineGraph from '../D3/lineGraph';
+import FilterButtonGroup from './filter_button.react';
 
 
 class Sensor extends Component {
     state = {
-        chamberId: '2'
-    };
+        chamberId: '2',
+        graphWidth: 300,
+        graphHeight: 200,
+        optionsForFilter: [1,2,3]
+    }
+    componentDidMount(){
+      console.log('componentDidMount sensor');
+      this.handleChamberIdChange();
+    }
 
-    handleChamberChange = (event) => {
-      this.setState({ chamberId: event.target.value });
-    };
+    shouldComponentUpdate (newProps, newState) {
+      console.log('shouldComponentUpdate sensor');
+      return this.props.sensorData !== newProps.sensorData || this.state.chamberId !== newState.chamberId || this.state.graphWidth !== newState.graphWidth || this.state.graphHeight !== newState.graphHeight
+    }
+
+    componentDidUpdate() {
+      console.log('componentDidUpdate sensor');
+    }
+
+    handleChamberIdChange = (newChamber) => {
+      console.log('handleChamberIdChange')
+      let tempChamber = ''
+      if (newChamber == null) {
+        tempChamber = '1'
+      } else {
+        tempChamber = newChamber.toString();
+      }
+
+      this.setState({
+        chamberId: tempChamber
+       })
+    }
 
       render() {
-        const { sensor, plants } = this.props;
-        const { title } = this.props.match.params.id;
-        const plantName = upperFirst(plants[1].name);
+          console.log('render sensor');
+        const { sensorData } = this.props;
+        // const plantName = upperFirst(plants[1].name);
+        const today = new Date(2017,7,4);
+        const yesterday = new Date(today - (1000*60*60*24*1));
+        const oneWeekAgo = new Date(today - (1000*60*60*24*7));
+        const full = new Date(today - (1000*60*60*24*8));
+        const startedOnMonth = new Date(today - (1000*60*60*24*7)).toLocaleString("en-us", {month: "long"});
+        const startedOnDay = new Date(today - (1000*60*60*24*7)).getDay();
 
         return (
           <div className="sensor container">
-            <Header title={title}/>
-            <h1> {plantName} </h1>
+            <SiteHeader title={upperFirst(this.props.match.params.id)} />
             <div className="filter">
-              <input
-                value={this.state.chamberId}
-                onChange={this.handleChamberChange}
-                type="text"
-                placeholder="chamber id"
-              />
+              <FilterButtonGroup
+                onChange={this.handleChamberIdChange} chamberId={this.state.chamberId}
+                options={this.state.optionsForFilter}/>
             </div>
-            {/* this.props.data
-              .filter(data => `${chamberId}`.indexOf(this.state.chamberId) >= 0)
-              .map(data => <Graph key={data.id} id={data.id} sensor={data.humidity} />) */}
-            <div className="graph-detail container">
-              <h3 className={`${sensor} chamber${this.state.chamberId}`}>data:{sensor}</h3>
-              <h4>{this.props.startDate}-{this.props.endDate}</h4>
-            </div>
-            {/*
-            <Graph data={data} title={title} startDate={new Date()} endDate={new Date()}/>
-            */}
-          </div>
+            <LineGraph
+              chamberId={this.state.chamberId}
+              sensorData={sensorData}
+              sensor={this.props.match.params.id}
+              graphHeight={this.state.graphHeight}
+              graphWidth={this.state.graphWidth}
+              endDate={today}
+              startDate={yesterday}
+              match={this.props.match}
+            />
+            <LineGraph
+              chamberId={this.state.chamberId}
+              sensorData={sensorData}
+              sensor={this.props.match.params.id}
+              graphHeight={this.state.graphHeight}
+              graphWidth={this.state.graphWidth}
+              endDate={today}
+              startDate={oneWeekAgo}
+              match={this.props.match}
+            />
+            <LineGraph
+              chamberId={this.state.chamberId}
+              sensorData={sensorData}
+              sensor={this.props.match.params.id}
+              graphHeight={this.state.graphHeight}
+              graphWidth={this.state.graphWidth}
+              endDate={today}
+              startDate={full}
+              match={this.props.match}
+            />
+
+            <Row className="bottom container readings">
+              <Col className="startedOn half-circle center" xs={6} xsOffset={3} sm={6} smOffset={3} md={6} mdOffset={3}>
+                <h4> Started</h4>
+                <h4>{startedOnMonth.toString()} {startedOnDay.toString()}</h4>
+              </Col>
+          </Row>
+        </div>
       );
   }
 };
 
-{/*  data: PropTypes.string.isRequired, */}
 Sensor.propTypes = {
-  id: PropTypes.string.isRequired,
-  sensor: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  plants: PropTypes.shape({
-    chamberId: PropTypes.string.isRequired,
-    plant: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
-  }).isRequired,
+  sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.shape({
-    params: PropTypes.string.isRequired
-  }).isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
-  endDate: PropTypes.instanceOf(Date).isRequired
-
-
+    params: PropTypes.object
+  }).isRequired
 }
 
 export default Sensor;

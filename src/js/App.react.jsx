@@ -25,7 +25,7 @@ const App = () => (
         <Route
           path="/sensors/:id"
           component={(props) =>
-            <Sensor sensor={Preload.sensor_data} plants={Preload.plants} {...props} />}
+            <Sensor sensorData={Preload.sensor_data} plants={Preload.plants} {...props} />}
         />
         <Route path="/tutorials" component={Tutorials} />
         <Route component={FourOhFour} />

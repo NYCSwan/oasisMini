@@ -1,28 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { ButtonGroup, Button } from 'react-bootstrap';
 
-class FilterButtonGroup extends Component {
-  handleSelect = (value) => {
-    console.log(value);
-  }
-  render() {
-    return (
-      <div className="filter">
-        <ToggleButtonGroup justified
+const FilterButtonGroup = (props) => (
+        <ButtonGroup justified
           type="radio"
           name="filterById"
-          value={this.props.chamberId}
-          onChange={this.handleSelect}>
-          <ToggleButton value={1}>Chamber 1</ToggleButton>
-          <ToggleButton value={2}>Chamber 2</ToggleButton>
-          <ToggleButton value={3}>Chamber 3</ToggleButton>
-        </ToggleButtonGroup>
-      </div>
+          className="filterById filter flex-row row"
+          options={props.options}
+          onChange={props.onChange}
+          sm={12} md={12} lg={12}
+        >
+        { props.options.map(option => { // eslint-disable-line
+
+          return ( // eslint-disable-line
+            <Button
+              key={option.toString()}
+              value={option}
+              className={`chamber-${option}`}
+              checked={props.chamberId === option}
+            >
+                Chamber {option}
+            </Button>
+        );
+      })}
+        </ButtonGroup>
     )
-  }
-}
+
 FilterButtonGroup.propTypes = {
-  chamberId: PropTypes.string.isRequired
+  chamberId: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.number).isRequired,
+  onChange: PropTypes.func.isRequired
 }
 export default FilterButtonGroup;

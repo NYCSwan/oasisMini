@@ -1,15 +1,20 @@
 .Futura-Lig {
 	font-family: Futura-Lig;
-	font-weight: bold;
+	font-weight: normal;
 	font-style: normal;
+}
+h1, h2, h3, h4 {
+  font-weight: bold;
 }
 
 body {
   background-image: url(/public/img/BG.png);
   background-size: cover;
   background-position: center;
-  color:#fff;
+  color: #fff;
   font-family: Future-Lig;
+  margin:0;
+  padding: 0;
 }
 
 li {
@@ -17,7 +22,7 @@ li {
 }
 
 img {
-  max-width:250px;
+  max-width:150px;
 }
 
 .app {
@@ -26,14 +31,9 @@ img {
   height: 100vh;
 }
 
-.brandLogo {
-  margin-left: 0;
-  width: auto;
-}
-.logo {
-  width: inherit;
-  margin-left: 0;
-  max-height: 75px;
+.container {
+  margin: 0;
+  padding: 0;
 }
 
 .links {
@@ -60,12 +60,68 @@ img {
 
 /* BUTTONS */
 /************/
+button {
+  align-items: stretch;
+}
+
+button.btn.btn-default {
+  background-color: transparent;
+  border:0;
+  display: inline-block;
+  font-size: 16px;
+  color: #fff;
+}
 .links a {
   background-color: rgba(255,255,255, 0.3);
   border-radius: 50%;
-  width: 200px;
+  width: 100px;
   border:0;
   margin: 20px;
+}
+button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active, button.chamber-3.btn.btn-default:active, button.chamber-1.btn.btn-default:focus, button.chamber-2.btn.btn-default:focus, button.chamber-3.btn.btn-default:focus  {
+  background:linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.1));
+  color: #fff;
+  font-weight: bolder;
+  border:0;
+}
+
+/* Header */
+/***********/
+.brandLogo {
+  margin-left: 0;
+  width: 100%;
+  height: auto;
+}
+.logo {
+  background-image: url(/public/img/logo.png);
+  width: inherit;
+  margin-left: 0;
+  max-height: 75px;
+}
+div.backImage {
+  display: none;
+  position: relative;
+  background-image: url(/public/img/white_back_button.png);
+  background-repeat:no-repeat;
+  background-size: 100% 100%;
+  z-index: 1;
+  width: 150px;
+  height: auto;
+}
+
+ul.pager {
+  display: none;
+  z-index: 200;
+  position: absolute;
+  bottom: 0;
+}
+
+img.headerLinks.img-responsive {
+  max-width: 175px;
+  height: auto;
+}
+h1.title.Futura-Lig {
+  font-weight: bolder;
 }
 /* NAVBAR MENU*/
 /***************/
@@ -75,10 +131,14 @@ img {
   border-left: 0;
   border-right: 0;
   border-bottom: 2px solid white;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
-.nav.navbar.navbar-inverse {
+.nav.container-fluid.navbar.navbar-inverse {
   display: inline-block;
   background-color: inherit;
+  width: 100%;
 }
 
 .navbar-toggle {
@@ -153,7 +213,8 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
   display: inline-block;
 }
 
-.title {
+h1.title.Futura-Lig {
+  margin-top: 0;
   text-align: center;
 }
 
@@ -161,14 +222,22 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
   max-width: 175px;
   height: auto;
   margin-left: 0;
+  padding:0;
   display: inline-block;
 }
 
+ul.pager {
+  display: none;
+}
 
+div.backImage {
+  margin-left: 10px;
+}
 /*MONITOR*/
 /**********/
 
-.bottom.container.readings {
+div.bottom.container.readings.row {
+  position: relative;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -176,6 +245,68 @@ ul.nav.nav-pills.navbar-nav.navbar-right li {
 
 .ph, .PPM, .half-circle {
   text-align: center;
+}
+
+.dayOfCycle.half-circle.col-md-4.col-sm-4.col-xs-4 {
+  bottom: 0;
+  position: absolute;
+}
+
+/* Charts */
+/************/
+svg.recharts-surface {
+  width: 100%;
+}
+
+
+
+/* Filter Nav By Chamber */
+/*************************/
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+.flex-row > [class*='chamber-'] {
+  align-self:stretch;
   padding: 0;
-  margin-bottom: 0;
+  margin: 0;
+}
+.flex-row.row:after,
+.flex-row.row:before {
+  display: flex;
+}
+
+div.filter.row {
+  background-color: transparent;
+  vertical-align: middle;
+}
+
+.filterById {
+  background-color: transparent;
+  text-align: center;
+  border-top: '#fff';
+}
+
+div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
+  width: 100%;
+  align-content: stretch;
+  align-items: stretch;
+}
+
+.chamber-1, .chamber-2, .chamber-3 {
+  border: none;
+}
+
+/* Sensor */
+/***********/
+
+.startedOn {
+  vertical-align: middle;
+}
+
+.center {
+  vertical-align: center;
+
 }

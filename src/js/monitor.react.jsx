@@ -16,23 +16,22 @@ import FilterButtonGroup from './filter_button.react';
 class Monitor extends Component {
   state = {
     chamberId: '2',
-    graphWidth: 600,
-    graphHeight: 300,
+    graphWidth: 300,
+    graphHeight: 200,
     sensor1: 'temperature',
     sensor2: 'humidity',
-    sensor3: 'height'
+    sensor3: 'height',
+    optionsForFilter: [1,2,3]
   };
 
   componentDidMount(){
     console.log('componentDidMount monitor');
+    this.handleChamberIdChange();
   }
 
-  componentWillReceiveProps({sensorData}) {
-    console.log('componentWillReceiveProps monitor');
-    if (sensorData !== this.props.sensorData ) {
-      console.log(`nextProps: ${sensorData}`);
-
-    }
+  shouldComponentUpdate (newProps, newState) {
+    console.log('shouldComponentUpdate monitor');
+    return this.props.sensorData !== newProps.sensorData || this.state.chamberId !== newState.chamberId || this.state.graphWidth !== newState.graphWidth || this.state.graphHeight !== newState.graphHeight
   }
 
   componentDidUpdate() {
@@ -53,12 +52,14 @@ class Monitor extends Component {
      })
   }
 
+
   render() {
     const { sensorData, plants } = this.props;
     const plantByChamber = pickBy(plants, (plant) => plant.chamber_id === this.state.chamberId);
     const lastPhReading = findLastIndex(sensorData, (sensor) => sensor.pH !== 'na');
     const lastPpmReading = findLastIndex(sensorData, (sensor) => sensor.PPM !== 'na');
-    const today = new Date(2017,8,4);
+    const today = new Date(2017,7,4);
+    const yesterday = new Date(today - (1000*60*60*24*1));
     const oneWeekAgo = new Date(today - (1000*60*60*24*7));
     const plantByChamberArray=[];
     let dayOfCycle;
@@ -79,14 +80,16 @@ class Monitor extends Component {
         }
         return dayOfCycle;
     })
-    console.log('render')
+    console.log('render monitor')
+
     return (
       <div className="monitor container">
+
         <SiteHeader title="Monitor"/>
-        <div className="graphs container">
           <FilterButtonGroup
-            onChange={this.handleChamberChange} chamberId={this.state.chamberId} value={this.state.chamberId} />
-          <p>{plantByChamber.name}</p>
+            onChange={this.handleChamberIdChange}
+            chamberId={this.state.chamberId}
+            options={this.state.optionsForFilter} />
           <LineGraph
             chamberId={this.state.chamberId}
             sensorData={this.props.sensorData}
@@ -94,15 +97,15 @@ class Monitor extends Component {
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}
-            startDate={oneWeekAgo}
+            startDate={yesterday}
           />
-          <LineGraph
+        <LineGraph
             chamberId={this.state.chamberId}
             sensorData={this.props.sensorData}
             graphHeight={this.state.graphHeight}
             graphWidth={this.state.graphWidth}
             endDate={today}
-            startDate={oneWeekAgo}
+            startDate={yesterday}
             sensor={this.state.sensor2}
           />
           <LineGraph
@@ -113,8 +116,8 @@ class Monitor extends Component {
             endDate={today}
             startDate={oneWeekAgo}
             sensor={this.state.sensor3}
+
           />
-        </div>
 
         <Row className="bottom container readings">
           <Col className="ph" xs={4} sm={4} md={4}>
@@ -122,7 +125,8 @@ class Monitor extends Component {
             <h4>pH</h4>
           </Col>
           <Col className="dayOfCycle half-circle" xs={4} sm={4} md={4}>
-            <h4>day {dayOfCycle}</h4>
+            <h4>Day</h4>
+            <h4>{dayOfCycle}</h4>
           </Col>
           <Col className="PPM" xs={4} sm={4} md={4}>
             <h2 className="xBigFont">{lastPpmReading}</h2>
