@@ -40,7 +40,8 @@ class NewGrow extends Component {
     selectedPresetId:'',
     selectedChamber:'',
     isCalculated:false,
-    settings: []
+    settings: [],
+
   }
 
   componentDidMount() {
@@ -104,8 +105,11 @@ class NewGrow extends Component {
     this.setState({ selectedChamber: e.target.labels[0].innerText });
   }
 
-  updateSlider = (e) => {
-    console.log(`e: ${e}`);
+  updateSlider = (phValue) => {
+    console.log(`phValue ${phValue}`);
+    this.setState({
+      phValue
+    })
   }
 
   render() {
@@ -151,10 +155,12 @@ class NewGrow extends Component {
           }
           { (this.state.selectedChamber === '' && this.state.selectedPlant !== '')
             ?
-          <FormGrouping
-            id={2}
-            options={this.state.chamberOptions}
-            onClick={this.handleChamberRadioClick} />
+          <div className="chamberOptions">
+            <FormGrouping
+              id={2}
+              options={this.state.chamberOptions}
+              onClick={this.handleChamberRadioClick} />
+          </div>
              :
             ''
           }

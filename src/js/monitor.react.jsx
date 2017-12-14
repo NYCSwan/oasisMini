@@ -14,10 +14,10 @@ import LineGraph from '../D3/lineGraph';
 import FilterButtonGroup from './filter_button.react';
 
 class Monitor extends Component {
-static propTypes = {
-  sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  plants: PropTypes.arrayOf(PropTypes.object).isRequired
-}
+  static propTypes = {
+    sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    plants: PropTypes.arrayOf(PropTypes.object).isRequired
+  }
 
   state = {
     chamberId: '2',

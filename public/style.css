@@ -11,7 +11,7 @@ h1, h2, h3, h4 {
 }
 
 body {
-  background-image: url(/public/img/BG.png);
+  background-image: url(/public/img/Grren2.png);
   background-size: cover;
   background-position: center;
 	repeat: no-repeat;
@@ -143,6 +143,8 @@ ul.pager {
 img.headerLinks.img-responsive {
   max-width: 175px;
   height: auto;
+  /* display: inline-block; */
+  /* margin: 70px; */
 }
 h1.title.Futura-Lig {
   font-weight: bolder;
@@ -352,7 +354,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   font-family: Futura-Lig;
   font-size: 18px;
 }
-.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .temperate.link, .customize.link {
+.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .temperate.link, .customize.link, .chamberOptions {
   font-family: Futura-Lig;
   background-repeat:no-repeat;
   background-size: 100% 100%;
@@ -362,6 +364,53 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   padding-bottom: 20px;
   margin-top: 10px;
   font-size: 18px;
+}
+
+div.selectedPlant {
+  text-align: center;
+
+}
+div.selectedPlant > .form-group{
+  text-align: center;
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 10%;
+  padding: 5px;
+  vertical-align: center;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-left: 20%;
+  margin-top: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+div.form-group {
+  display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+  margin-left: 20%;
+  margin-top: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+.newgrow.container {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+  margin-left: 20px;
+  margin-top: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+div.slider.row {
+  text-align: center;
+  background-color: rgba(0,0,0, 0.3);
+  border-radius: 10%;
+  min-height: 300px;
 }
 
 .basil.link {
@@ -420,6 +469,10 @@ div.form-group {
   flex-direction: row;
   align-items: center;
   align-content: center;
+}
+
+.chamberOptions {
+	background-image: url(/public/img/oasis_mini_icon_raw.png);
 }
                       /*Forms General Settings */
                       /**************************/

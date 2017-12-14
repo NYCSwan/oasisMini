@@ -10,6 +10,7 @@ class PresetSensors extends Component {
     climates: PropTypes.arrayOf(PropTypes.object).isRequired,
     selectedPreset: PropTypes.string.isRequired,
     selectedPlant: PropTypes.string.isRequired,
+    phValue: PropTypes.number.isRequired,
     updateSlider: PropTypes.func.isRequired,
     presets: PropTypes.arrayOf(PropTypes.object).isRequired
   }
@@ -18,10 +19,13 @@ class PresetSensors extends Component {
     currentSetting:''
   }
 
+  updateSlider(e) {
+    this.props.updateSlider(e);
+  }
 
   render() {
     console.log('render preset sensors');
-    const { climates, selectedPreset, updateSlider, selectedPlant, presets } = this.props;
+    const { climates, selectedPreset, updateSlider, selectedPlant, presets, phValue } = this.props;
     const sensor = 'pH'
     const idx = findIndex(presets, (plant) => plant.name === selectedPlant);
     const currentPlantType = pickBy(presets, (plant) => plant.name === selectedPlant );
@@ -36,16 +40,18 @@ class PresetSensors extends Component {
               selectedPlant={selectedPlant}
               plantType={currentPlantType}
               selectedPreset={currentPlantType[idx].climate_id}
-              updateSlider={updateSlider}
+              onUserInput={updateSlider}
               sensor={sensor}
+              phValue={phValue}
             />
           :
             <Slider
               climates={climates}
               selectedPlant={selectedPlant}
               selectedPreset={selectedPreset}
-              updateSlider={updateSlider}
+              onUserInput={updateSlider}
               sensor={sensor}
+              phValue={phValue}
             />
         }
       </div>
