@@ -20,7 +20,10 @@ const App = () => (
           path="/newgrow"
           component={(props) => <NewGrow presets={Preload.plantTypes} chambers={Preload.chambers} climates={Preload.climates} {...props} />}
         />
-        <Route path="/existinggrow" component={ExistingGrow} />
+        <Route
+          path="/existinggrow"
+          component={(props) => <ExistingGrow currentGrows={Preload.growing_plants} chambers={Preload.chambers} climates={Preload.climates} plantTypes={Preload.plantTypes} {...props} />} 
+        />
         <Route
           path="/monitor"
           component={(props) => <Monitor sensorData={Preload.sensor_data} plants={Preload.growing_plants} {...props} />}

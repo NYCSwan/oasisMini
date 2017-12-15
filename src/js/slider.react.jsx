@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, ControlLabel } from 'react-bootstrap';
 import pickBy from 'lodash/pickBy';
 
 class Slider extends Component {
@@ -23,7 +22,7 @@ class Slider extends Component {
     return this.props.selectedPreset !== newProps.selectedPreset || this.props.sensor !== newProps.sensor || this.state.phValue !== newState.phValue || this.state.temperatureValue !== newState.temperatureValue || this.state.ppmValue !== newState.ppmValue
   }
 
-  updateSliderVal = (e) => {
+  handleChange = (e) => {
     console.log('updateSliderVal slider');
     debugger
     this.setState({phValue: e.target.value});
@@ -39,20 +38,15 @@ class Slider extends Component {
     const currentSensorMax = currentClimate[selectedPreset-1].phMax;
 
     return (
-      <Row className="slider">
-        <ControlLabel htmlFor={sensor}>{ sensor }</ControlLabel>
-        <p>{currentSensorMin}</p>
         <input
-          id="slide"
+          id={`slide ${sensor}`}
           type="range"
           min={currentSensorMin}
           max={currentSensorMax}
           step="5"
-          onChange={this.updateSliderVal}
-          value={this.state.phValue}
+          onChange={this.handleChange}
+          defaultValue={this.state.phValue}
         />
-        <p>{currentSensorMax}</p>
-      </Row>
     )
   }
 }

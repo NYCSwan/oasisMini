@@ -11,8 +11,8 @@ h1, h2, h3, h4 {
 }
 
 body {
-  background-image: url(/public/img/Grren2.png);
-  background-size: cover;
+  background-image: url(/public/img/BG_GREY.jpg);
+  background-size: center;
   background-position: center;
 	repeat: no-repeat;
   color: #fff;
@@ -115,6 +115,7 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
   margin-left: 0;
   width: 100%;
   height: auto;
+  display: block;
 }
 .logo {
   background-image: url(/public/img/logo.png);
@@ -141,13 +142,18 @@ ul.pager {
 }
 
 img.headerLinks.img-responsive {
-  max-width: 175px;
+  position: absolute;
+  max-width: 100px;
   height: auto;
-  /* display: inline-block; */
-  /* margin: 70px; */
+  margin-left: -150px;
+  margin-right: 70px;
 }
+
 h1.title.Futura-Lig {
   font-weight: bolder;
+}
+
+ul.nav.nav-pillsnavbar-nav.navbar-right {
 }
                                 /* NAVBAR MENU*/
                                 /***************/
@@ -354,7 +360,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   font-family: Futura-Lig;
   font-size: 18px;
 }
-.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .temperate.link, .customize.link, .chamberOptions {
+.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .temperate.link, .customize.link {
   font-family: Futura-Lig;
   background-repeat:no-repeat;
   background-size: 100% 100%;
@@ -364,6 +370,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   padding-bottom: 20px;
   margin-top: 10px;
   font-size: 18px;
+  margin-left: 10%;
 }
 
 div.selectedPlant {
@@ -471,8 +478,30 @@ div.form-group {
   align-content: center;
 }
 
-.chamberOptions {
+.chamberOptions, .existing-grow.chambers {
 	background-image: url(/public/img/oasis_mini_icon_raw.png);
+  background-repeat:no-repeat;
+  background-size: 100% 100%;
+  width: 55%;
+  height: 40%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 10px;
+}
+
+/*Chamber*/
+div.1.link.radio {
+  position: absolute;
+  margin-left: 120px;
+}
+div.2.link.radio {
+  position: absolute;
+  margin-top: -25px;
+  margin-left: 120px;
+}
+
+div.3.link.radio {
+  position: absolute;
 }
                       /*Forms General Settings */
                       /**************************/
@@ -491,4 +520,21 @@ input[type=radio] {
 .slider {
 	width: 500px;
   margin-left: 20px;
+}
+
+                      /* Existing Grow */
+                      /******************/
+.existing-grow.chambers {
+  width: 50%;
+  height: 50%;
+  vertical-align: middle;
+  margin-left: 20%;
+
+}
+span.help-block {
+  margin-bottom: 50px;
+}
+
+div.Basil.link.radio label {
+
 }

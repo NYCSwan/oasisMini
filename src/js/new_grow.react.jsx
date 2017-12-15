@@ -4,18 +4,18 @@ import { form } from 'react-bootstrap';
 import upperFirst from 'lodash/upperFirst';
 import pickBy from 'lodash/pickBy';
 import findIndex from 'lodash/findIndex';
-import slice from 'lodash/slice';
+import findKey from 'lodash/findKey';
 
 import SiteHeader from './Header.react';
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import FormGrouping from './form_group.react';
 import PresetSensors from './preset_sensors.react';
+import Directions from './directions.react';
 
 class NewGrow extends Component {
   static propTypes = {
     presets: PropTypes.arrayOf(PropTypes.object).isRequired,
-    // chambers: PropTypes.arrayOf(PropTypes.object).isRequired,
     climates: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
@@ -32,16 +32,17 @@ class NewGrow extends Component {
       'customize'
     ],
     chamberOptions: [
-      'chamber 1',
-      'chamber 2',
-      'chamber 3'
+      '1',
+      '2',
+      '3'
     ],
+    isBalanced: false,
     selectedPlant:'',
     selectedPresetId:'',
     selectedChamber:'',
     isCalculated:false,
     settings: [],
-
+    directions: []
   }
 
   componentDidMount() {
@@ -61,8 +62,9 @@ class NewGrow extends Component {
   handleFormCalcsByPlant = () => {
     this.handlePresetSelection();
     if (this.state.isCalculated === false) {
-      this.updateSettings()
-      this.setState({ isCalculated: true })
+      this.updateSettings();
+      this.updateDirections();
+      this.setState({ isCalculated: true });
     }
   }
 
@@ -93,11 +95,36 @@ class NewGrow extends Component {
 
   updateSettings = () => {
     // update state.settings with plantTypes info
-    const { presets } = this.props;
+    const { presets, climates } = this.props;
+    const chamber = this.state.selectedChamber;
     const currentPlantState = upperFirst(this.state.selectedPlant);
     const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
-    const currentSettings = slice(currentPlantType, 4);
+    const key = findKey(currentPlantType);
+    const climateName = find(climates, climate => { climate.id === currentPlantType[key].climate_id})
+    const currentSettings = [];
+
+    currentSettings.push(currentPlantType[key].pH);
+    currentSettings.push(currentPlantType[key].temperature);
+    currentSettings.push(currentPlantType[key].name);
+    currentSettings.push(climateName);
+    currentSettings.push(chamber);
     this.setState({ settings: currentSettings });
+  }
+
+  updateDirections = () => {
+    const { presets } = this.props;
+    const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
+    const tempDirections = ["This may take about 5 minutes..."];
+    const key = findKey(currentPlantType);
+
+    tempDirections.push(currentPlantType[key].grow_directions);
+    this.setState({ directions: tempDirections });
+  }
+
+  updatePhBalance = (e) => {
+    setTimeout(2000);
+    console.log(e);
+    this.setState({ isBalanced: true });
   }
 
   handleChamberRadioClick = (e) => {
@@ -105,15 +132,16 @@ class NewGrow extends Component {
     this.setState({ selectedChamber: e.target.labels[0].innerText });
   }
 
-  updateSlider = (phValue) => {
-    console.log(`phValue ${phValue}`);
-    this.setState({
-      phValue
-    })
-  }
+  // updateSlider = (phValue) => {
+  //   console.log(`phValue ${phValue}`);
+  //   this.setState({
+  //     phValue
+  //   })
+  // }
 
   render() {
     console.log('render new grow');
+
     return (
       <div className="newGrow container">
         <SiteHeader title="New Grow" />
@@ -165,6 +193,16 @@ class NewGrow extends Component {
             ''
           }
         </form>
+        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '' && this.state.settings.length > 0)
+        ?
+        <Directions
+          settings={this.state.settings}
+          plant={this.state.selectedPlant}
+          handleClick={this.updatePhBalance}
+          />
+        :
+        ''
+        }
         <PagerBack />
         <PagerFwd />
       </div>

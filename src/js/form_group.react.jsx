@@ -16,7 +16,7 @@ class FormGrouping extends Component {
       this.handleClick();
     }
   }
-  
+
   handleClick = (e) => {
     console.log('handle click form group');
     this.props.onClick(e);

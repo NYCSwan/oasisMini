@@ -10097,7 +10097,7 @@
     },
     {
       "id": "3",
-      "filled": "na"
+      "filled": false
     }
   ],
   "sensors": [
