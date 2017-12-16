@@ -538,3 +538,9 @@ span.help-block {
 div.Basil.link.radio label {
 
 }
+
+div.list-group {
+  width: 45%;
+  display: inline-block;
+  position: relative;
+}

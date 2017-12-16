@@ -39,8 +39,8 @@
     {
       "id": "3",
       "name": "Lettuce",
-      "climate_id": "2",
       "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "climate_id": "2",
       "pH": "5.7",
       "PPM": "355",
       "temperature": "77",

@@ -40,8 +40,9 @@ class NewGrow extends Component {
     selectedPlant:'',
     selectedPresetId:'',
     selectedChamber:'',
-    isCalculated:false,
+    // isCalculated:false,
     settings: [],
+    phValue:0,
     directions: []
   }
 
@@ -49,28 +50,26 @@ class NewGrow extends Component {
     console.log('component did mount new grow');
   }
 
-  shouldComponentUpdate (newProps, newState) {
+  shouldComponentUpdate (newState) {
     console.log('shouldComponentUpdate new grow');
-    return this.state.selectedChamber !== newState.selectedChamber || this.state.selectedPlant !== newState.selectedPlant || this.state.settings !== newState.settings || this.state.selectedPreset !== newState.selectedPreset
+    return this.state.selectedChamber !== newState.selectedChamber || this.state.settings !== newState.settings || this.state.selectedPresetId !== newState.selectedPresetId || this.state.selectedPlant !== newState.selectedPlant || this.state.directions !== newState.directions
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate new grow');
-      this.handleFormCalcsByPlant();
   }
 
   handleFormCalcsByPlant = () => {
-    this.handlePresetSelection();
-    if (this.state.isCalculated === false) {
+    if ( this.state.selectedChamber !== '') {
       this.updateSettings();
       this.updateDirections();
-      this.setState({ isCalculated: true });
     }
+      // this.setState({ isCalculated: true });
   }
 
   handlePlantRadioClick = (e) => {
     console.log(`handlePlantRadioClick: ${e.target.labels[0].innerText}`);
-    this.setState({ selectedPlant: e.target.labels[0].innerText, isCalculated:false })
+    this.setState({ selectedPlant: e.target.labels[0].innerText })
     this.handlePresetSelection(e);
   }
 
@@ -83,61 +82,72 @@ class NewGrow extends Component {
       const idx = findIndex(presets, (plant) => plant.name === tempPlant);
       const currentPlantType = pickBy(presets, (plant) => plant.name === tempPlant );
       this.setState({ selectedPresetId: currentPlantType[idx].climate_id}, () => { console.log(this.state.selectedPresetId) });
-    } else {
+    }  else if (this.state.selectedPresetId === '') {
       const tempPlant = this.state.selectedPlant;
       const idx = findIndex(presets, (plant) => plant.name === tempPlant);
       const currentPlantType = pickBy(presets, (plant) => plant.name === tempPlant );
       console.log(`else setstate: ${currentPlantType[idx].climate_id}`);
 
       this.setState({ selectedPresetId: currentPlantType[idx].climate_id});
+    } else {
+      console.log('what the hell')
     }
   }
 
   updateSettings = () => {
+    console.log('update settings new grow');
     // update state.settings with plantTypes info
     const { presets, climates } = this.props;
+
     const chamber = this.state.selectedChamber;
     const currentPlantState = upperFirst(this.state.selectedPlant);
+    const currentPresetId = this.state.selectedPresetId;
     const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
-    const key = findKey(currentPlantType);
-    const climateName = find(climates, climate => { climate.id === currentPlantType[key].climate_id})
+    const currentClimate = pickBy(climates, (climate) => climate.id === currentPresetId )
+    const key = findKey(currentClimate);
+    const climateName = currentClimate[key].type;
     const currentSettings = [];
+    const plantKey = findKey(currentPlantType);
 
-    currentSettings.push(currentPlantType[key].pH);
-    currentSettings.push(currentPlantType[key].temperature);
-    currentSettings.push(currentPlantType[key].name);
-    currentSettings.push(climateName);
-    currentSettings.push(chamber);
+    currentSettings.push(currentPlantType[plantKey].name);
+    currentSettings.push(`${upperFirst(climateName)}, ${currentPlantType[plantKey].temperature}`);
+    currentSettings.push(`pH ${currentPlantType[plantKey].pH}`);
+    currentSettings.push(`Chamber ${chamber}`);
     this.setState({ settings: currentSettings });
   }
 
   updateDirections = () => {
+    console.log('update directions new grow');
     const { presets } = this.props;
+    const currentPlantState = upperFirst(this.state.selectedPlant);
     const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
-    const tempDirections = ["This may take about 5 minutes..."];
+    const tempDirections = [];
     const key = findKey(currentPlantType);
-
     tempDirections.push(currentPlantType[key].grow_directions);
+    tempDirections.push("This may take about 5 minutes...");
     this.setState({ directions: tempDirections });
   }
 
   updatePhBalance = (e) => {
+    console.log('timeout 0');
     setTimeout(2000);
+    console.log('timeout 2000');
     console.log(e);
     this.setState({ isBalanced: true });
   }
 
   handleChamberRadioClick = (e) => {
-    console.log(`handleChamberRadio: ${e.target.labels[0].innerText}`, this);
-    this.setState({ selectedChamber: e.target.labels[0].innerText });
+    console.log(`handleChamberRadio: ${e.target.labels[0].innerText}`);
+    this.setState({
+      selectedChamber: e.target.labels[0].innerText }, () => { this.handleFormCalcsByPlant();
+      console.log('handel form shoudl have chamber state')  });
   }
 
-  // updateSlider = (phValue) => {
-  //   console.log(`phValue ${phValue}`);
-  //   this.setState({
-  //     phValue
-  //   })
-  // }
+  updateSliderVal = (phValue) => {
+    console.log(`phValue ${phValue}`);
+    debugger;
+    this.setState({ phValue });
+  }
 
   render() {
     console.log('render new grow');
@@ -176,29 +186,30 @@ class NewGrow extends Component {
               presets={this.props.presets}
               selectedPlant={this.state.selectedPlant}
               selectedPreset={this.state.selectedPreset}
-              updateSlider={this.updateSlider}
+              updateSlider={this.updateSliderVal}
             />
             :
             ''
           }
           { (this.state.selectedChamber === '' && this.state.selectedPlant !== '')
             ?
-          <div className="chamberOptions">
-            <FormGrouping
-              id={2}
-              options={this.state.chamberOptions}
-              onClick={this.handleChamberRadioClick} />
-          </div>
-             :
-            ''
+            <div className="chamberOptions">
+              <FormGrouping
+                id={2}
+                options={this.state.chamberOptions}
+                onClick={this.handleChamberRadioClick} />
+            </div>
+            :
+             ''
           }
         </form>
-        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '' && this.state.settings.length > 0)
+        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '')
         ?
-        <Directions
-          settings={this.state.settings}
-          plant={this.state.selectedPlant}
-          handleClick={this.updatePhBalance}
+          <Directions
+            settings={this.state.settings}
+            directions={this.state.directions}
+            plant={this.state.selectedPlant}
+            handleClick={this.updatePhBalance}
           />
         :
         ''

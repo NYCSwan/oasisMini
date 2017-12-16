@@ -27,7 +27,7 @@ class PresetSensors extends Component {
 
   render() {
     console.log('render preset sensors');
-    const { climates, selectedPreset, updateSlider, selectedPlant, presets } = this.props;
+    const { climates, selectedPreset, selectedPlant, presets } = this.props;
     const sensor = 'pH'
     const idx = findIndex(presets, (plant) => plant.name === selectedPlant);
     const currentPlantType = pickBy(presets, (plant) => plant.name === selectedPlant );
@@ -42,7 +42,7 @@ class PresetSensors extends Component {
             selectedPlant={selectedPlant}
             plantType={currentPlantType}
             selectedPreset={currentPlantType[idx].climate_id}
-            onUserInput={updateSlider}
+            onUserInput={this.updateSlider}
             sensor={sensor}
           />
           :
@@ -50,7 +50,7 @@ class PresetSensors extends Component {
             climates={climates}
             selectedPlant={selectedPlant}
             selectedPreset={selectedPreset}
-            onUserInput={updateSlider}
+            onUserInput={this.updateSlider}
             sensor={sensor}
           />
         }
