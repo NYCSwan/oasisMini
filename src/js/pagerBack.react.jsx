@@ -1,8 +1,9 @@
 import React from 'react';
-import { Pager } from 'react-bootstrap';
+import { Pager, Glyphicon } from 'react-bootstrap';
 
 const PagerBack = () => (
-    <Pager className="glyphicon glyphicon-chevron-left">
+    <Pager >
+      <Glyphicon glyph="glyphicon glyphicon-chevron-left" />
       <Pager.Item previous href="#" />
     </Pager>
 );

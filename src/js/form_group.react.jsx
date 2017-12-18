@@ -29,7 +29,7 @@ class FormGrouping extends Component {
        return <Radio
          name={`radioGroup${this.props.id}`}
          key={value}
-         className={`${value} link`}
+         className={`link ${value}`}
          onChange={this.handleClick}
          >
          { upperFirst(value) }

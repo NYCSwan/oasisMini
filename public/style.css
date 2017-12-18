@@ -11,10 +11,10 @@ h1, h2, h3, h4 {
 }
 
 body {
-  background-image: url(/public/img/BG_GREY.jpg);
+  background-image: url(/public/img/BG_GRAY.jpg);
   background-size: center;
   background-position: center;
-	repeat: no-repeat;
+  repeat: no-repeat;
   color: #fff;
   font-family: Future-Lig;
   margin:0;
@@ -122,6 +122,7 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
   width: inherit;
   margin-left: 0;
   max-height: 75px;
+  display: inline;
 }
 div.backImage {
   display: none;
@@ -135,18 +136,15 @@ div.backImage {
 }
 
 ul.pager {
-  display: none;
+  /* display: none; */
   z-index: 200;
   position: absolute;
   bottom: 0;
 }
 
 img.headerLinks.img-responsive {
-  position: absolute;
-  max-width: 100px;
+  max-width: 80px;
   height: auto;
-  margin-left: -150px;
-  margin-right: 70px;
 }
 
 h1.title.Futura-Lig {
@@ -251,15 +249,16 @@ h1.title.Futura-Lig {
 }
 
 .brandLogo {
+  min-width:  100px;
   max-width: 175px;
-  height: auto;
+  height: 100px;
   margin-left: 0;
   padding:0;
   display: inline-block;
 }
 
 ul.pager {
-  display: none;
+  /* display: none; */
 }
 
 div.backImage {
@@ -356,51 +355,49 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
 
                                   /*New Grow*/
                                   /***********/
-.selectedPlant h3 {
-  font-family: Futura-Lig;
-  font-size: 18px;
-}
-.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .temperate.link, .customize.link {
+
+  div.selectedPlant {
+    text-align: center;
+    position: relative;
+  }
+  .selectedPlant h3 {
+    font-family: Futura-Lig;
+    font-size: 18px;
+  }
+
+  div.form-group {
+    display: flex;
+    flex-flow: row wrap;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    min-height: 300px;
+    height: auto;
+    width: 75%;
+    align-items: baseline;
+    justify-content: center;
+    align-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 5%;
+  }
+
+.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .customize {
   font-family: Futura-Lig;
   background-repeat:no-repeat;
   background-size: 100% 100%;
-  max-width: 33%;
+  max-width: 35%;
   min-width: 200px;
-  padding-top: 20px;
-  padding-bottom: 20px;
   margin-top: 10px;
   font-size: 18px;
-  margin-left: 10%;
-}
-
-div.selectedPlant {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
-
-}
-div.selectedPlant > .form-group{
-  text-align: center;
-  background-color: rgba(0,0,0,0.1);
-  border-radius: 10%;
-  padding: 5px;
-  vertical-align: center;
-  margin: 10px;
+  flex: 1 100%;
+  height: 70px;
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin-left: 20%;
-  margin-top: 20px;
-  width: 80%;
-  text-align: center;
-}
+  align-items: center;
+  justify-content: space-around;
 
-div.form-group {
-  display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-  margin-left: 20%;
-  margin-top: 20px;
-  width: 80%;
-  text-align: center;
 }
 
 .newgrow.container {
@@ -420,46 +417,42 @@ div.slider.row {
   min-height: 300px;
 }
 
-.basil.link {
+.link.basil {
   background-image: url(/public/img/basil_button.png);
 
 }
 
-.bell.Pepper.link {
+.link.bell.Pepper {
   background-image: url(/public/img/bell_pepper_button.png);
 
 }
 
-.broccoli.link {
+.link.broccoli {
   background-image: url(/public/img/broccoli_button.png);
 
 }
 
-.cilantro.link{
+.link.cilantro{
   background-image: url(/public/img/cilantro_button.png);
-
 }
 
-.kale.link{
+.link.kale{
   background-image: url(/public/img/kale_button.png);
-
 }
 
-.lettuce.link{
+.link.lettuce{
   background-image: url(/public/img/lettuce_button.png);
-
 }
 
-.tomato.link{
+.link.tomato{
   background-image: url(/public/img/tomato_button.png);
-
 }
 
-.customize.link {
+.link.customize {
   background-image: url(/public/img/customize_button.jpg);
 }
 
-.green.Beans.link {
+.link.green.Beans {
   background-image: url(/public/img/green_bean_button.png)
 }
 .text.Futura-Lig.center h3{
@@ -470,41 +463,95 @@ div.slider.row {
  width: 90%;
 }
 
-div.form-group {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-}
-
-.chamberOptions, .existing-grow.chambers {
+.chamberImage, .existing-grow.chambers {
 	background-image: url(/public/img/oasis_mini_icon_raw.png);
-  background-repeat:no-repeat;
-  background-size: 100% 100%;
-  width: 55%;
-  height: 40%;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-top: 10px;
+	background-repeat:no-repeat;
+	background-size: 100% 100%;
+	width: 45%;
+	height: 70%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*Chamber*/
-div.1.link.radio {
-  position: absolute;
-  margin-left: 120px;
-}
-div.2.link.radio {
-  position: absolute;
-  margin-top: -25px;
-  margin-left: 120px;
+div.chamberImage .form-group {
+  background: none;
+  font-size: 18px;
+  position: relative;
+  font-family: Futura-Lig;
 }
 
-div.3.link.radio {
-  position: absolute;
+#chambers {
+  background-color: blue;
 }
-                      /*Forms General Settings */
-                      /**************************/
+
+h3#chamber#directions.Futura-Lig {
+  position: fixed;
+  margin-top: 100px;
+}
+
+div.link.Chamber1.radio {
+  /*position: absolute;
+  margin-left: 120px;
+  margin-top: 45px;*/
+  position: fixed;
+  margin-left: 130px;
+  margin-top: 210px;
+}
+
+div.link.Chamber2.radio {
+  /*position: absolute;
+  margin-top: -25px;
+  margin-left: 120px;*/
+  position: fixed;
+  margin-left: 130px;
+  margin-top: 80px;
+}
+
+div.link.Chamber3.radio {
+  position: fixed;
+  margin-left: -90px;
+  margin-top: 150px;
+}
+
+.directions.container {
+  margin: 10%;
+}
+
+ul {
+  width: 40%;
+  font-style: Futura-Lig;
+  font-size: 24px;
+  display: inline-block;
+}
+
+.directions.right {
+  right:0;
+  width: 45%;
+  display: inline-block;
+  /*background-color:  blue;*/
+  /*margin-top: 10px;*/
+  font-size: 18px;
+}
+
+.directions.right button {
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 20px;
+}
+
+.directions.right .row {
+  position: relative;
+  width: 100%;
+  padding-bottom: 10px;
+}
+div.Futura-Lig.col-md-6.col-xs-5 {
+  width: 100%;
+}
+                    /*Forms General Settings */
+                    /**************************/
 
 label {
   text-shadow: 0px 1px 1px #000;
@@ -535,12 +582,73 @@ span.help-block {
   margin-bottom: 50px;
 }
 
-div.Basil.link.radio label {
-
+div.link.Basil.radio label {
+  background-color: red;
 }
 
 div.list-group {
   width: 45%;
   display: inline-block;
   position: relative;
+}
+
+.check_mark {
+  width: 100%;
+  height: 100%;
+}
+
+
+                        /* Pagers */
+                        /***********/
+.pagers {
+  width: 100%;
+  display: inline;
+}
+.pagers ul.glyphicon.glyphicon-chevron-left.pager {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin-left: 3%;
+}
+
+.pagers ul.glyphicon.glyphicon-chevron-right.pager {
+  width: 90px;
+  height: 50px;
+  position: relative;
+  display: inline-block;
+}
+
+/*smaller screen responsive*/
+/****************************/
+@media only screen
+  and (min-width: 808px)
+  and (max-width: 1320px) {
+
+    div.link.Chamber1.radio {
+      position: fixed;
+      margin-left: 100px;
+      margin-top: 80px;
+      background-color: red;
+    }
+
+    div.link.Chamber2.radio {
+      position: fixed;
+      margin-left: 100px;
+      margin-top: 85px;
+      background-color: blue;
+    }
+
+    div.link.Chamber3.radio {
+      position: fixed;
+      margin-left: -80px;
+      margin-top: 20px;
+    }
+
+    .basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .link.temperate, .link.customize {
+      height: 50px;
+    }
+    .directions.right {
+      width: 50%;
+      font-size: 18px;
+    }
 }

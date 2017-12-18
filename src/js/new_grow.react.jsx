@@ -9,8 +9,8 @@ import findKey from 'lodash/findKey';
 import SiteHeader from './Header.react';
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
+import CustomizeSensors from './customize_sensors.react';
 import FormGrouping from './form_group.react';
-import PresetSensors from './preset_sensors.react';
 import Directions from './directions.react';
 
 class NewGrow extends Component {
@@ -32,15 +32,13 @@ class NewGrow extends Component {
       'customize'
     ],
     chamberOptions: [
-      '1',
-      '2',
-      '3'
+      'Chamber1',
+      'Chamber2',
+      'Chamber3'
     ],
     isBalanced: false,
     selectedPlant:'',
-    selectedPresetId:'',
     selectedChamber:'',
-    // isCalculated:false,
     settings: [],
     phValue:0,
     directions: []
@@ -64,7 +62,6 @@ class NewGrow extends Component {
       this.updateSettings();
       this.updateDirections();
     }
-      // this.setState({ isCalculated: true });
   }
 
   handlePlantRadioClick = (e) => {
@@ -130,8 +127,8 @@ class NewGrow extends Component {
 
   updatePhBalance = (e) => {
     console.log('timeout 0');
-    setTimeout(2000);
-    console.log('timeout 2000');
+    setTimeout(20000);
+    console.log('timeout 20000');
     console.log(e);
     this.setState({ isBalanced: true });
   }
@@ -174,12 +171,17 @@ class NewGrow extends Component {
 
           { (this.state.selectedPlant === 'customize' && this.state.selectedChamber === '')
             ?
-          // <CustomizeSensors />
-          <div> Customized Here </div>
+            <CustomizeSensors
+              climates={this.props.climates}
+              presets={this.props.presets}
+              selectedPlant={this.state.selectedPlant}
+              selectedPreset={this.state.selectedPreset}
+              updateSlider={this.updateSliderVal}
+            />
             :
             ''
           }
-          { (this.state.selectedPlant !== '' && this.state.selectedPlant !== 'customize' && this.state.selectedChamber === '')
+          {/* (this.state.selectedPlant !== '' && this.state.selectedPlant !== 'customize' && this.state.selectedChamber === '')
             ?
             <PresetSensors
               climates={this.props.climates}
@@ -190,14 +192,17 @@ class NewGrow extends Component {
             />
             :
             ''
-          }
+          */}
           { (this.state.selectedChamber === '' && this.state.selectedPlant !== '')
             ?
             <div className="chamberOptions">
-              <FormGrouping
-                id={2}
-                options={this.state.chamberOptions}
-                onClick={this.handleChamberRadioClick} />
+              <div className="chamberImage">
+                <FormGrouping
+                  id={2}
+                  options={this.state.chamberOptions}
+                  onClick={this.handleChamberRadioClick} />
+              </div>
+              <h3 id="chamber directions" className="Futura-Lig">Select A Chamber</h3>
             </div>
             :
              ''
@@ -210,12 +215,15 @@ class NewGrow extends Component {
             directions={this.state.directions}
             plant={this.state.selectedPlant}
             handleClick={this.updatePhBalance}
+            isBalanced={this.state.isBalanced}
           />
         :
         ''
         }
-        <PagerBack />
-        <PagerFwd />
+        <div className="pagers">
+          <PagerBack />
+          <PagerFwd />
+        </div>
       </div>
     )
   }

@@ -20,16 +20,16 @@ class SiteHeader extends Component {
         <Navbar.Header>
               <Navbar.Brand className="brandLogo" id="navbarbrand">
                 <Link to="/" href="/" className="logo img-responsive center-block" />
-                <div className='backImage'>
-                  <PagerBack />
-                </div>
+                 <div className='backImage'>
+                   <PagerBack />
+                 </div>
               </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse className="bs-navbar-collapse">
           <Nav bsStyle="pills" pullRight onSelect={this.handleSelect}>
-            <NavItem eventKey={1} href="#"><img src="../public/img/My_Account_Button.png" className="headerLinks img-responsive" alt="My Account" /></NavItem>
-            <NavItem eventKey={2} href="#"><img src="../public/img/Support_button.png" className="headerLinks img-responsive" alt="Support" /></NavItem>
+            <NavItem eventKey={1} href="#"><img src="../public/img/My_Account_Button.png" className="headerLinks img-responsive account" alt="My Account" /></NavItem>
+            <NavItem eventKey={2} href="#"><img src="../public/img/Support_button.png" className="headerLinks img-responsive support" alt="Support" /></NavItem>
           </Nav>
         </Navbar.Collapse>
         <h1 className="title Futura-Lig">{headerTitle}</h1>

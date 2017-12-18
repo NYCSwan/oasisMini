@@ -5,7 +5,7 @@ import findIndex from 'lodash/findIndex';
 
 import Slider from './slider.react';
 
-class PresetSensors extends Component {
+class CustomizeSensors extends Component {
   static propTypes = {
     climates: PropTypes.arrayOf(PropTypes.object).isRequired,
     selectedPlant: PropTypes.string.isRequired,
@@ -54,11 +54,10 @@ class PresetSensors extends Component {
             sensor={sensor}
           />
         }
-          <h3>77 *F</h3>
       </div>
 
     )
   }
 }
 
-export default PresetSensors;
+export default CustomizeSensors;
