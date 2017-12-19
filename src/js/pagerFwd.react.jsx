@@ -3,8 +3,7 @@ import { Pager, Glyphicon } from 'react-bootstrap';
 
 const PagerFwd = () => (
     <Pager>
-      <Glyphicon glyph="glyphicon glyphicon-chevron-right" />
-      <Pager.Item next href="#" />
+      <Pager.Item next href="#"><Glyphicon glyph="glyphicon glyphicon-chevron-right" /></Pager.Item>
     </Pager>
 );
 

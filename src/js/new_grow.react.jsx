@@ -40,7 +40,7 @@ class NewGrow extends Component {
     selectedPlant:'',
     selectedChamber:'',
     settings: [],
-    phValue:0,
+    // phValue:0,
     directions: []
   }
 
@@ -140,11 +140,11 @@ class NewGrow extends Component {
       console.log('handel form shoudl have chamber state')  });
   }
 
-  updateSliderVal = (phValue) => {
-    console.log(`phValue ${phValue}`);
-    debugger;
-    this.setState({ phValue });
-  }
+  // updateSliderVal = (phValue) => {
+  //   console.log(`phValue ${phValue}`);
+  //   debugger;
+  //   this.setState({ phValue });
+  // }
 
   render() {
     console.log('render new grow');
@@ -202,7 +202,7 @@ class NewGrow extends Component {
                   options={this.state.chamberOptions}
                   onClick={this.handleChamberRadioClick} />
               </div>
-              <h3 id="chamber directions" className="Futura-Lig">Select A Chamber</h3>
+              <h3 id="chamber" className="directions Futura-Lig">Select A Chamber</h3>
             </div>
             :
              ''

@@ -31,8 +31,10 @@ class Directions extends Component {
 
     return (
       <div className="directions container">
-        <ListGroupContainer
-          items={this.props.settings} />
+        <div className="directions left">
+          <ListGroupContainer
+            items={this.props.settings} />
+        </div>
         <div className="directions right" pullRight>
           <Grid>
           { this.props.directions.map(direction => { // eslint-disable-line
