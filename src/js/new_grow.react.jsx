@@ -140,12 +140,6 @@ class NewGrow extends Component {
       console.log('handel form shoudl have chamber state')  });
   }
 
-  // updateSliderVal = (phValue) => {
-  //   console.log(`phValue ${phValue}`);
-  //   debugger;
-  //   this.setState({ phValue });
-  // }
-
   render() {
     console.log('render new grow');
 
@@ -166,7 +160,7 @@ class NewGrow extends Component {
                 />
               </div>
             :
-            ''
+            null
           }
 
           { (this.state.selectedPlant === 'customize' && this.state.selectedChamber === '')
@@ -179,20 +173,8 @@ class NewGrow extends Component {
               updateSlider={this.updateSliderVal}
             />
             :
-            ''
+            null
           }
-          {/* (this.state.selectedPlant !== '' && this.state.selectedPlant !== 'customize' && this.state.selectedChamber === '')
-            ?
-            <PresetSensors
-              climates={this.props.climates}
-              presets={this.props.presets}
-              selectedPlant={this.state.selectedPlant}
-              selectedPreset={this.state.selectedPreset}
-              updateSlider={this.updateSliderVal}
-            />
-            :
-            ''
-          */}
           { (this.state.selectedChamber === '' && this.state.selectedPlant !== '')
             ?
             <div className="chamberOptions">
@@ -205,7 +187,7 @@ class NewGrow extends Component {
               <h3 id="chamber" className="directions Futura-Lig">Select A Chamber</h3>
             </div>
             :
-             ''
+             null
           }
         </form>
         { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '')
@@ -218,7 +200,7 @@ class NewGrow extends Component {
             isBalanced={this.state.isBalanced}
           />
         :
-        ''
+        null
         }
         <div className="pagers">
           <PagerBack />

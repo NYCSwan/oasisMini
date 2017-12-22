@@ -29,7 +29,9 @@ class ExistingGrow extends Component {
     directions: [],
     showBalance: false,
     showPause: false,
-    showInitialPopup: false
+    showInitialPopup: false,
+    showChambers: true,
+    showButton: false
   }
 
   componentDidMount() {
@@ -37,80 +39,61 @@ class ExistingGrow extends Component {
     // this.setChambers()
   }
 
-  shouldComponentUpdate (newProps, newState) {
+  shouldComponentUpdate (newState) {
     console.log('shouldComponentUpdate existing grow');
-    return this.state.filledChambers !== newState.filledChambers || this.state.selectedClimateId !== newState.selectedClimateId || this.state.showPause !== newState.showPause || this.state.showBalance !== newState.showBalance || this.state.showInitialPopup !== newState.showInitialPopup
+    return this.state.filledChambers !== newState.filledChambers || this.state.selectedClimateId !== newState.selectedClimateId || this.state.showPause !== newState.showPause || this.state.showBalance !== newState.showBalance || this.state.showInitialPopup !== newState.showInitialPopup || this.state.showChambers !== newState.showChambers
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate existing grow');
-    // this.updateFormWithChamberData();
   }
 
   updateFormWithChamberData = () => {
-    if (this.state.selectedChamber !== "") {
+    console.log('update form with chamber data');
+    if (this.state.selectedChamber !== "" && this.state.selectedPlant === "") {
+      console.log('update plant');
       this.updatePlantSelection();
-    }
-    if (this.state.selectedPlant !== "") {
+    // }
+    // if (this.state.selectedPlant !== "") {
+    //
+    //   debugger
       this.updateSettings();
       this.updateDirections();
     }
   }
 
   updatePlantSelection = () => {
-    console.log('handlePlant selection');
+    console.log('update Plant selection');
     const tempFilledChambers = this.state.filledChambers;
     const currentChamber = this.state.selectedChamber;
     const selectedPlantData = pickBy(tempFilledChambers, (plant) => plant.chamber_id === currentChamber.toString() );
     const key = findKey(selectedPlantData);
+    debugger
     this.setState({
       selectedPlant: selectedPlantData[key].name,
       selectedClimateId: selectedPlantData[key].climate_id
-    })
-  }
-
-  handlePopupToggle = () => {
-    console.log('handle popup Click existingGrow');
-    this.setState({ showInitialPopup: true }, () => console.log(this.state.showInitialPopup));
+    }, () => { this.updateSettings();
+    this.updateDirections(); })
   }
 
   handleBalanceClick = (e) => {
     console.log('handle balance Click existingGrow');
     console.log(e);
-    this.setState({ showBalance: true });
+    this.setState({
+      showBalance: true,
+      showInitialPopup: false,
+      showButton: false,
+      showChambers: false });
   }
 
   handlePauseClick = () => {
     console.log('handle pause Click existingGrow');
-    this.setState({ showPause: !this.state.showPause });
+    this.setState({
+      showPause: true,
+      showButton: false,
+      showInitialPopup: false,
+      showChambers: false });
   }
-
-  // updateClimateId = () => {
-  //   console.log('update climate id existing grow');
-  //   // const tempFilledChambers
-  // }
-
-  // updateClimateSelection = () => {
-  // // //
-  //   console.log('handleClimateSelection existing grow');
-  //   const { filledChambers } = this.props;
-  //
-  //   const climate = pickBy(filledChambers, (chamber) => chamber.name)
-  //   const key = (climate);
-    // if (value) {
-    //   const tempPlant = value.target.labels[0].innerText;
-    //   const idx = findIndex(plantTypes, (plant) => plant.name === tempPlant);
-    //   const currentPlantType = pickBy(plantTypes, (plant) => plant.name === tempPlant );
-    //   this.setState({ selectedClimateId: currentPlantType[idx].climate_id}, () => { console.log(this.state.selectedClimateId) });
-    // } else {
-    //   const tempPlant = this.state.selectedPlant;
-    //   const idx = findIndex(plantTypes, (plant) => plant.name === tempPlant);
-    //   const currentPlantType = pickBy(plantTypes, (plant) => plant.name === tempPlant );
-    //   console.log(`else setstate: ${currentPlantType[idx].climate_id}`);
-    //
-    //   this.setState({ selectedClimateId: currentPlantType[idx].climate_id});
-    // }
-  // }
 
   updateSettings = () => {
     console.log('update settings existing grow');
@@ -142,15 +125,19 @@ class ExistingGrow extends Component {
     const currentPlantType = pickBy(plantTypes, (plant) => plant.name === currentPlantState );
     const tempDirections = [];
     const key = findKey(currentPlantType);
+    debugger
     tempDirections.push(currentPlantType[key].grow_directions);
     tempDirections.push("This may take about 5 minutes...");
+    tempDirections.push(currentPlantType[key].planting_directions);
     this.setState({ directions: tempDirections });
   }
 
   handleChamberRadioClick = (e) => {
     console.log(`handleChamberRadio existingGrow: ${e.nativeEvent.which}`);
-    this.setState({ selectedChamber: e.nativeEvent.which }, () => {
-      this.handlePopupToggle();
+    this.setState({
+      selectedChamber: e.nativeEvent.which,
+      showButton: true
+     }, () => {
       this.updateFormWithChamberData();
     });
   }
@@ -162,43 +149,53 @@ class ExistingGrow extends Component {
       <div className="existingGrow container">
         <SiteHeader title="Existing Gardens" />
 
-        <form className='existing_grow_form'>
         {/* chamber selection */}
+        { (this.state.showChambers === true)
+          ?
           <div className="existing-grow chambers">
-            <FormGroup
-              label="garden">
-            {this.props.currentGrows.map(plant => { // eslint-disable-line
-              return <Radio
-                name={`radioGroup${plant.id}`}
-                className={`Chamber${plant.chamber_id}`}
-                key={plant.id}
-                onChange={this.handleChamberRadioClick}>
-                {`Chamber${plant.chamber_id}`}
-              </Radio>
-            })}
-            </FormGroup>
+          <form className='existing_grow_form'>
+              <FormGroup
+                label="garden">
+              {this.props.currentGrows.map(plant => { // eslint-disable-line
+                return <Radio
+                  name={`radioGroup${plant.id}`}
+                  className={`Chamber${plant.chamber_id}`}
+                  key={plant.id}
+                  onChange={this.handleChamberRadioClick}>
+                  {`Chamber${plant.chamber_id}`}
+                </Radio>
+              })}
+              </FormGroup>
+              </form>
               <h3 id="chamber" className="chamber Futura-Lig">Select A Chamber</h3>
-          </div>
-        </form>
-        <PopUp
-          modalTitle="Select Your Next Step"
-          modalBody={(
-            <div><h4>Pause</h4>
-            <p>Pause your grow system to clean or change the water.</p>
-            <Button
-              className="pause" onClick={this.handlePauseClick}>Pause</Button>
-            <h4>pH Balance</h4>
-            <p>Balance the pH in your system.</p>
-            <Button
-              className="balanced"
-              onClick={this.handleBalanceClick}>Balance</Button>
             </div>
-          )}
-          buttonText1="Submit Chamber"
-          buttonText2="Close"
-          displayModal={this.state.showInitialPopup}
-          // handleClicke={this.handlePopupClick}
-        />
+        :
+          null
+        }
+        { (this.state.showButton === true)
+          ?
+          <PopUp
+            modalTitle="Select Your Next Step"
+            modalBody={(
+              <div><h4>Pause</h4>
+              <p>Pause your grow system to clean or change the water.</p>
+              <Button
+                className="pause" onClick={this.handlePauseClick}>Pause</Button>
+              <h4>pH Balance</h4>
+              <p>Balance the pH in your system.</p>
+              <Button
+                className="balanced"
+                onClick={this.handleBalanceClick}>Balance</Button>
+              </div>
+            )}
+            buttonText1="187 Submit Chamber"
+            buttonText2="Close"
+            displayModal={this.state.showInitialPopup}
+            // handleClicke={this.handlePopupClick}
+          />
+        :
+          null
+        }
         { (this.state.showPause === true)
           ?
           <Pause
@@ -210,13 +207,15 @@ class ExistingGrow extends Component {
           ?
           <Directions
             settings={this.state.settings}
-            plant={this.state.selectedPlant}
             directions={this.state.directions}
+            isBalanced={this.state.showBalance}
+            plant={this.state.selectedPlant}
             handleClick={this.updatePhBalance}
           />
           :
           null
         }
+
         <PagerBack />
         <PagerFwd />
       </div>

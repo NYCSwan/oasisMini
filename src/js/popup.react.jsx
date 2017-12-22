@@ -21,20 +21,21 @@ class PopUp extends Component {
     return this.state.showModal !== newState.showModal || this.props.displayModal !== newProps.displayModal
   }
 
-  componentDidUpdate(nextState) {
-    // debugger
+  componentDidUpdate() {
     console.log('componentDidUpdate popup');
-    this.updateModalDisplay(nextState);
+    // this.updateModalDisplay(nextProps, nextState);
   }
 
-  updateModalDisplay = (nextState) => {
+  updateModalDisplay = (nextProps, nextState) => {
     console.log('update modal display');
-    this.setState({ showModal: nextState.displayModal })
+    console.log(nextProps, nextState);
+    // debugger
+    this.setState({ showModal: !this.state.showModal })
   }
 
   close = () => {
     console.log('close popup');
-    debugger
+    // debugger
     this.setState({ showModal: false });
   }
 

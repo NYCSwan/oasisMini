@@ -88,7 +88,7 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
 }
 
 .homepage.link.Futura-Lig, .temperate.link, .custom.link, .tropical.link {
-  background-color: rgba(115,115,115,0.3);
+  background-color: rgba(115,115,115,0.4);
   min-width: 150px;
   height: auto;
   margin: 20px;
@@ -110,7 +110,24 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
   border-left: solid 1px rgba(115,115,115,0.5);
 }
 
+div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
+  width: 100%;
+  padding:0;
 
+}
+button.chamber-1.btn.btn-default, button.chamber-2.btn.btn-default, button.chamber-3.btn.btn-default {
+  padding: 0;
+  width: 300px;
+  align-self: baseline;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+button.chamber-2.btn.btn-default {
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
                                   /* Header */
                                   /***********/
 .brandLogo {
@@ -119,7 +136,7 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
   height: auto;
   display: block;
 }
-.logo {
+.logo.img-responsive.center-block {
   background-image: url(/public/img/logo.png);
   width: inherit;
   margin-left: 0;
@@ -347,14 +364,27 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
                                   /*Homepage*/
                                   /************/
 
-.homepage.links.container {
+.homepage.links.container{
   vertical-align: center;
   display: flex;
   align-items: center;
+  flex-flow: row;
   margin-top: 20px;
+  min-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-
+.monitorOrGrow.container, .grow.links.container {
+  vertical-align: center;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  margin-top: 20px;
+  min-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
                                   /*New Grow*/
                                   /***********/
 
@@ -367,7 +397,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
     font-size: 18px;
   }
 
-  div.form-group {
+  div.selectedPlant .form-group {
     display: flex;
     flex-flow: row wrap;
     margin-right: auto;
@@ -380,6 +410,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
     justify-content: center;
     align-content: center;
     border-radius: 5%;
+    background-color: rgba(0,0,0,0.4);
   }
 
 .basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .customize {
@@ -409,13 +440,6 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   margin-top: 20px;
   width: 80%;
   text-align: center;
-}
-
-div.slider.row {
-  text-align: center;
-  background-color: rgba(0,0,0, 0.3);
-  border-radius: 10%;
-  min-height: 300px;
 }
 
 .link.basil {
@@ -460,21 +484,28 @@ div.slider.row {
   font-size: 20px;
 }
 
-.new_grow_form {
- width: 90%;
+/*.new_grow_form {
+width: 90%;
+min-height: 800px;
+}*/
+
+div.chamberOptions {
+  min-height: 800px;
+  min-width: 500px;
 }
 
-.chamberImage, .existing-grow.chambers {
+
+.chamberImage, .existing_grow_form {
 	background-image: url(/public/img/oasis_mini_icon_raw.png);
 	background-repeat:no-repeat;
 	background-size: 100% 100%;
 	width: 45%;
-	height: 70%;
+	min-height: 400px;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 /*Chamber*/
@@ -491,25 +522,27 @@ div.chamberImage .form-group {
 
 h3#chamber.directions.Futura-Lig {
   width: 180px;
-  margin-top: 50px;
+  margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
 }
 
 div.link.Chamber1.radio {
-  position: fixed;
-  margin-left: 145px;
-  margin-top: 245px;
+  position: absolute;
+  /*margin-left: 145px;*/
+  /*margin-top: 245px;*/
+  margin-left: 355px;
+  margin-top: 295px;
 }
 
 div.link.Chamber2.radio {
-  position: fixed;
+  position: absolute;
   margin-left: 130px;
   margin-top: 80px;
 }
 
 div.link.Chamber3.radio {
-  position: fixed;
+  position: absolute;
   margin-left: -90px;
   margin-top: 150px;
 }
@@ -517,6 +550,7 @@ div.link.Chamber3.radio {
 .directions.container {
   margin: 10%;
 }
+
 .directions.left {
   width: 40%;
   font-size: 24px;
@@ -559,12 +593,6 @@ input[type=radio] {
   display: none;
 }
 
-											/* Slider */
-											/**********/
-.slider {
-	width: 500px;
-  margin-left: 20px;
-}
 
                       /* Existing Grow */
                       /******************/
@@ -572,24 +600,30 @@ input[type=radio] {
   background: none;
   position: relative;
   font-size: 18px;
+  width: 400px;
+  height: 350px;
+}
+
+h3#chamber.chamber.Futura-Lig {
+  margin-top: 50px;
 }
 
 div.Chamber1.radio {
-  position: fixed;
-  margin-left: 145px;
-  margin-top: 240px;
+  position: absolute;
+  margin-left: 355px;
+  margin-top: 295px;
 }
 
 div.Chamber2.radio {
-  position: fixed;
-  margin-left: 130px;
-  margin-top: 80px;
+  position: absolute;
+  margin-left: 180px;
+  margin-top: 110px;
 }
 
 div.Chamber3.radio {
-  position: fixed;
-  margin-left: -90px;
-  margin-top: 170px;
+  position: absolute;
+  margin-left: 120px;
+  margin-top: 225px;
 }
 
 .chamber.Futura-Lig {
@@ -615,7 +649,7 @@ div.list-group {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  height: auto;
+  height: 400px;
   line-height: normal;
 }
 .modal-container button {
@@ -632,6 +666,14 @@ button.btn.btn-default.pause {
 
 button.btn.btn-default.balanced {
   background-color: grey;
+}
+
+button.close.Resume.btn.btn-default {
+  text-align: center;
+  color: #333;
+  height: 60px;
+  background-color: gray;
+  width: 150px;
 }
                         /* Pagers */
                         /***********/
@@ -659,21 +701,21 @@ button.btn.btn-default.balanced {
 /****************************/
 /*@media only screen and (min-width: 808px) and (max-width: 1320px) {
     div.link.Chamber1.radio {
-      position: fixed;
+      position: absolute;
       margin-left: 100px;
       margin-top: 80px;
       background-color: red;
     }
 
     div.link.Chamber2.radio {
-      position: fixed;
+      position: absolute;
       margin-left: 100px;
       margin-top: 85px;
       background-color: blue;
     }
 
     div.link.Chamber3.radio {
-      position: fixed;
+      position: absolute;
       margin-left: -80px;
       margin-top: 20px;
     }

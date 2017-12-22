@@ -4,7 +4,7 @@ import PopUp from './popup.react';
 
 const Pause = (props) => (
   <PopUp
-    showModal={props.showPause}
+    displayModal={props.showPause}
     modalTitle="Your System Is Paused."
     modalBody={
       <div>
