@@ -1,10 +1,14 @@
 import React from 'react';
 import { Pager, Glyphicon } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const PagerBack = () => (
-    <Pager>
+const PagerBack = (props) => (
+    <Pager
+      className={props.className}>
       <Pager.Item previous href="#"><Glyphicon glyph="glyphicon glyphicon-chevron-left" /></Pager.Item>
     </Pager>
 );
-
+PagerBack.propTypes = {
+  className: PropTypes.string.isRequired
+}
 export default PagerBack;

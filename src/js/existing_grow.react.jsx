@@ -11,6 +11,7 @@ import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import Pause from './pause.react';
 import PopUp from './popup.react';
+import PlantingDirections from './planting_directions.react';
 
 class ExistingGrow extends Component {
   static propTypes = {
@@ -31,7 +32,9 @@ class ExistingGrow extends Component {
     showPause: false,
     showInitialPopup: false,
     showChambers: true,
-    showButton: false
+    showButton: false,
+    isBalanced: false,
+    showGrowDirections: false
   }
 
   componentDidMount() {
@@ -41,11 +44,23 @@ class ExistingGrow extends Component {
 
   shouldComponentUpdate (newState) {
     console.log('shouldComponentUpdate existing grow');
-    return this.state.filledChambers !== newState.filledChambers || this.state.selectedClimateId !== newState.selectedClimateId || this.state.showPause !== newState.showPause || this.state.showBalance !== newState.showBalance || this.state.showInitialPopup !== newState.showInitialPopup || this.state.showChambers !== newState.showChambers
+    return this.state.filledChambers !== newState.filledChambers || this.state.selectedClimateId !== newState.selectedClimateId || this.state.showPause !== newState.showPause || this.state.showBalance !== newState.showBalance || this.state.showInitialPopup !== newState.showInitialPopup || this.state.showChambers !== newState.showChambers || this.state.showGrowDirections !== newState.showGrowDirections
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate existing grow');
+    if (this.state.selectedPlant !== "" && this.state.directions.length === 0) {
+      this.updateSettings();
+      this.updateDirections();
+    }
+  }
+
+  updatePhBalance = (e) => {
+    console.log('timeout 0');
+    setTimeout(200000);
+    console.log('timeout 20000');
+    console.log(e);
+    this.setState({ isBalanced: true });
   }
 
   updateFormWithChamberData = () => {
@@ -53,10 +68,8 @@ class ExistingGrow extends Component {
     if (this.state.selectedChamber !== "" && this.state.selectedPlant === "") {
       console.log('update plant');
       this.updatePlantSelection();
-    // }
-    // if (this.state.selectedPlant !== "") {
-    //
-    //   debugger
+    }
+    if (this.state.selectedPlant !== "") {
       this.updateSettings();
       this.updateDirections();
     }
@@ -68,12 +81,10 @@ class ExistingGrow extends Component {
     const currentChamber = this.state.selectedChamber;
     const selectedPlantData = pickBy(tempFilledChambers, (plant) => plant.chamber_id === currentChamber.toString() );
     const key = findKey(selectedPlantData);
-    debugger
     this.setState({
       selectedPlant: selectedPlantData[key].name,
       selectedClimateId: selectedPlantData[key].climate_id
-    }, () => { this.updateSettings();
-    this.updateDirections(); })
+    })
   }
 
   handleBalanceClick = (e) => {
@@ -125,7 +136,7 @@ class ExistingGrow extends Component {
     const currentPlantType = pickBy(plantTypes, (plant) => plant.name === currentPlantState );
     const tempDirections = [];
     const key = findKey(currentPlantType);
-    debugger
+
     tempDirections.push(currentPlantType[key].grow_directions);
     tempDirections.push("This may take about 5 minutes...");
     tempDirections.push(currentPlantType[key].planting_directions);
@@ -140,6 +151,15 @@ class ExistingGrow extends Component {
      }, () => {
       this.updateFormWithChamberData();
     });
+  }
+
+  showGrowDirections = () => {
+    console.log('show grow directions existing grow');
+    this.setState({ showGrowDirections: true, showBalance: false });
+  }
+
+  submitGrowChange = () => {
+    console.log('submit grow changes');
   }
 
   render() {
@@ -208,16 +228,35 @@ class ExistingGrow extends Component {
           <Directions
             settings={this.state.settings}
             directions={this.state.directions}
-            isBalanced={this.state.showBalance}
+            isBalanced={this.state.isBalanced}
             plant={this.state.selectedPlant}
             handleClick={this.updatePhBalance}
           />
           :
           null
         }
-
-        <PagerBack />
-        <PagerFwd />
+        { (this.state.isBalanced === true)
+          ?
+          <Button
+            onClick={this.showGrowDirections}>Next</Button>
+          :
+          null
+        }
+        { (this.state.showGrowDirections === true)
+          ?
+          <PlantingDirections
+            directions={this.state.directions}
+            isBalanced={this.state.isBalanced}
+            handleClick={this.submitGrowChange}
+            settings={this.state.settings}
+          />
+          :
+          null
+        }
+        <PagerBack
+          className="grow" />
+        <PagerFwd
+          className="grow" />
       </div>
     )
   }

@@ -154,13 +154,6 @@ div.backImage {
   height: auto;
 }
 
-ul.pager {
-  /* display: none; */
-  z-index: 200;
-  position: absolute;
-  bottom: 0;
-}
-
 img.headerLinks.img-responsive {
   max-width: 80px;
   height: auto;
@@ -274,10 +267,6 @@ h1.title.Futura-Lig {
   margin-left: 0;
   padding:0;
   display: inline-block;
-}
-
-ul.pager {
-  /* display: none; */
 }
 
 div.backImage {
@@ -658,6 +647,7 @@ div.list-group {
 }
 .modal-content {
   color: rgb(0,0,0);
+  min-height: 250px;
 }
 
 button.btn.btn-default.pause {
@@ -672,8 +662,10 @@ button.close.Resume.btn.btn-default {
   text-align: center;
   color: #333;
   height: 60px;
-  background-color: gray;
+  background-color: grey;
   width: 150px;
+  text-shadow: 0 1px 0 #333;
+  opacity: 1;
 }
                         /* Pagers */
                         /***********/
@@ -681,22 +673,35 @@ button.close.Resume.btn.btn-default {
   width: 100%;
   display: inline;
 }
-.pagers ul.glyphicon.glyphicon-chevron-left.pager {
-  width: 50px;
-  height: 50px;
+
+span.glyphicon.glyphicon-glyphicon.glyphicon-chevron-left, span.glyphicon.glyphicon-glyphicon.glyphicon-chevron-right {
+  /*width: 100px;*/
+  /*height: 100px;*/
   position: relative;
-  margin-left: 3%;
+  zoom: 3;
+  color: green;
 }
 
-.pagers ul.glyphicon.glyphicon-chevron-right.pager {
-  width: 90px;
-  height: 50px;
-  position: relative;
-  display: inline-block;
+ul.grow.pager {
+  z-index: 200;
+  position: fixed;
+  bottom: 300px;
+  margin-top: 300px;
 }
 
+ul.grow.pager .previous {
+  height: 50px;
+}
 
+ul.grow.pager .next {
+  margin-left: 900px;
+  height: 50px;
+}
 
+li.next a, li.previous a {
+  background-color: transparent;
+  border:none;
+}
 /*smaller screen responsive*/
 /****************************/
 /*@media only screen and (min-width: 808px) and (max-width: 1320px) {
