@@ -1,67 +1,159 @@
 {
-  "plants": [
+  "growing_plants": [
     {
       "id": "1",
       "name": "Basil",
       "climate_id": "1",
-      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
       "day_of_cycle": "7",
-      "chamber_id": "2"
+      "chamber_id": "1"
     },
     {
       "id": "2",
       "name": "Tomatoes",
       "climate_id": "1",
-      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
       "day_of_cycle": "5",
-      "chamber_id": "1"
+      "chamber_id": "3"
+    }
+  ],
+  "plantTypes": [
+    {
+      "id": "1",
+      "name": "Green Beans",
+      "climate_id": "2",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.6",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "50"
+    },
+    {
+      "id": "2",
+      "name": "Tomato",
+      "climate_id": "1",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.8",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "50"
+    },
+    {
+      "id": "3",
+      "name": "Lettuce",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "climate_id": "2",
+      "pH": "5.7",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "50"
+    },
+    {
+      "id": "4",
+      "name": "Cilantro",
+      "climate_id": "2",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.7",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "50"
+    },
+    {
+      "id": "5",
+      "name": "Broccoli",
+      "climate_id": "2",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.8",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "50"
+    },
+    {
+      "id": "6",
+      "name": "Kale",
+      "climate_id": "2",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.7",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "50"
+    },
+    {
+      "id": "7",
+      "name": "Customize",
+      "climate_id": "3",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "",
+      "PPM": "",
+      "temperature": "",
+      "humidity": ""
+    },
+    {
+      "id": "8",
+      "name": "Basil",
+      "climate_id": "2",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.7",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "60"
+    },
+    {
+      "id": "9",
+      "name": "Bell Pepper",
+      "climate_id": "1",
+      "grow_directions": "Fill Chamber water reservoir with clean water, then put the water reservoir back inside the chamber and initiate pH balancing.",
+      "planting_directions": "Transplant seedlings in rockwool cubes from propagation chamber to net pots and put net pots in chamber lid holes. \nYour plants are ready!",
+      "pH": "5.8",
+      "PPM": "355",
+      "temperature": "77",
+      "humidity": "55"
     }
   ],
   "climates": [
     {
       "id": "1",
       "type": "tropical",
-      "given_settings": [
-        {
-          "temperature": "77",
-          "humidity": "48",
-          "pH": "5.7",
-          "PPM": "345",
-          "height": "0",
-          "water": "85"
-        }
-      ]
+      "temperatureMin": "75",
+      "temperatureMax": "95",
+      "humidityMin": "45",
+      "humidityMax": "70",
+      "phMin": "5.4",
+      "phMax": "6.0",
+      "PPMMin": "300",
+      "PPMMax": "400"
     },
     {
       "id": "2",
       "type": "temperate",
-      "given_settings": [
-        {
-          "temperature": "74",
-          "humidity": "40",
-          "pH": "5.7",
-          "PPM": "345",
-          "height": "0",
-          "water": "85"
-        }
-      ]
+      "temperatureMin": "75",
+      "temperatureMax": "95",
+      "humidityMin": "45",
+      "humidityMax": "70",
+      "phMin": "5.4",
+      "phMax": "6.0",
+      "PPMMin": "300",
+      "PPMMax": "400"
     },
     {
       "id": "3",
-      "type": "custom",
-      "given_settings": [
-        {
-          "temperature": "0",
-          "humidity": "0",
-          "pH": "0",
-          "PPM": "0",
-          "height": "0",
-          "water": "85"
-        }
-      ]
+      "type": "customize",
+      "temperatureMin": "75",
+      "temperatureMax": "95",
+      "humidityMin": "45",
+      "humidityMax": "70",
+      "phMin": "5.4",
+      "phMax": "6.0",
+      "PPMMin": "300",
+      "PPMMax": "400"
     }
   ],
-  "chamber_id": "1",
   "sensor_data": [
     {
       "time": "2017-07-28 10:00:00.846621+00",
@@ -10014,7 +10106,7 @@
     },
     {
       "id": "3",
-      "filled": "na"
+      "filled": false
     }
   ],
   "sensors": [

@@ -1,3 +1,6 @@
+                                  /*****************/
+                                  /*Universal Styling*/
+
 .Futura-Lig {
 	font-family: Futura-Lig;
 	font-weight: normal;
@@ -8,14 +11,17 @@ h1, h2, h3, h4 {
 }
 
 body {
-  background-image: url(/public/img/BG.png);
-  background-size: cover;
+  background-image: url(/public/img/BG_GRAY.jpg);
+  background-size: center;
   background-position: center;
+  repeat: no-repeat;
   color: #fff;
-  font-family: Future-Lig;
+  font-family: Futura-Lig;
   margin:0;
   padding: 0;
 }
+
+label {}
 
 li {
   list-style-type:none;
@@ -58,10 +64,11 @@ img {
   text-align: center;
 }
 
-/* BUTTONS */
-/************/
+                                  /* BUTTONS GENERAL*/
+                                  /************/
 button {
-  align-items: stretch;
+  /* align-items: stretch; */
+  font-family: Futura-Lig;
 }
 
 button.btn.btn-default {
@@ -71,13 +78,8 @@ button.btn.btn-default {
   font-size: 16px;
   color: #fff;
 }
-.links a {
-  background-color: rgba(255,255,255, 0.3);
-  border-radius: 50%;
-  width: 100px;
-  border:0;
-  margin: 20px;
-}
+
+/* Header buttons */
 button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active, button.chamber-3.btn.btn-default:active, button.chamber-1.btn.btn-default:focus, button.chamber-2.btn.btn-default:focus, button.chamber-3.btn.btn-default:focus  {
   background:linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.1));
   color: #fff;
@@ -85,18 +87,61 @@ button.chamber-1.btn.btn-default:active, button.chamber-2.btn.btn-default:active
   border:0;
 }
 
-/* Header */
-/***********/
+.homepage.link.Futura-Lig, .temperate.link, .custom.link, .tropical.link {
+  background-color: rgba(115,115,115,0.4);
+  min-width: 150px;
+  height: auto;
+  margin: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 24px;
+  /*border styles*/
+  border: 0;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+}
+
+.homepage.link.Futura-Lig:active, .temperate.link:active, .custom.link:active, .tropical.link:active  {
+  /*border styles*/
+  border-top: solid 2px rgba(115,115,115,0.5);
+  border-bottom: solid 1px rgba(115,115,115,0.3);
+  border-right: solid 1px rgba(115,115,115,0.5);
+  border-left: solid 1px rgba(115,115,115,0.5);
+}
+
+div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
+  width: 100%;
+  padding:0;
+
+}
+button.chamber-1.btn.btn-default, button.chamber-2.btn.btn-default, button.chamber-3.btn.btn-default {
+  padding: 0;
+  width: 300px;
+  align-self: baseline;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+button.chamber-2.btn.btn-default {
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+                                  /* Header */
+                                  /***********/
 .brandLogo {
   margin-left: 0;
   width: 100%;
   height: auto;
+  display: block;
 }
-.logo {
+.logo.img-responsive.center-block {
   background-image: url(/public/img/logo.png);
   width: inherit;
   margin-left: 0;
   max-height: 75px;
+  display: inline;
 }
 div.backImage {
   display: none;
@@ -109,22 +154,19 @@ div.backImage {
   height: auto;
 }
 
-ul.pager {
-  display: none;
-  z-index: 200;
-  position: absolute;
-  bottom: 0;
-}
-
 img.headerLinks.img-responsive {
-  max-width: 175px;
+  max-width: 80px;
   height: auto;
 }
+
 h1.title.Futura-Lig {
   font-weight: bolder;
 }
-/* NAVBAR MENU*/
-/***************/
+
+ul.nav.nav-pillsnavbar-nav.navbar-right {
+}
+                                /* NAVBAR MENU*/
+                                /***************/
 .navbar {
   background-color: rgba(255,255,255,0.0);
   border-top:0;
@@ -219,22 +261,19 @@ h1.title.Futura-Lig {
 }
 
 .brandLogo {
+  min-width:  100px;
   max-width: 175px;
-  height: auto;
+  height: 100px;
   margin-left: 0;
   padding:0;
   display: inline-block;
 }
 
-ul.pager {
-  display: none;
-}
-
 div.backImage {
   margin-left: 10px;
 }
-/*MONITOR*/
-/**********/
+                                      /*MONITOR*/
+                                      /**********/
 
 div.bottom.container.readings.row {
   position: relative;
@@ -252,16 +291,16 @@ div.bottom.container.readings.row {
   position: absolute;
 }
 
-/* Charts */
-/************/
+                                  /* Charts */
+                                  /************/
 svg.recharts-surface {
   width: 100%;
 }
 
 
 
-/* Filter Nav By Chamber */
-/*************************/
+                                  /* Filter Nav By Chamber */
+                                  /*************************/
 .flex-row {
   display: flex;
   flex-wrap: wrap;
@@ -299,8 +338,8 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   border: none;
 }
 
-/* Sensor */
-/***********/
+                                  /* Sensor */
+                                  /***********/
 
 .startedOn {
   vertical-align: middle;
@@ -310,3 +349,387 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   vertical-align: center;
 
 }
+
+                                  /*Homepage*/
+                                  /************/
+
+.homepage.links.container{
+  vertical-align: center;
+  display: flex;
+  align-items: center;
+  flex-flow: row;
+  margin-top: 20px;
+  min-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.monitorOrGrow.container, .grow.links.container {
+  vertical-align: center;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  margin-top: 20px;
+  min-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+                                  /*New Grow*/
+                                  /***********/
+
+  div.selectedPlant {
+    text-align: center;
+    position: relative;
+  }
+  .selectedPlant h3 {
+    font-family: Futura-Lig;
+    font-size: 18px;
+  }
+
+  div.selectedPlant .form-group {
+    display: flex;
+    flex-flow: row wrap;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    min-height: 300px;
+    height: auto;
+    width: 75%;
+    align-items: baseline;
+    justify-content: center;
+    align-content: center;
+    border-radius: 5%;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .customize {
+  font-family: Futura-Lig;
+  background-repeat:no-repeat;
+  background-size: 100% 100%;
+  max-width: 35%;
+  min-width: 200px;
+  margin-top: 10px;
+  font-size: 18px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  flex: 1 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+}
+
+.newgrow.container {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+  margin-left: 20px;
+  margin-top: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+.link.basil {
+  background-image: url(/public/img/basil_button.png);
+
+}
+
+.link.bell.Pepper {
+  background-image: url(/public/img/bell_pepper_button.png);
+
+}
+
+.link.broccoli {
+  background-image: url(/public/img/broccoli_button.png);
+
+}
+
+.link.cilantro{
+  background-image: url(/public/img/cilantro_button.png);
+}
+
+.link.kale{
+  background-image: url(/public/img/kale_button.png);
+}
+
+.link.lettuce{
+  background-image: url(/public/img/lettuce_button.png);
+}
+
+.link.tomato{
+  background-image: url(/public/img/tomato_button.png);
+}
+
+.link.customize {
+  background-image: url(/public/img/customize_button.jpg);
+}
+
+.link.green.Beans {
+  background-image: url(/public/img/green_bean_button.png)
+}
+.text.Futura-Lig.center h3{
+  font-size: 20px;
+}
+
+/*.new_grow_form {
+width: 90%;
+min-height: 800px;
+}*/
+
+div.chamberOptions {
+  min-height: 800px;
+  min-width: 500px;
+}
+
+
+.chamberImage, .existing_grow_form {
+	background-image: url(/public/img/oasis_mini_icon_raw.png);
+	background-repeat:no-repeat;
+	background-size: 100% 100%;
+	width: 45%;
+	min-height: 400px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*Chamber*/
+div.chamberImage .form-group {
+  background: none;
+  font-size: 18px;
+  position: relative;
+  font-family: Futura-Lig;
+}
+
+#chambers {
+  background-color: blue;
+}
+
+h3#chamber.directions.Futura-Lig {
+  width: 180px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.link.Chamber1.radio {
+  position: absolute;
+  /*margin-left: 145px;*/
+  /*margin-top: 245px;*/
+  margin-left: 355px;
+  margin-top: 295px;
+}
+
+div.link.Chamber2.radio {
+  position: absolute;
+  margin-left: 130px;
+  margin-top: 80px;
+}
+
+div.link.Chamber3.radio {
+  position: absolute;
+  margin-left: -90px;
+  margin-top: 150px;
+}
+
+.directions.container {
+  margin: 10%;
+}
+
+.directions.left {
+  width: 40%;
+  font-size: 24px;
+  display: inline-block;
+}
+
+.directions.right {
+  right:0;
+  width: 45%;
+  display: inline-block;
+  font-size: 18px;
+}
+
+.directions.right div.container {
+  width: 80%;
+}
+
+.directions.right button {
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 20px;
+}
+
+.directions.right .row {
+  position: relative;
+  width: 100%;
+  padding-bottom: 10px;
+}
+div.Futura-Lig.col-md-6.col-xs-5 {
+  width: 100%;
+}
+                    /*Forms General Settings */
+                    /**************************/
+
+label {
+  text-shadow: 0px 1px 1px #000;
+  text-align: center;
+}
+
+input[type=radio] {
+  display: none;
+}
+
+
+                      /* Existing Grow */
+                      /******************/
+.existing-grow.chambers .form-group {
+  background: none;
+  position: relative;
+  font-size: 18px;
+  width: 400px;
+  height: 350px;
+}
+
+h3#chamber.chamber.Futura-Lig {
+  margin-top: 50px;
+}
+
+div.Chamber1.radio {
+  position: absolute;
+  margin-left: 355px;
+  margin-top: 295px;
+}
+
+div.Chamber2.radio {
+  position: absolute;
+  margin-left: 180px;
+  margin-top: 110px;
+}
+
+div.Chamber3.radio {
+  position: absolute;
+  margin-left: 120px;
+  margin-top: 225px;
+}
+
+.chamber.Futura-Lig {
+  width: 200px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.list-group {
+  width: 45%;
+  display: inline-block;
+  position: relative;
+}
+
+.check_mark {
+  width: 100%;
+  height: 100%;
+}
+
+/* modal*/
+.modal-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 400px;
+  line-height: normal;
+}
+.modal-container button {
+  vertical-align: middle;
+  margin-top: 10px;
+}
+.modal-content {
+  color: rgb(0,0,0);
+  min-height: 250px;
+}
+
+button.btn.btn-default.pause {
+  background-color: grey;
+}
+
+button.btn.btn-default.balanced {
+  background-color: grey;
+}
+
+button.close.Resume.btn.btn-default {
+  text-align: center;
+  color: #333;
+  height: 60px;
+  background-color: grey;
+  width: 150px;
+  text-shadow: 0 1px 0 #333;
+  opacity: 1;
+}
+                        /* Pagers */
+                        /***********/
+.pagers {
+  width: 100%;
+  display: inline;
+}
+
+span.glyphicon.glyphicon-glyphicon.glyphicon-chevron-left, span.glyphicon.glyphicon-glyphicon.glyphicon-chevron-right {
+  /*width: 100px;*/
+  /*height: 100px;*/
+  position: relative;
+  zoom: 3;
+  color: green;
+}
+
+ul.grow.pager {
+  z-index: 200;
+  position: fixed;
+  bottom: 300px;
+  margin-top: 300px;
+}
+
+ul.grow.pager .previous {
+  height: 50px;
+}
+
+ul.grow.pager .next {
+  margin-left: 900px;
+  height: 50px;
+}
+
+li.next a, li.previous a {
+  background-color: transparent;
+  border:none;
+}
+/*smaller screen responsive*/
+/****************************/
+/*@media only screen and (min-width: 808px) and (max-width: 1320px) {
+    div.link.Chamber1.radio {
+      position: absolute;
+      margin-left: 100px;
+      margin-top: 80px;
+      background-color: red;
+    }
+
+    div.link.Chamber2.radio {
+      position: absolute;
+      margin-left: 100px;
+      margin-top: 85px;
+      background-color: blue;
+    }
+
+    div.link.Chamber3.radio {
+      position: absolute;
+      margin-left: -80px;
+      margin-top: 20px;
+    }
+
+    .basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .link.temperate, .link.customize {
+      height: 50px;
+    }
+    .directions.right {
+      width: 50%;
+      font-size: 18px;
+    }
+}*/
