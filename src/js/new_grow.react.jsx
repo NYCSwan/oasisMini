@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { form } from 'react-bootstrap';
+import { form, Button } from 'react-bootstrap';
 import upperFirst from 'lodash/upperFirst';
 import pickBy from 'lodash/pickBy';
 import findIndex from 'lodash/findIndex';
@@ -12,6 +12,7 @@ import PagerFwd from './pagerFwd.react';
 import CustomizeSensors from './customize_sensors.react';
 import FormGrouping from './form_group.react';
 import Directions from './directions.react';
+import PlantingDirections from './planting_directions.react';
 
 class NewGrow extends Component {
   static propTypes = {
@@ -40,8 +41,8 @@ class NewGrow extends Component {
     selectedPlant:'',
     selectedChamber:'',
     settings: [],
-    // phValue:0,
-    directions: []
+    directions: [],
+    showGrowDirections: false
   }
 
   componentDidMount() {
@@ -202,10 +203,29 @@ class NewGrow extends Component {
         :
         null
         }
-        <div className="pagers">
-          <PagerBack />
-          <PagerFwd />
-        </div>
+        { (this.state.isBalanced === true)
+          ?
+          <Button
+            onClick={this.showGrowDirections}>Next</Button>
+          :
+          null
+        }
+        { (this.state.showGrowDirections === true)
+          ?
+          <PlantingDirections
+            directions={this.state.directions}
+            isBalanced={this.state.isBalanced}
+            handleClick={this.submitGrowChange}
+            settings={this.state.settings}
+          />
+          :
+          null
+        }
+          <PagerBack
+            className="grow" />
+          <PagerFwd
+            className="grow" />
+
       </div>
     )
   }

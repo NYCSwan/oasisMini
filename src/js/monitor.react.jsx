@@ -6,68 +6,83 @@ import forIn from 'lodash/forIn';
 import toPairsIn from 'lodash/toPairsIn';
 import forEach from 'lodash/forEach';
 import pickBy from 'lodash/pickBy';
-
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Button } from 'react-bootstrap';
 
 import SiteHeader from './Header.react';
-import LineGraph from '../D3/lineGraph';
 import FilterButtonGroup from './filter_button.react';
 
 class Monitor extends Component {
   static propTypes = {
     sensorData: PropTypes.arrayOf(PropTypes.object).isRequired,
-    plants: PropTypes.arrayOf(PropTypes.object).isRequired
+    plants: PropTypes.arrayOf(PropTypes.object).isRequired,
+    chambers: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
   state = {
-    chamberId: '2',
+    chamberId: '1',
     graphWidth: 300,
     graphHeight: 200,
-    sensor1: 'temperature',
-    sensor2: 'humidity',
-    sensor3: 'height',
-    optionsForFilter: [1,2,3]
+    chamberData: [],
+    optionsForFilter: this.props.chambers
   };
+
+  componentWillMount(){
+    console.log('component will mount');
+    this.updateChamberData();
+  }
 
   componentDidMount(){
     console.log('componentDidMount monitor');
-    this.handleChamberIdChange();
+
   }
 
   shouldComponentUpdate (newProps, newState) {
     console.log('shouldComponentUpdate monitor');
-    return this.props.sensorData !== newProps.sensorData || this.state.chamberId !== newState.chamberId || this.state.graphWidth !== newState.graphWidth || this.state.graphHeight !== newState.graphHeight
+    return this.props.sensorData !== newProps.sensorData || this.state.chamberId !== newState.chamberId || this.state.graphWidth !== newState.graphWidth || this.state.graphHeight !== newState.graphHeight || this.state.chamberData !== newState.chamberData
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(newState) {
     console.log('componentDidUpdate monitor');
+    if (this.state.chamberId !== newState.chamberId) {
+      this.updateChamberData();
+    }
+  }
+
+  updateChamberData = () => {
+    console.log('update chamber data');
+    const tempPlantData = pickBy(this.props.sensorData, (data) => data.chamber_id === this.state.chamberId);
+    const plantDataArray = [];
+    forEach(tempPlantData, (entry) => {
+      plantDataArray.push(entry);
+    })
+    debugger
+    this.setState({ chamberData: plantDataArray })
   }
 
   handleChamberIdChange = (newChamber) => {
-    console.log('handleChamberIdChange')
+    console.log('handleChamberIdChange');
+    console.log(newChamber);
     let tempChamber = ''
-    if (newChamber == null) {
-      tempChamber = '1'
-    } else {
-      tempChamber = newChamber.toString();
+    if (newChamber != null) {
+      tempChamber = newChamber.target.value;
+      this.setState({
+        chamberId: tempChamber
+      }, ()=>console.log(this.state.chamberId))
     }
+    debugger
 
-    this.setState({
-      chamberId: tempChamber
-     })
+     // this.updateChamberData();
   }
 
-
   render() {
-    const { sensorData, plants } = this.props;
+    const { plants, sensorData } = this.props;
     const plantByChamber = pickBy(plants, (plant) => plant.chamber_id === this.state.chamberId);
-    const lastPhReading = findLastIndex(sensorData, (sensor) => sensor.pH !== 'na');
-    const lastPpmReading = findLastIndex(sensorData, (sensor) => sensor.PPM !== 'na');
-    const today = new Date(2017,7,4);
-    const yesterday = new Date(today - (1000*60*60*24*1));
-    const oneWeekAgo = new Date(today - (1000*60*60*24*7));
+    const phReadingIdx = findLastIndex(this.state.chamberData, (data) => data.sensors.pH !== "na");
+    // debugger
+    const ppmReadingIdx = findLastIndex(this.state.chamberData, (data) => data.sensors.PPM !== 'na');
+    const temperatureReadingIdx = findLastIndex(this.state.chamberData, (data) =>  data.sensors.temperature !== 'na');
+    const humidityReadingIdx = findLastIndex(this.state.chamberData, (data) => data.sensors.humidity !== 'na');
     const plantByChamberArray=[];
-    let dayOfCycle;
 
     forIn(plantByChamber, (value) => {
       if (value != null) {
@@ -75,72 +90,86 @@ class Monitor extends Component {
       }
       return plantByChamberArray;
     });
+    const dayOfCycle = plantByChamberArray[0][3][1];
 
-    forEach(plantByChamberArray,
-       (plantInfo, index) => {
-         if (plantInfo[index][0] === plantInfo[index].day_of_cycle) {
-           dayOfCycle = plantInfo[index].day_of_cycle
-        } else {
-          dayOfCycle  = 1;
-        }
-        return dayOfCycle;
-    })
+debugger
+    // forEach(plantByChamberArray,
+    //    (plantInfo, index) => {
+    //      if (plantInfo[index][0] === plantInfo[index].day_of_cycle) {
+    //        dayOfCycle = plantInfo[index].day_of_cycle
+    //     } else {
+    //       dayOfCycle  = 1;
+    //     }
+    //     return dayOfCycle;
+    // })
     console.log('render monitor')
-
+    // console.log(`plants ${this.state.chamberData}`);
+    // console.log(`plantByChamberArray ${plantByChamberArray}`);
+    // console.log(`phReadingIdx ${phReadingIdx}`);
+    // console.log(`ppmReadingIdx ${ppmReadingIdx}`);
+    // console.log(`temperatureReadingIdx ${temperatureReadingIdx}`);
+    // console.log(`chamber ${this.state.chamberId}`);
+// Not filtering in proper way. Something snags - compW stackoverflow,
     return (
       <div className="monitor container">
 
-        <SiteHeader title="Monitor"/>
+        <SiteHeader title="Monitor" />
           <FilterButtonGroup
             onChange={this.handleChamberIdChange}
             chamberId={this.state.chamberId}
             options={this.state.optionsForFilter} />
-          <LineGraph
-            chamberId={this.state.chamberId}
-            sensorData={this.props.sensorData}
-            sensor={this.state.sensor1}
-            graphHeight={this.state.graphHeight}
-            graphWidth={this.state.graphWidth}
-            endDate={today}
-            startDate={yesterday}
-          />
-        <LineGraph
-            chamberId={this.state.chamberId}
-            sensorData={this.props.sensorData}
-            graphHeight={this.state.graphHeight}
-            graphWidth={this.state.graphWidth}
-            endDate={today}
-            startDate={yesterday}
-            sensor={this.state.sensor2}
-          />
-          <LineGraph
-            chamberId={this.state.chamberId}
-            sensorData={this.props.sensorData}
-            graphHeight={this.state.graphHeight}
-            graphWidth={this.state.graphWidth}
-            endDate={today}
-            startDate={oneWeekAgo}
-            sensor={this.state.sensor3}
 
-          />
-
-        <Row className="bottom container readings">
-          <Col className="ph" xs={4} sm={4} md={4}>
-            <h2 className="xBigFont">{lastPhReading}</h2>
-            <h4>pH</h4>
+        { (plantByChamber.length >= 1)
+        ?
+        <Row className="readings">
+          <Col className="bubble ph" xs={12} md={10} mdOffset={2}>
+            <a href="/sensors/ph">
+              <h2 className="xBigFont">
+                {this.state.chamberData[phReadingIdx].sensors.pH}
+              </h2>
+              <h4>pH</h4>
+            </a>
           </Col>
-          <Col className="dayOfCycle half-circle" xs={4} sm={4} md={4}>
-            <h4>Day</h4>
-            <h4>{dayOfCycle}</h4>
+          <Col className="bubble empty small" />
+          <Col className="bubble ppm" xs={6} xsOffset={6} md={6}>
+            <a href="/sensors/ppm">
+              <h2 className="xBigFont">
+                {this.state.chamberData[ppmReadingIdx].sensors.PPM}
+              </h2>
+              <h4>PPM</h4>
+            </a>
           </Col>
-          <Col className="PPM" xs={4} sm={4} md={4}>
-            <h2 className="xBigFont">{lastPpmReading}</h2>
-            <h4>PPM</h4>
+          <Col className="bubble temperature" xs={4} md={4} mdOffset={8} xsOffset={8}>
+            <a href="/sensors/temperature">
+              <h2 className="xBigFont">{this.state.chamberData[temperatureReadingIdx].sensors.temperature}*</h2>
+              <h4>F</h4>
+            </a>
+          </Col>
+          <Col className="bubble empty md" />
+          <Col className="bubble empty small" />
+          <Col className="bubble humidity" xs={8} md={8} xsOffset={4} mdOffset={4}>
+            <a href="/sensors/humidity">
+              <h2 className="xBigFont">
+                {this.state.chamberData[humidityReadingIdx].sensors.humidity}%
+              </h2>
+            <h4>humidity</h4>
+            </a>
+          </Col>
+          <Col className="bubble dayOfCycle" xs={3} md={3}>
+            <h4 className="xBigFont">Day {dayOfCycle}</h4>
           </Col>
         </Row>
+        :
+        <div>
+          <h2>Sorry. You are not growing anything in this chamber right now.</h2>
+          <a href="/newgrow" alt="grow something in this chamber">
+            <Button>Start New Grow</Button>
+          </a>
+        </div>
+        }
       </div>
     );
   }
-};
+}
 
 export default Monitor;

@@ -11,7 +11,6 @@ import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import Pause from './pause.react';
 import PopUp from './popup.react';
-import PlantingDirections from './planting_directions.react';
 
 class ExistingGrow extends Component {
   static propTypes = {
@@ -34,7 +33,6 @@ class ExistingGrow extends Component {
     showChambers: true,
     showButton: false,
     isBalanced: false,
-    showGrowDirections: false
   }
 
   componentDidMount() {
@@ -235,24 +233,7 @@ class ExistingGrow extends Component {
           :
           null
         }
-        { (this.state.isBalanced === true)
-          ?
-          <Button
-            onClick={this.showGrowDirections}>Next</Button>
-          :
-          null
-        }
-        { (this.state.showGrowDirections === true)
-          ?
-          <PlantingDirections
-            directions={this.state.directions}
-            isBalanced={this.state.isBalanced}
-            handleClick={this.submitGrowChange}
-            settings={this.state.settings}
-          />
-          :
-          null
-        }
+
         <PagerBack
           className="grow" />
         <PagerFwd

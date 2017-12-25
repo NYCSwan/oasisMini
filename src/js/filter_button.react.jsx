@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { ButtonGroup, Button } from 'react-bootstrap';
 
+
 const FilterButtonGroup = (props) => (
         <ButtonGroup justified
           type="radio"
@@ -15,12 +16,14 @@ const FilterButtonGroup = (props) => (
 
           return ( // eslint-disable-line
             <Button
-              key={option.toString()}
-              value={option}
-              className={`chamber-${option}`}
-              checked={props.chamberId === option}
+              key={option.id}
+              value={option.id}
+              className={`chamber-${option.id}`}
+              checked={props.chamberId === option.id}
+              onClick={props.onChange}
+              disabled={!option.filled}
             >
-                Chamber {option}
+                Chamber {option.id}
             </Button>
         );
       })}
@@ -30,6 +33,8 @@ const FilterButtonGroup = (props) => (
 FilterButtonGroup.propTypes = {
   chamberId: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.number).isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  filledChambers: PropTypes.arrayOf(PropTypes.object).isRequired
+
 }
 export default FilterButtonGroup;
