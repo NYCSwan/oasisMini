@@ -11,10 +11,10 @@ h1, h2, h3, h4 {
 }
 
 body {
-  background-image: url(/public/img/green_BG.png);
-  background-size: stretch;
-  background-position: center;
-  /*background-repeat: no-repeat;*/
+  background-image: url(/public/img/BG_12_23.jpg);
+  background-size: cover;
+  /*background-position: center;*/
+  background-repeat: no-repeat;
   color: #fff;
   font-family: Futura-Lig;
   margin:0;
@@ -29,9 +29,9 @@ img {
   max-width:150px;
 }
 
-.app {
+#app {
   position: relative;
-  width: 100%;
+  /* width: auto; */
   height: 100vh;
 }
 
@@ -62,6 +62,9 @@ img {
   text-align: center;
 }
 
+.appContainer {
+  height: 100%;
+}
                                   /* BUTTONS GENERAL*/
                                   /************/
 button {
@@ -175,10 +178,14 @@ ul.nav.nav-pillsnavbar-nav.navbar-right {
   padding: 0;
   width: 100%;
 }
-.nav.container-fluid.navbar.navbar-inverse {
+.navItem {
   display: inline-block;
   background-color: inherit;
   width: 100%;
+}
+
+.navItem li {
+  text-align: center;
 }
 
 .navbar-toggle {
@@ -192,7 +199,12 @@ ul.nav.nav-pillsnavbar-nav.navbar-right {
     outline: 0;
     background-color: rgba(255,255,255,0.0);
 }
-
+.navbar-toggle:hover {
+  background-color: #3333337d;
+}
+.navbar-collapse {
+  border: none;
+}
 .navbar-toggler span {
    display: inline-block;
    background-color: rgba(255,255,255, 0.0);
@@ -251,6 +263,8 @@ ul.nav.nav-pillsnavbar-nav.navbar-right {
 ul.nav.nav-pills.navbar-nav.navbar-right li {
   max-width: 75px;
   display: inline-block;
+  border-radius: 50%;
+  background-color: #3333337d;
 }
 
 h1.title.Futura-Lig {
@@ -388,7 +402,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   align-items: center;
   flex-flow: column;
   margin-top: 20px;
-  min-width: 500px;
+  /* min-width: 500px; */
   margin-left: auto;
   margin-right: auto;
 }

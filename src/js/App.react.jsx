@@ -9,6 +9,7 @@ import Monitor from './monitor.react';
 import Tutorials from './tutorials.react';
 import Sensor from './sensor.react';
 import Progress from './progress.react';
+import ControlSettings from './control_settings.react';
 
 const FourOhFour = () => <h1>404</h1>;
 
@@ -24,6 +25,10 @@ const App = () => (
         <Route
           path="/existinggrow"
           component={(props) => <ExistingGrow currentGrows={Preload.growing_plants} chambers={Preload.chambers} climates={Preload.climates} plantTypes={Preload.plantTypes} {...props} />}
+        />
+        <Route
+          path="/controls"
+          component={(props) => <ControlSettings currentGrows={Preload.growing_plants} chambers={Preload.chambers} climates={Preload.climates} plantTypes={Preload.plantTypes} {...props} />}
         />
         <Route
           path="/monitor"

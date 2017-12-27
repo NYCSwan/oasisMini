@@ -4,7 +4,7 @@ and (min-device-width : 320px)
 and (max-device-width : 480px) {
 /* Header Styles */
 /*****************/
-    navItem {
+    .navItem {
         width:64px;
         height:auto;
     }
@@ -38,6 +38,10 @@ and (max-device-width : 480px) {
 
     .headerLinks {
       width: 30px;
+    }
+
+    .title.Futura-Lig {
+        font-size: 24px;
     }
     button.navbar-toggle.collapsed {
       margin-top: 15px;
@@ -79,7 +83,31 @@ and (max-device-width : 480px) {
       padding-bottom: 10px;
       margin-top: 10px;
       font-size: 14px;
-      /* margin-left: 5%; */
+    }
+
+    .monitorOrGrow.container, .grow.links.container {
+        min-width: 375px;
+        margin: 0;
+    }
+
+    div.directions.container {
+        margin-left: 0;
+        margin-right: 0;
+        display: flex;
+        align-items: flex-start;
+    }
+    div.directions.right {
+        width: 50%;
+        /*float: right;*/
+    }
+
+    div.directions.left {
+      font-size: 18px;
+
+    }
+    .check_mark {
+        width: 50px;
+        height: auto;
     }
 }
 
@@ -256,10 +284,24 @@ button.btn.btn-default {
       /* max-width: 150px; */
     }
     button.btn.btn-default {
-      padding: 10px;
+      padding: 5px;
     }
     .chamber1, .chamber2, .chamber3 {
       padding: 5px;
+    }
+
+    .appContainer {
+        width: auto;
+    }
+
+    .navItem {
+        width: 75px;
+        height: 75px;
+        font-size: 14px;
+    }
+    .navItem li {
+        padding: 2px;
+
     }
 }
 

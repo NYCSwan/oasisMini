@@ -141,6 +141,13 @@ class NewGrow extends Component {
       console.log('handel form shoudl have chamber state')  });
   }
 
+  showGrowDirections = () => {
+    this.setState({
+      showGrowDirections: true,
+      isBalanced: false
+     })
+  }
+
   render() {
     console.log('render new grow');
 
@@ -191,7 +198,7 @@ class NewGrow extends Component {
              null
           }
         </form>
-        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '')
+        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '' && this.state.isBalanced === false )
         ?
           <Directions
             settings={this.state.settings}
