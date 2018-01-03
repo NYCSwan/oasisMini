@@ -22,7 +22,7 @@ const Homepage = (props) => (
           </Button>
           <Button
             bsStyle="primary"
-            className="homepage link Futura-Lig" href="/controls"
+            className="homepage link Futura-Lig" href="/monitor"
           >
           Grow Something
           </Button>
@@ -31,7 +31,7 @@ const Homepage = (props) => (
   </div>
 )
 
-SiteHeader.propTypes = {
+Homepage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.object
   }).isRequired,

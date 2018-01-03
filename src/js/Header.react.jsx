@@ -13,7 +13,6 @@ class SiteHeader extends Component {
 
   render() {
     const { title, match } = this.props;
-
     return (
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
         <Navbar.Header>

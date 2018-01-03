@@ -17,7 +17,10 @@ import PlantingDirections from './planting_directions.react';
 class NewGrow extends Component {
   static propTypes = {
     presets: PropTypes.arrayOf(PropTypes.object).isRequired,
-    climates: PropTypes.arrayOf(PropTypes.object).isRequired
+    climates: PropTypes.arrayOf(PropTypes.object).isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.object
+    }).isRequired,
   }
 
   state = {
@@ -42,7 +45,7 @@ class NewGrow extends Component {
     selectedChamber:'',
     settings: [],
     directions: [],
-    showGrowDirections: false
+    showDirections: false
   }
 
   componentDidMount() {
@@ -143,7 +146,7 @@ class NewGrow extends Component {
 
   showGrowDirections = () => {
     this.setState({
-      showGrowDirections: true,
+      showDirections: true,
       isBalanced: false
      })
   }
@@ -153,7 +156,7 @@ class NewGrow extends Component {
 
     return (
       <div className="newGrow container">
-        <SiteHeader title="New Grow" />
+        <SiteHeader title="New Grow" match={this.props.match} />
 
         <form className='new_grow_form'>
           { (this.state.selectedPlant === '')
@@ -190,14 +193,17 @@ class NewGrow extends Component {
                 <FormGrouping
                   id={2}
                   options={this.state.chamberOptions}
-                  onClick={this.handleChamberRadioClick} />
+                />
               </div>
               <h3 id="chamber" className="directions Futura-Lig">Select A Chamber</h3>
+              <a href='/directions' className="btn btn-default">Submit
+              </a>
             </div>
             :
              null
           }
         </form>
+
         { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '' && this.state.isBalanced === false )
         ?
           <Directions
@@ -213,11 +219,11 @@ class NewGrow extends Component {
         { (this.state.isBalanced === true)
           ?
           <Button
-            onClick={this.showGrowDirections}>Next</Button>
+            onClick={this.showDirections}>Next</Button>
           :
           null
         }
-        { (this.state.showGrowDirections === true)
+        { (this.state.showDirections === true)
           ?
           <PlantingDirections
             directions={this.state.directions}
