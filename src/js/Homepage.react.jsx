@@ -1,35 +1,62 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import SiteHeader from './Header.react';
 
-const Homepage = (props) => (
+class Homepage extends Component {
+  state = {
+    users: []
+  }
 
-  <div>
-    <SiteHeader title="Homepage" match={props.match} />
+  handleOpen = () => {
+   fetch('/api/users', {
+    method: 'GET',
+    headers: {
+     'Content-Type': 'application/json',
+     'Accept': 'application/json',
+    }
+   }).then(res => res.json())
+     .then(users => this.setState({ users }));
+  }
+  render() {
+    return (
 
       <div>
-        <p> Notifications would appear here. </p>
-        <div
-        className="monitorOrGrow container"
-        >
-          <Button
-            bsStyle="primary"
-            className="homepage link Futura-Lig"
-            href="/monitor">
-          Monitor Your Garden
-          </Button>
-          <Button
-            bsStyle="primary"
-            className="homepage link Futura-Lig" href="/monitor"
-          >
-          Grow Something
-          </Button>
-        </div>
+      <SiteHeader title="Homepage" match={this.props.match} />
+
+      <div>
+      <p> Notifications would appear here. </p>
+      <div
+      className="monitorOrGrow container"
+      >
+      <Button
+      bsStyle="primary"
+      className="homepage link Futura-Lig"
+      href="/monitor">
+      Monitor Your Garden
+      </Button>
+      <Button
+      bsStyle="primary"
+      className="homepage link Futura-Lig" href="/monitor"
+      >
+      Grow Something
+      </Button>
       </div>
-  </div>
-)
+      <Button
+      onClick={this.handleOpen}>Test API</Button>
+      { (this.state.users.length !== 0 )
+        ?
+        <p>api called! check response of call to users in Network Tab in F12</p>
+        :
+        <p>api not yet called</p>
+      }
+      </div>
+
+      </div>
+    )
+  }
+}
 
 Homepage.propTypes = {
   match: PropTypes.shape({
