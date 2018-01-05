@@ -10,7 +10,7 @@ class Homepage extends Component {
   }
 
   handleOpen = () => {
-   fetch('/users', {
+   fetch('/api/v1/sensor_measurements', {
     method: 'GET',
     headers: {
      'Content-Type': 'application/json',

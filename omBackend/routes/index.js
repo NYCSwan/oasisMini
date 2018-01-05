@@ -1,12 +1,16 @@
-const express = require('express');
-const router = express.Router();
+const Router = require('express-promise-router')
 
-const db = require('../../om_data');
+const db = require('../db')
+const router = new Router()
 
+// export our router to be mounted by the parent application
+ module.exports = router
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const root = require('./root')
+const api = require('./api')
 
-module.exports = router;
+module.exports = (app) => {
+
+ app.use('/', root)
+ app.use('/api',api)
+ } 
