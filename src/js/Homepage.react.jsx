@@ -16,9 +16,9 @@ class Homepage extends Component {
      'Content-Type': 'application/json',
      'Accept': 'application/json',
     }
-   }).then(res => res.json())
-     .then(users => this.setState({ users }));
+  }).then(res => res.json());
   }
+
   render() {
     return (
 

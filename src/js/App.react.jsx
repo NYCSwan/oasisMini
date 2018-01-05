@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Auth from '../Auth/Auth.js';
 
 import Preload from '../../data.json';
 import Homepage from './Homepage.react';
@@ -13,6 +14,9 @@ import ControlSettings from './control_settings.react';
 import DirectionsContainer from './directions_container.react';
 
 const FourOhFour = () => <h1>404</h1>;
+
+const auth = new Auth();
+// auth.login();
 
 const App = () => (
   <BrowserRouter>
@@ -41,16 +45,6 @@ const App = () => (
           component={(props) =>
             <Sensor sensorData={Preload.sensor_data} plants={Preload.growing_plants} {...props} />}
         />
-        {/* / <Route
-          path="/directions"
-          component={(props) => <DirectionsContainer sensorData={Preload.sensor_data} plants={Preload.growing_plants}
-          chambers={Preload.chambers} {...props} />}
-          />
-          <Route
-        //   path="/plants/:id"
-        //   component={(props) =>
-        //     <Plant plants={Preload.growing_plants} {...props} />}
-        // /> */}
         <Route
           path="/timeline"
           component={(props) =>

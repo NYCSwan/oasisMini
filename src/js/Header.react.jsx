@@ -11,8 +11,21 @@ class SiteHeader extends Component {
     console.log(`selected ${eventKey}`);
   }
 
+  goTo = (route) => {
+    this.props.history.replace(`/${route}`);
+  }
+
+  login = () => {
+    this.props.auth.login();
+  }
+
+  logout = () => {
+    this.props.auth.logout();
+  }
+
   render() {
     const { title, match } = this.props;
+    const { isAuthenticated } = this.props.auth;
     return (
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
         <Navbar.Header>
@@ -33,6 +46,30 @@ class SiteHeader extends Component {
             <NavItem className="navItem" eventKey={2} href="#">Support</NavItem>
           </Nav>
         </Navbar.Collapse>
+        {
+             !isAuthenticated() && (
+                 <Button
+                   id="qsLoginBtn"
+                   bsStyle="primary"
+                   className="btn-margin"
+                   onClick={this.login}
+                 >
+                   Log In
+                 </Button>
+               )
+           }
+           {
+             isAuthenticated() && (
+                 <Button
+                   id="qsLogoutBtn"
+                   bsStyle="primary"
+                   className="btn-margin"
+                   onClick={this.logout}
+                 >
+                   Log Out
+                 </Button>
+               )
+           }
         <h1 className="title Futura-Lig">{title}</h1>
       </Navbar>
     )
