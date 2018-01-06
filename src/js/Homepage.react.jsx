@@ -5,10 +5,15 @@ import { Button } from 'react-bootstrap';
 import SiteHeader from './Header.react';
 
 class Homepage extends Component {
+  static propTypes = {
+    auth: PropTypes.objectOf(PropTypes.func).isRequired
+  }
+
   state = {
     users: []
   }
 
+  // get data from db with axios
   handleOpen = () => {
    fetch('/api/v1/sensor_measurements', {
     method: 'GET',
@@ -16,43 +21,50 @@ class Homepage extends Component {
      'Content-Type': 'application/json',
      'Accept': 'application/json',
     }
-  }).then(res => res.json());
+  }).then(res => res.json())
+  // .then(this.setState({ data: res }));
+  }
+
+  login = () => {
+    this.props.auth.login();
   }
 
   render() {
+    const { isAuthenticated } = this.props.auth;
+
     return (
 
       <div>
-      <SiteHeader title="Homepage" match={this.props.match} />
+        <SiteHeader title="Homepage" auth={this.props.auth} match={this.props.match} />
 
-      <div>
-      <p> Notifications would appear here. </p>
-      <div
-      className="monitorOrGrow container"
-      >
-      <Button
-      bsStyle="primary"
-      className="homepage link Futura-Lig"
-      href="/monitor">
-      Monitor Your Garden
-      </Button>
-      <Button
-      bsStyle="primary"
-      className="homepage link Futura-Lig" href="/monitor"
-      >
-      Grow Something
-      </Button>
-      </div>
-      <Button
-      onClick={this.handleOpen}>Test API</Button>
-      { (this.state.users.length !== 0 )
-        ?
-        <p>api called! check response of call to users in Network Tab in F12</p>
-        :
-        <p>api not yet called</p>
-      }
-      </div>
+        {isAuthenticated() && (
+          <div>
+            <p> Notifications would appear here. </p>
+            <div className="monitorOrGrow container">
+              <Button
+                bsStyle="primary"
+                className="homepage link Futura-Lig"
+                href="/monitor">
+                Monitor Your Garden
+              </Button>
+              <Button
+                bsStyle="primary"
+                className="homepage link Futura-Lig" href="/monitor">
+                Grow Something
+              </Button>
+            </div>
+          </div>
 
+        )}
+        {!isAuthenticated() && (
+          <h2>
+            You are not logged in! Please
+            <Button onClick={this.login}>
+              Log In
+            </Button>
+                 to continue.
+          </h2>
+        )}
       </div>
     )
   }

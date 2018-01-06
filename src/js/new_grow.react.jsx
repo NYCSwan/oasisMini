@@ -13,6 +13,7 @@ import CustomizeSensors from './customize_sensors.react';
 import FormGrouping from './form_group.react';
 import Directions from './directions.react';
 import PlantingDirections from './planting_directions.react';
+import { getPlantRecipeData } from '../utils/api_calls';
 
 class NewGrow extends Component {
   static propTypes = {
@@ -21,6 +22,8 @@ class NewGrow extends Component {
     match: PropTypes.shape({
       params: PropTypes.object
     }).isRequired,
+    auth: PropTypes.objectOf(PropTypes.object).isRequired
+
   }
 
   state = {
@@ -45,20 +48,34 @@ class NewGrow extends Component {
     selectedChamber:'',
     settings: [],
     directions: [],
-    showDirections: false
+    showDirections: false,
+    plantRecipes: []
   }
 
   componentDidMount() {
     console.log('component did mount new grow');
+    this.getPlantRecipes();
   }
 
   shouldComponentUpdate (newState) {
     console.log('shouldComponentUpdate new grow');
-    return this.state.selectedChamber !== newState.selectedChamber || this.state.settings !== newState.settings || this.state.selectedPresetId !== newState.selectedPresetId || this.state.selectedPlant !== newState.selectedPlant || this.state.directions !== newState.directions
+    return this.state.selectedChamber !== newState.selectedChamber || this.state.settings !== newState.settings || this.state.selectedPresetId !== newState.selectedPresetId || this.state.selectedPlant !== newState.selectedPlant || this.state.directions !== newState.directions || this.state.plantRecipes !== newState.plantRecipes
   }
 
   componentDidUpdate() {
     console.log('componentDidUpdate new grow');
+  }
+
+  getPlantRecipes = () => {
+    console.log('get plant recipes');
+
+    const test = getPlantRecipeData()
+    console.log(test);
+
+    debugger;
+    test.then((plantRecipes) => {
+      this.setState({ plantRecipes });
+    });
   }
 
   handleFormCalcsByPlant = () => {
@@ -153,10 +170,10 @@ class NewGrow extends Component {
 
   render() {
     console.log('render new grow');
-
+    console.log(this.state.plantRecipes)
     return (
       <div className="newGrow container">
-        <SiteHeader title="New Grow" match={this.props.match} />
+        <SiteHeader title="New Grow" auth={this.props.auth} match={this.props.match} />
 
         <form className='new_grow_form'>
           { (this.state.selectedPlant === '')

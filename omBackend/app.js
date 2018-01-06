@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -6,13 +8,35 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const parseurl = require('parseurl');
 const expressValidator = require('express-validator');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
+const cors = require('cors');
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
+const authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        // YOUR-AUTH0-DOMAIN name e.g prosper.auth0.com
+        jwksUri: "https://oasismini.auth0.com/.well-known/jwks.json"
+    }),
+    // This is the identifier we set when we created the API
+    audience: '{YOUR-API-AUDIENCE-ATTRIBUTE}',
+    issuer: '{YOUR-AUTH0-DOMAIN}',
+    algorithms: ['RS256']
+});
 
 const mountRoutes = require('./routes');
 //
 // const index = require('./routes/index');
 // const users = require('./routes/users');
 
-const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,5 +71,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(5432);
+console.log('Listening on localhost:5432');
 
 module.exports = app;

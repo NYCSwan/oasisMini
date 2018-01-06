@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import PagerBack from './pagerBack.react';
 
 class SiteHeader extends Component {
+  static propTypes = {
+    auth: PropTypes.objectOf(PropTypes.object).isRequired
+  }
 
   handleSelect = (event, eventKey) => {
     console.log(`selected ${eventKey}`);
@@ -24,8 +27,8 @@ class SiteHeader extends Component {
   }
 
   render() {
-    const { title, match } = this.props;
-    const { isAuthenticated } = this.props.auth;
+    const { title, match, auth } = this.props;
+    // debugger;
     return (
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
         <Navbar.Header>
@@ -47,10 +50,10 @@ class SiteHeader extends Component {
           </Nav>
         </Navbar.Collapse>
         {
-             !isAuthenticated() && (
+             !auth.isAuthenticated() && (
                  <Button
                    id="qsLoginBtn"
-                   bsStyle="primary"
+                   bsStyle="info"
                    className="btn-margin"
                    onClick={this.login}
                  >
@@ -59,10 +62,10 @@ class SiteHeader extends Component {
                )
            }
            {
-             isAuthenticated() && (
+             auth.isAuthenticated() && (
                  <Button
                    id="qsLogoutBtn"
-                   bsStyle="primary"
+                   bsStyle="info"
                    className="btn-margin"
                    onClick={this.logout}
                  >
@@ -81,6 +84,14 @@ SiteHeader.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.object,
     path: PropTypes.string
+  }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.object
+  }).isRequired,
+  auth: PropTypes.shape({
+    login: PropTypes.func,
+    logout: PropTypes.func,
+    isAuthenticated: PropTypes.func
   }).isRequired
 }
 
