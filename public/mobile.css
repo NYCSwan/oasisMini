@@ -73,7 +73,7 @@ and (max-device-width : 480px) {
       font-size: 14px;
     }
 
-    .basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .temperate.link, .customize.link {
+    .Basil, .Bell.Pepper, .Broccoli, .Cilantro, .Green.Beans, .Lettuce, .Tomato, .Kale, .Temperate.link, .Customize.link {
       font-family: Futura-Lig;
       background-repeat:no-repeat;
       background-size: 100% 100%;

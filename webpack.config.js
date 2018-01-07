@@ -33,7 +33,7 @@ module.exports = {
     publicPath: '/pubic/',
     historyApiFallback: true,
     proxy: [{
-      context: ["/auth", "/api"],
+      context: ["/api"],
       target: "http://localhost:3000"
     }],
     headers: {
@@ -53,6 +53,11 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.svg$/,
+        loader: require.resolve('./src/utils/dangerouslySetInnerHTML.loader'),
         exclude: /node_modules/
       }
     ]

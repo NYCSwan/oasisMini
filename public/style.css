@@ -434,7 +434,7 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
     background-color: rgba(0,0,0,0.4);
   }
 
-.basil, .bell.Pepper, .broccoli, .cilantro, .green.Beans, .lettuce, .tomato, .kale, .customize {
+.Basil, .Bell.Pepper, .Broccoli, .Cilantro, .Green.Beans, .Lettuce, .Tomato, .Kale, .Customize {
   font-family: Futura-Lig;
   background-repeat:no-repeat;
   background-size: 100% 100%;
@@ -463,42 +463,42 @@ div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
   text-align: center;
 }
 
-.link.basil {
+.link.Basil {
   background-image: url(/public/img/basil_button.png);
 
 }
 
-.link.bell.Pepper {
+.link.Bell.Pepper {
   background-image: url(/public/img/bell_pepper_button.png);
 
 }
 
-.link.broccoli {
+.link.Broccoli {
   background-image: url(/public/img/broccoli_button.png);
 
 }
 
-.link.cilantro{
+.link.Cilantro{
   background-image: url(/public/img/cilantro_button.png);
 }
 
-.link.kale{
+.link.Kale{
   background-image: url(/public/img/kale_button.png);
 }
 
-.link.lettuce{
+.link.Lettuce{
   background-image: url(/public/img/lettuce_button.png);
 }
 
-.link.tomato{
+.link.Tomato{
   background-image: url(/public/img/tomato_button.png);
 }
 
-.link.customize {
+.link.Customize {
   background-image: url(/public/img/customize_button.jpg);
 }
 
-.link.green.Beans {
+.link.Green.Beans {
   background-image: url(/public/img/green_bean_button.png)
 }
 .text.Futura-Lig.center h3{
