@@ -57,3 +57,8 @@ router.get('/v1/climates', async (req, res, next) => {
  const { rows } = await db.query("SELECT * FROM climates;");
  res.send(rows);
 });
+
+router.get('/v1/plant_recipes', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM plant_recipes;");
+ res.send(rows);
+});
