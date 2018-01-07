@@ -10,7 +10,7 @@ class SiteHeader extends Component {
     auth: PropTypes.objectOf(PropTypes.object).isRequired
   }
 
-  handleSelect = (event, eventKey) => {
+  handleSelect = (eventKey) => {
     console.log(`selected ${eventKey}`);
   }
 

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Radio } from 'react-bootstrap';
-import upperFirst from 'lodash/upperFirst';
 
-class FormGrouping extends Component {
+class PlantFormGroup extends Component {
   static propTypes = {
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
     onClick: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired
   }
 
   componentWillReceiveProps({onClick}) {
@@ -24,15 +22,14 @@ class FormGrouping extends Component {
 
   render() {
     console.log('render form_group');
-    // debugger
     const radioBtns = this.props.options.map(value => {  // eslint-disable-line
        return <Radio
-         name={`radioGroup${this.props.id}`}
-         key={value}
-         className={`link ${value}`}
+         name={`radioGroup${value.shortname}`}
+         key={value.shortname}
+         className={`link ${value.shortname}`}
          onChange={this.handleClick}
          >
-         { upperFirst(value) }
+         { value.shortname }
        </Radio>
      })
 
@@ -44,4 +41,4 @@ class FormGrouping extends Component {
   }
 }
 
-export default FormGrouping;
+export default PlantFormGroup;

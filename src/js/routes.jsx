@@ -26,7 +26,7 @@ export const makeMainRoutes = () => { // eslint-disable-line
           <Route exact path="/" render={(props) => <Homepage auth={auth} {...props} />} />
           <Route
             path="/newgrow"
-            render={(props) => <NewGrow  auth={auth} presets={Preload.plantTypes} chambers={Preload.chambers} climates={Preload.climates} {...props} />}
+            render={(props) => <NewGrow auth={auth} {...props} />}
           />
           <Route
             path="/existinggrow"

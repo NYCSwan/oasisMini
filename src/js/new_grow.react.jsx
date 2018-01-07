@@ -3,63 +3,48 @@ import PropTypes from 'prop-types';
 import { form, Button } from 'react-bootstrap';
 import upperFirst from 'lodash/upperFirst';
 import pickBy from 'lodash/pickBy';
-import findIndex from 'lodash/findIndex';
 import findKey from 'lodash/findKey';
 
 import SiteHeader from './Header.react';
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import CustomizeSensors from './customize_sensors.react';
-import FormGrouping from './form_group.react';
+import PlantFormGroup from './planttype_form_group.react';
+import ChamberFormGroup from './chamber_options_form.react';
 import Directions from './directions.react';
 import PlantingDirections from './planting_directions.react';
-import { getPlantRecipeData } from '../utils/api_calls';
+import { getPlantRecipeData, getChamberData } from '../utils/api_calls';
 
 class NewGrow extends Component {
   static propTypes = {
-    presets: PropTypes.arrayOf(PropTypes.object).isRequired,
-    climates: PropTypes.arrayOf(PropTypes.object).isRequired,
     match: PropTypes.shape({
       params: PropTypes.object
     }).isRequired,
-    auth: PropTypes.objectOf(PropTypes.object).isRequired
-
+    auth: PropTypes.shape({
+      isAuthenticated: PropTypes.func,
+      auth0: PropTypes.object
+    }).isRequired
   }
 
   state = {
-    plantTypes: [
-      'basil',
-      'tomato',
-      'lettuce',
-      'kale',
-      'broccoli',
-      'cilantro',
-      'bell Pepper',
-      'green Beans',
-      'customize'
-    ],
-    chamberOptions: [
-      'Chamber1',
-      'Chamber2',
-      'Chamber3'
-    ],
+    plantTypes: [],
+    chamberOptions: [],
     isBalanced: false,
     selectedPlant:'',
     selectedChamber:'',
-    settings: [],
-    directions: [],
     showDirections: false,
-    plantRecipes: []
+    newGrowPlant: null
   }
 
   componentDidMount() {
     console.log('component did mount new grow');
     this.getPlantRecipes();
+    this.getChamberOptions();
   }
 
   shouldComponentUpdate (newState) {
     console.log('shouldComponentUpdate new grow');
-    return this.state.selectedChamber !== newState.selectedChamber || this.state.settings !== newState.settings || this.state.selectedPresetId !== newState.selectedPresetId || this.state.selectedPlant !== newState.selectedPlant || this.state.directions !== newState.directions || this.state.plantRecipes !== newState.plantRecipes
+    return this.state.selectedChamber !== newState.selectedChamber || this.state.selectedPlant !== newState.selectedPlant || this.state.plantTypes !== newState.plantTypes || this.state.newGrowPlant !== newState.newGrowPlant || this.state.chamberOptions !== newState.chamberOptions
   }
 
   componentDidUpdate() {
@@ -69,12 +54,18 @@ class NewGrow extends Component {
   getPlantRecipes = () => {
     console.log('get plant recipes');
 
-    const test = getPlantRecipeData()
-    console.log(test);
+  getPlantRecipeData().then((plantRecipes) => {
+    console.log(plantRecipes);
+    this.setState({ plantTypes: plantRecipes });
+    });
+  }
 
-    debugger;
-    test.then((plantRecipes) => {
-      this.setState({ plantRecipes });
+  getChamberOptions = () => {
+    console.log('get chamber options');
+
+    getChamberData().then((chamberOptions) => {
+      console.log(chamberOptions);
+      this.setState({ chamberOptions });
     });
   }
 
@@ -88,63 +79,68 @@ class NewGrow extends Component {
   handlePlantRadioClick = (e) => {
     console.log(`handlePlantRadioClick: ${e.target.labels[0].innerText}`);
     this.setState({ selectedPlant: e.target.labels[0].innerText })
-    this.handlePresetSelection(e);
+    this.handleNewPlantSelection(e);
   }
 
-  handlePresetSelection = (value) => {
-    console.log('handlePresetSelection new grow');
-    const { presets } = this.props;
-
-    if (value) {
-      const tempPlant = value.target.labels[0].innerText;
-      const idx = findIndex(presets, (plant) => plant.name === tempPlant);
-      const currentPlantType = pickBy(presets, (plant) => plant.name === tempPlant );
-      this.setState({ selectedPresetId: currentPlantType[idx].climate_id}, () => { console.log(this.state.selectedPresetId) });
-    }  else if (this.state.selectedPresetId === '') {
-      const tempPlant = this.state.selectedPlant;
-      const idx = findIndex(presets, (plant) => plant.name === tempPlant);
-      const currentPlantType = pickBy(presets, (plant) => plant.name === tempPlant );
-      console.log(`else setstate: ${currentPlantType[idx].climate_id}`);
-
-      this.setState({ selectedPresetId: currentPlantType[idx].climate_id});
-    } else {
-      console.log('what the hell')
-    }
+  handleNewPlantSelection = (e) => {
+    console.log('handleNewPlantSelection new grow');
+    const tempPlant = e.target.labels[0].innerText;
+    const currentPlantType = pickBy(this.state.plantTypes, (plant) => plant.shortname === tempPlant );
+    this.setState({ newGrowPlant: currentPlantType });
   }
 
-  updateSettings = () => {
-    console.log('update settings new grow');
-    // update state.settings with plantTypes info
-    const { presets, climates } = this.props;
+  // handlePresetSelection = (value) => {
+  //   const { presets } = this.props;
+  //
+  //   if (value) {
+  //     const tempPlant = value.target.labels[0].innerText;
+  //     const idx = findIndex(presets, (plant) => plant.name === tempPlant);
+  //     this.setState({ selectedPresetId: currentPlantType[idx].climate_id}, () => { console.log(this.state.selectedPresetId) });
+  //   }  else if (this.state.selectedPresetId === '') {
+  //     const tempPlant = this.state.selectedPlant;
+  //     const idx = findIndex(presets, (plant) => plant.name === tempPlant);
+  //     const currentPlantType = pickBy(presets, (plant) => plant.name === tempPlant );
+  //     console.log(`else setstate: ${currentPlantType[idx].climate_id}`);
+  //
+  //     this.setState({ selectedPresetId: currentPlantType[idx].climate_id});
+  //   } else {
+  //     console.log('what the hell');
+  //   }
+  // }
 
-    const chamber = this.state.selectedChamber;
-    const currentPlantState = upperFirst(this.state.selectedPlant);
-    const currentPresetId = this.state.selectedPresetId;
-    const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
-    const currentClimate = pickBy(climates, (climate) => climate.id === currentPresetId )
-    const key = findKey(currentClimate);
-    const climateName = currentClimate[key].type;
-    const currentSettings = [];
-    const plantKey = findKey(currentPlantType);
-
-    currentSettings.push(currentPlantType[plantKey].name);
-    currentSettings.push(`${upperFirst(climateName)}, ${currentPlantType[plantKey].temperature}`);
-    currentSettings.push(`pH ${currentPlantType[plantKey].pH}`);
-    currentSettings.push(`Chamber ${chamber}`);
-    this.setState({ settings: currentSettings });
-  }
-
-  updateDirections = () => {
-    console.log('update directions new grow');
-    const { presets } = this.props;
-    const currentPlantState = upperFirst(this.state.selectedPlant);
-    const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
-    const tempDirections = [];
-    const key = findKey(currentPlantType);
-    tempDirections.push(currentPlantType[key].grow_directions);
-    tempDirections.push("This may take about 5 minutes...");
-    this.setState({ directions: tempDirections });
-  }
+  // updateSettings = () => {
+    // console.log('update settings new grow');
+  //   // update state.settings with plantTypes info
+  //   const { presets, climates } = this.props;
+  //
+  //   const chamber = this.state.selectedChamber;
+  //   const currentPlantState = upperFirst(this.state.selectedPlant);
+  //   const currentPresetId = this.state.selectedPresetId;
+  //   const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
+  //   const currentClimate = pickBy(climates, (climate) => climate.id === currentPresetId )
+  //   const key = findKey(currentClimate);
+  //   const climateName = currentClimate[key].type;
+  //   const currentSettings = [];
+  //   const plantKey = findKey(currentPlantType);
+  //
+  //   currentSettings.push(currentPlantType[plantKey].name);
+  //   currentSettings.push(`${upperFirst(climateName)}, ${currentPlantType[plantKey].temperature}`);
+  //   currentSettings.push(`pH ${currentPlantType[plantKey].pH}`);
+  //   currentSettings.push(`Chamber ${chamber}`);
+  //   this.setState({ settings: currentSettings });
+  // }
+  //
+  // updateDirections = () => {
+  //   console.log('update directions new grow');
+  //   const { presets } = this.props;
+  //   const currentPlantState = upperFirst(this.state.selectedPlant);
+  //   const currentPlantType = pickBy(presets, (plant) => plant.name === currentPlantState );
+  //   const tempDirections = [];
+  //   const key = findKey(currentPlantType);
+  //   tempDirections.push(currentPlantType[key].grow_directions);
+  //   tempDirections.push("This may take about 5 minutes...");
+  //   this.setState({ directions: tempDirections });
+  // }
 
   updatePhBalance = (e) => {
     console.log('timeout 0');
@@ -170,7 +166,7 @@ class NewGrow extends Component {
 
   render() {
     console.log('render new grow');
-    console.log(this.state.plantRecipes)
+
     return (
       <div className="newGrow container">
         <SiteHeader title="New Grow" auth={this.props.auth} match={this.props.match} />
@@ -182,8 +178,7 @@ class NewGrow extends Component {
               <h3>Select A Plant</h3>
               <h3>OR</h3>
               <h3>Customize Your Own Settings</h3>
-              <FormGrouping
-                id={1}
+              <PlantFormGroup
                 options={this.state.plantTypes} onClick={this.handlePlantRadioClick}
                 />
               </div>
@@ -207,9 +202,9 @@ class NewGrow extends Component {
             ?
             <div className="chamberOptions">
               <div className="chamberImage">
-                <FormGrouping
-                  id={2}
+                <ChamberFormGroup
                   options={this.state.chamberOptions}
+                  onClick={this.handleChamberRadioClick}
                 />
               </div>
               <h3 id="chamber" className="directions Futura-Lig">Select A Chamber</h3>

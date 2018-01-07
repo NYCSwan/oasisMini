@@ -9,9 +9,9 @@ class Homepage extends Component {
     auth: PropTypes.objectOf(PropTypes.func).isRequired
   }
 
-  state = {
-    users: []
-  }
+  // state = {
+  //   users: []
+  // }
 
   // get data from db with axios
   handleOpen = () => {

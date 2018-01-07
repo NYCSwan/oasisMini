@@ -34,7 +34,7 @@ FilterButtonGroup.propTypes = {
   chamberId: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.number).isRequired,
   onChange: PropTypes.func.isRequired,
-  filledChambers: PropTypes.arrayOf(PropTypes.object).isRequired
+  // filledChambers: PropTypes.arrayOf(PropTypes.object).isRequired
 
 }
 export default FilterButtonGroup;

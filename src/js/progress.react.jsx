@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Progress extends Component {
-  render() {
-    return (
-      <div> Progress Pg!</div>
-    )
-  }
-}
+const Progress =() => (
+
+      <div> Progress Page!</div>
+)
 
 export default Progress;

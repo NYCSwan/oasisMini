@@ -75,7 +75,7 @@ class Monitor extends Component {
   }
 
   render() {
-    const { plants, sensorData } = this.props;
+    const { plants } = this.props;
     const plantByChamber = pickBy(plants, (plant) => plant.chamber_id === this.state.chamberId);
     const phReadingIdx = findLastIndex(this.state.chamberData, (data) => data.sensors.pH !== "na");
     // debugger
