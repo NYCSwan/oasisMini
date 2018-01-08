@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { form } from 'react-bootstrap';
+import { form, Button } from 'react-bootstrap';
 import upperFirst from 'lodash/upperFirst';
 import pickBy from 'lodash/pickBy';
 import findIndex from 'lodash/findIndex';
@@ -12,11 +12,15 @@ import PagerFwd from './pagerFwd.react';
 import CustomizeSensors from './customize_sensors.react';
 import FormGrouping from './form_group.react';
 import Directions from './directions.react';
+import PlantingDirections from './planting_directions.react';
 
 class NewGrow extends Component {
   static propTypes = {
     presets: PropTypes.arrayOf(PropTypes.object).isRequired,
-    climates: PropTypes.arrayOf(PropTypes.object).isRequired
+    climates: PropTypes.arrayOf(PropTypes.object).isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.object
+    }).isRequired,
   }
 
   state = {
@@ -40,8 +44,8 @@ class NewGrow extends Component {
     selectedPlant:'',
     selectedChamber:'',
     settings: [],
-    // phValue:0,
-    directions: []
+    directions: [],
+    showDirections: false
   }
 
   componentDidMount() {
@@ -140,12 +144,19 @@ class NewGrow extends Component {
       console.log('handel form shoudl have chamber state')  });
   }
 
+  showGrowDirections = () => {
+    this.setState({
+      showDirections: true,
+      isBalanced: false
+     })
+  }
+
   render() {
     console.log('render new grow');
 
     return (
       <div className="newGrow container">
-        <SiteHeader title="New Grow" />
+        <SiteHeader title="New Grow" match={this.props.match} />
 
         <form className='new_grow_form'>
           { (this.state.selectedPlant === '')
@@ -182,15 +193,18 @@ class NewGrow extends Component {
                 <FormGrouping
                   id={2}
                   options={this.state.chamberOptions}
-                  onClick={this.handleChamberRadioClick} />
+                />
               </div>
               <h3 id="chamber" className="directions Futura-Lig">Select A Chamber</h3>
+              <a href='/directions' className="btn btn-default">Submit
+              </a>
             </div>
             :
              null
           }
         </form>
-        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '')
+
+        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.selectedPreset !== '' && this.state.isBalanced === false )
         ?
           <Directions
             settings={this.state.settings}
@@ -202,10 +216,29 @@ class NewGrow extends Component {
         :
         null
         }
-        <div className="pagers">
-          <PagerBack />
-          <PagerFwd />
-        </div>
+        { (this.state.isBalanced === true)
+          ?
+          <Button
+            onClick={this.showDirections}>Next</Button>
+          :
+          null
+        }
+        { (this.state.showDirections === true)
+          ?
+          <PlantingDirections
+            directions={this.state.directions}
+            isBalanced={this.state.isBalanced}
+            handleClick={this.submitGrowChange}
+            settings={this.state.settings}
+          />
+          :
+          null
+        }
+          <PagerBack
+            className="grow" />
+          <PagerFwd
+            className="grow" />
+
       </div>
     )
   }

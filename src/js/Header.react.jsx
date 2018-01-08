@@ -8,17 +8,15 @@ import PagerBack from './pagerBack.react';
 class SiteHeader extends Component {
 
   handleSelect = (event, eventKey) => {
-    event.preventDefault();
     console.log(`selected ${eventKey}`);
   }
 
   render() {
-    const headerTitle = this.props.title;
-
+    const { title, match } = this.props;
     return (
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
         <Navbar.Header>
-              <Navbar.Brand className="brandLogo" id="navbarbrand">
+              <Navbar.Brand className={`brandLogo ${match.path}`} id="navbarbrand">
                 <Link to="/" href="/" className="logo img-responsive center-block" />
                  <div className='backImage'>
                    <PagerBack
@@ -29,18 +27,24 @@ class SiteHeader extends Component {
         </Navbar.Header>
         <Navbar.Collapse className="bs-navbar-collapse">
           <Nav bsStyle="pills" pullRight onSelect={this.handleSelect}>
-            <NavItem eventKey={1} href="#"><img src="../public/img/My_Account_Button.png" className="headerLinks img-responsive account" alt="My Account" /></NavItem>
-            <NavItem eventKey={2} href="#"><img src="../public/img/Support_button.png" className="headerLinks img-responsive support" alt="Support" /></NavItem>
+            <NavItem className="navItem" EventKey={3} href="/monitor">Monitor</NavItem>
+            <NavItem className="navItem" eventKey={4} href="/controls">Controls</NavItem>
+            <NavItem className="navItem" eventKey={1} href="#">My Account</NavItem>
+            <NavItem className="navItem" eventKey={2} href="#">Support</NavItem>
           </Nav>
         </Navbar.Collapse>
-        <h1 className="title Futura-Lig">{headerTitle}</h1>
+        <h1 className="title Futura-Lig">{title}</h1>
       </Navbar>
     )
   }
 };
 
 SiteHeader.propTypes = {
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.object,
+    path: PropTypes.string
+  }).isRequired
 }
 
 export default SiteHeader;

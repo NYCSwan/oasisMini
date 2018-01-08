@@ -1,65 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import SiteHeader from './Header.react';
-import GrowContainer from './grow_container.react';
 
-class Homepage extends Component {
-  state = {
-    showGrowOptions: false,
-    showMonitor: true
-  }
+const Homepage = (props) => (
 
-  shouldComponentUpdate(newState) {
-    return this.state.showGrowOptions !== newState.showGrowOptions || this.state.showMonitor !== newState.showMonitor
-  }
-
-  handleGrowClick = () => {
-    console.log('handle click homepage');
-    this.setState({
-      showGrowOptions: true,
-      showMonitor: false
-    })
-  }
-
-  render() {
-    return (
+  <div>
+    <SiteHeader title="Homepage" match={props.match} />
 
       <div>
-        <SiteHeader title="Homepage"/>
-        { (this.state.showMonitor === true)
-          ?
-          <div>
-            <p> Notifications would appear here. </p>
-            <div
-            className="monitorOrGrow container"
-            >
-              <Button
-              bsStyle="primary"
-              className="homepage link Futura-Lig"
-              href="/monitor">
-              Monitor Your Garden
-              </Button>
-              <Button
-              bsStyle="primary"
-              className="homepage link Futura-Lig" href="#"
-              onClick={this.handleGrowClick}>
-              Grow Something
-              </Button>
-            </div>
-          </div>
-          :
-          null
-        }
-        { this.state.showGrowOptions === true
-          ?
-          <GrowContainer />
-          :
-          null
-        }
+        <p> Notifications would appear here. </p>
+        <div
+        className="monitorOrGrow container"
+        >
+          <Button
+            bsStyle="primary"
+            className="homepage link Futura-Lig"
+            href="/monitor">
+          Monitor Your Garden
+          </Button>
+          <Button
+            bsStyle="primary"
+            className="homepage link Futura-Lig" href="/monitor"
+          >
+          Grow Something
+          </Button>
+        </div>
       </div>
-    )
-  }
-};
+  </div>
+)
+
+Homepage.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.object
+  }).isRequired,
+}
 
 export default Homepage;

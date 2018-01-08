@@ -8,6 +8,9 @@ import ExistingGrow from './existing_grow.react';
 import Monitor from './monitor.react';
 import Tutorials from './tutorials.react';
 import Sensor from './sensor.react';
+import Progress from './progress.react';
+import ControlSettings from './control_settings.react';
+import DirectionsContainer from './directions_container.react';
 
 const FourOhFour = () => <h1>404</h1>;
 
@@ -22,17 +25,37 @@ const App = () => (
         />
         <Route
           path="/existinggrow"
-          component={(props) => <ExistingGrow currentGrows={Preload.growing_plants} chambers={Preload.chambers} climates={Preload.climates} plantTypes={Preload.plantTypes} {...props} />} 
+          component={(props) => <ExistingGrow currentGrows={Preload.growing_plants} chambers={Preload.chambers} climates={Preload.climates} plantTypes={Preload.plantTypes} {...props} />}
+        />
+        <Route
+          path="/controls"
+          component={(props) => <ControlSettings currentGrows={Preload.growing_plants} chambers={Preload.chambers} climates={Preload.climates} plantTypes={Preload.plantTypes} {...props} />}
         />
         <Route
           path="/monitor"
-          component={(props) => <Monitor sensorData={Preload.sensor_data} plants={Preload.growing_plants} {...props} />}
+          component={(props) => <Monitor sensorData={Preload.sensor_data} plants={Preload.growing_plants}
+          chambers={Preload.chambers} {...props} />}
         />
         <Route
           path="/sensors/:id"
           component={(props) =>
             <Sensor sensorData={Preload.sensor_data} plants={Preload.growing_plants} {...props} />}
         />
+        {/* / <Route
+          path="/directions"
+          component={(props) => <DirectionsContainer sensorData={Preload.sensor_data} plants={Preload.growing_plants}
+          chambers={Preload.chambers} {...props} />}
+          />
+          <Route
+        //   path="/plants/:id"
+        //   component={(props) =>
+        //     <Plant plants={Preload.growing_plants} {...props} />}
+        // /> */}
+        <Route
+          path="/timeline"
+          component={(props) =>
+            <Progress currentGrows={Preload.growing_plants} chambers={Preload.plantTypes} {...props} />}
+          />
         <Route path="/tutorials" component={Tutorials} />
         <Route component={FourOhFour} />
       </Switch>

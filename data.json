@@ -12,7 +12,7 @@
       "name": "Tomatoes",
       "climate_id": "1",
       "day_of_cycle": "5",
-      "chamber_id": "3"
+      "chamber_id": "2"
     }
   ],
   "plantTypes": [
@@ -2092,7 +2092,7 @@
       "chamber_id": "1",
       "sensors": {
         "temperature": "77",
-        "humidity": "50",
+        "humidity": "53",
         "pH": "na",
         "PPM": "na",
         "height": "na",
