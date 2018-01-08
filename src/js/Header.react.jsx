@@ -7,7 +7,10 @@ import PagerBack from './pagerBack.react';
 
 class SiteHeader extends Component {
   static propTypes = {
-    auth: PropTypes.objectOf(PropTypes.object).isRequired
+    auth: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: PropTypes.shape({
+      replace: PropTypes.func
+    }).isRequired
   }
 
   handleSelect = (eventKey) => {

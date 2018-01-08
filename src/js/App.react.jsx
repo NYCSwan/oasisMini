@@ -14,9 +14,16 @@ import SiteHeader from './Header.react';
 
 class App extends Component {
   static propTypes = {
-    auth: PropTypes.objectOf(PropTypes.object).isRequired,
+    auth: PropTypes.shape({
+      isAuthenticated: PropTypes.func,
+      auth0: PropTypes.object,
+      login: PropTypes.func,
+      logout: PropTypes.func
+    }).isRequired,
     history: PropTypes.objectOf(PropTypes.object).isRequired,
+    match: PropTypes.arrayOf(PropTypes.object).isRequired
   }
+
   goTo = (route) => {
     this.props.history.replace(`/${route}`);
   }
@@ -34,7 +41,7 @@ class App extends Component {
 
     return (
       <div className="appContainer">
-        <SiteHeader />
+        <SiteHeader title="" auth={this.props.auth} match={this.props.match}/>
       </div>
     )
   }

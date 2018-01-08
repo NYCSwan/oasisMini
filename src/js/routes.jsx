@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 
 import Callback from '../Callback/Callback.react';
 import Auth from '../Auth/Auth';
@@ -14,13 +14,21 @@ import Tutorials from './tutorials.react';
 import Sensor from './sensor.react';
 import Progress from './progress.react';
 import ControlSettings from './control_settings.react';
+import PlantContainer from './plant_container.react';
+import PlantList from './plant_list.react';
 
 const FourOhFour = () => <h1>404</h1>;
 const auth = new Auth();
 
+const handleAuthentication = ({location}) => {
+  if (/access_token|id_token|error/.test(location.hash)) {
+    auth.handleAuthentication();
+  }
+}
+
 export const makeMainRoutes = () => { // eslint-disable-line
   return ( // eslint-disable-line
-    <BrowserRouter history={history} component={App}>
+    <Router history={history} component={App}>
       <div>
         <Switch>
           <Route exact path="/" render={(props) => <Homepage auth={auth} {...props} />} />
@@ -52,10 +60,20 @@ export const makeMainRoutes = () => { // eslint-disable-line
               <Progress auth={auth} currentGrows={Preload.growing_plants} chambers={Preload.plantTypes} {...props} />}
             />
           <Route path="/tutorials" render={Tutorials} />
+          <Route
+            path="/plants"
+            render={(props) => <PlantList auth={auth} {...props} />} />
+          <Route
+            path="/plant/:id"
+            render={(props) => <PlantContainer auth={auth} {...props} />}
+          />
+          <Route path="/callback" render={(props) => {
+            handleAuthentication(props);
+            return <Callback {...props} />
+          }}/>
           <Route render={FourOhFour} />
-          <Route path="/callback" render={(props) => <Callback {...props} />} />
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   )
 }

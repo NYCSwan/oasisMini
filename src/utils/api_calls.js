@@ -8,7 +8,7 @@ function getSensorMeasurements() {
   return axios.get(url).then(response => response.data);
 }
 
-function getClimates() {
+function getClimateData() {
   const url = `${BASE_URL}/api/v1/climates`;
   return axios.get(url).then(response => response.data);
 }
@@ -22,6 +22,11 @@ function getGrowingPlants() {
   const url = `${BASE_URL}/api/v1/growing_plants`;
   return axios.get(url).then(response => response.data);
 }
+// not sure it works
+// function postNewGrowingPlant() {
+//   const url = `${BASE_URL}/api/v1/growing_plants`;
+//   return axios.post(url).then(response => response.data);
+// }
 
 function getPlantRecipeData() {
   const url = `${BASE_URL}/api/v1/plant_recipes`;
@@ -29,4 +34,4 @@ function getPlantRecipeData() {
   return axios.get(url).then(response => response.data);
 }
 
-export { getSensorMeasurements, getClimates, getChamberData, getPlantRecipeData, getGrowingPlants };
+export { getSensorMeasurements, getClimateData, getChamberData, getPlantRecipeData, getGrowingPlants };

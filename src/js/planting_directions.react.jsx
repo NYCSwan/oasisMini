@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
-import ListGroupContainer from './ListGroup.react';
+
+import SettingsList from './settings_list.react';
 
 class PlantingDirections extends Component {
   static propTypes = {
-    settings: PropTypes.arrayOf(PropTypes.string).isRequired,
-    directions: PropTypes.arrayOf(PropTypes.string).isRequired,
-    // plant: PropTypes.string.isRequired,
-    handleClick: PropTypes.func.isRequired,
-    isBalanced: PropTypes.bool.isRequired
+    newGrowPlant: PropTypes.arrayOf(PropTypes.object).isRequired,
+    climates: PropTypes.arrayOf(PropTypes.object).isRequired,
+    handleClick: PropTypes.func.isRequired
   }
   // state = {
   //   displaySettings: []
   // }
 
   shouldComponentUpdate(newProps) {
-    return this.props.isBalanced !== newProps.isBalanced
+     this.props.newGrowPlant !== newProps.newGrowPlant || this.props.climates !== newProps.climates
   }
 
   handleClickUpdate = (e) => {
@@ -25,14 +24,15 @@ class PlantingDirections extends Component {
 
   render() {
     console.log('render directions');
-    const growingDirections = this.props.directions.slice(2);
+    const { newGrowPlant, climates } = this.props;
+    const growingDirections = this.props.newGrowPlant
+    ;
     // debugger
     return (
       <div className="directions container">
-        <div className="directions left">
-          <ListGroupContainer
-            items={this.props.settings} />
-        </div>
+        <SettingsList
+          climates={climates}
+          newGrowPlant={newGrowPlant} />
         <div className="directions right" pullRight>
           <Grid>
               <Row key="growingDirections">
