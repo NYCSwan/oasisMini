@@ -1,25 +1,17 @@
-// import React from 'react';
-// import LoadingIcon from './loading.react';
-//
-// const Callback = () => (
-//   // After authentication, loading while app sets up client session, redirects to /
-//
-//       <div className='callback'>
-//         {LoadingIcon}
-//       </div>
-// )
-//
-//
-// export default Callback;
+import React, { Component } from 'react';
+import { setIdToken, setAccessToken } from '../utils/AuthService';
 
-import React from 'react';
-import loading from './loading.svg';
+class Callback extends Component {
 
-const Callback = () => (
+  componentDidMount() {
+    setAccessToken();
+    setIdToken();
+    window.location.href = "/";
+  }
 
-      <div>
-        <img src={loading} alt="loading"/>
-      </div>
-    );
+  render() {
+    return null;
+  }
+}
 
 export default Callback;

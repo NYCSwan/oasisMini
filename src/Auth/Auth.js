@@ -6,7 +6,7 @@ import history from '../js/history';
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: 'oasis-mini.auth0.com',
-    clientID: 'ANf47C0ykhgykGB33ZpDP7hHj58RW7z6',
+    clientID: 'ymiw5gyQidgNQ524q9Rr18BuWDqbX6PC',
     redirectUri: 'http://localhost:8080/callback',
     audience: 'https://oasis-mini.auth0.com/userinfo',
     responseType: 'token id_token',

@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import HomePage from './Homepage.react';
+import { Button } from 'react-bootstrap';
+// import { Router, Route } from 'react-router-dom';
+// import { withRouter } from 'react-router';
+// import history from './history';
+// import HomePage from './Homepage.react';
 import SiteHeader from './Header.react';
-import MonitorSubLayout from './monitor_sublayout.react';
-import ControlSubLayout from './control_sublayout.react';
-import PlantsSubLayout from './plants_sublayout.react';
-import Callback from '../Callback/Callback.react';
+import HomePage from './Homepage.react';
 
-const FourOhFour = () => <h1>404</h1>;
+// import MonitorSubLayout from './monitor_sublayout.react';
+// import ControlSubLayout from './control_sublayout.react';
+// import PlantsSubLayout from './plants_sublayout.react';
+// import Callback from '../Callback/Callback.react';
+// import Auth from '../Auth/Auth';
+
+// const auth = new Auth();
 
 class AppLayout extends Component {
   static propTypes = {
@@ -19,9 +25,10 @@ class AppLayout extends Component {
       logout: PropTypes.func
     }).isRequired,
     history: PropTypes.shape({
+      replace: PropTypes.func,
       length: PropTypes.number,
       action: PropTypes.string}).isRequired,
-    match: PropTypes.arrayOf(PropTypes.object).isRequired
+    match: PropTypes.arrayOf(PropTypes.array).isRequired
   }
 
   goTo = (route) => {
@@ -37,32 +44,48 @@ class AppLayout extends Component {
   }
 
   render() {
-   const { auth, match, history } = this.props;
+   const {match, auth} = this.props;
 
-   const handleAuthentication = ({location}) => {
-     if (/access_token|id_token|error/.test(location.hash)) {
-       auth.handleAuthentication();
-     }
-   }
+      // const handleAuthentication = ({location}) => {
+      //   if (/access_token|id_token|error/.test(location.hash)) {
+      //     auth.handleAuthentication();
+      //   }
+      // }
 
     return (
-      <div className="appContainer">
-        <SiteHeader title="" auth={auth} match={match} history={history} />
-        <main>
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/monitor" component={MonitorSubLayout} />
-          <Route path="/plants" component={PlantsSubLayout} />
-          <Route path="/controls" component={ControlSubLayout} />
-          <Route path="/callback" render={(props) => {
-            handleAuthentication(props);
-            return <Callback {...props} />
-          }}/>
-          <Redirect to="/" />
-        </Switch>
-        </main>
-      </div>
+        <div className="appContainer">
+          <SiteHeader title="" auth={auth} match={match} {...this.props} />
+          {
+               !auth.isAuthenticated() && (
+                 <div className="appLayout">
+                   <Button
+                     id="qsLoginBtn"
+                     bsStyle="info"
+                     className="btn-margin"
+                     onClick={this.login}
+                   >
+                     Log In
+                   </Button>
+                   <HomePage {...this.props} />
+                 </div>
+                )
+             }
+             {
+               auth.isAuthenticated() && (
+                   <Button
+                     id="qsLogoutBtn"
+                     bsStyle="info"
+                     className="btn-margin"
+                     onClick={this.logout}
+                   >
+                     Log Out
+                   </Button>
+                 )
+             }
+        </div>
     )
   }
 }
+// const AppLayoutWithRouter = withRouter(AppLayout);
+
 export default AppLayout;

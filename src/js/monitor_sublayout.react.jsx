@@ -8,7 +8,7 @@ import Sensor from './sensor.react';
 const MonitorSubLayout = (props) => (
   <div className="monitor-sub-layout">
       <Switch>
-        <Route path={props.match.path} exact component={Monitor} />
+        <Route path='/monitor' exact component={Monitor} />
         <Route path={`${props.match.path}/:sensor_id`} component={Sensor} />
       </Switch>
   </div>

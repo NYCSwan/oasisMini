@@ -21,18 +21,6 @@ class SiteHeader extends Component {
     console.log(`selected ${eventKey}`);
   }
 
-  goTo = (route) => {
-    this.props.history.replace(`/${route}`);
-  }
-
-  login = () => {
-    this.props.auth.login();
-  }
-
-  logout = () => {
-    this.props.auth.logout();
-  }
-
   render() {
     const { title, match, auth } = this.props;
     // debugger;
@@ -56,30 +44,6 @@ class SiteHeader extends Component {
             <NavItem className="navItem" eventKey={2} href="#">Support</NavItem>
           </Nav>
         </Navbar.Collapse>
-        {
-             !auth.isAuthenticated() && (
-                 <Button
-                   id="qsLoginBtn"
-                   bsStyle="info"
-                   className="btn-margin"
-                   onClick={this.login}
-                 >
-                   Log In
-                 </Button>
-               )
-           }
-           {
-             auth.isAuthenticated() && (
-                 <Button
-                   id="qsLogoutBtn"
-                   bsStyle="info"
-                   className="btn-margin"
-                   onClick={this.logout}
-                 >
-                   Log Out
-                 </Button>
-               )
-           }
         <h1 className="title Futura-Lig">{title}</h1>
       </Navbar>
     )

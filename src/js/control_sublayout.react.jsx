@@ -9,7 +9,7 @@ import ControlSettings from './control_settings.react';
 const ControlSubLayout = ({match}) => (
   <div className="monitor-sub-layout">
       <Switch>
-        <Route path={match.path} exact component={ControlSettings} />
+        <Route path='/controls' exact component={ControlSettings} />
         <Route path={`${match.path}/newgrow`} component={NewGrow} />
         <Route path={`${match.path}/existinggrow`} component={ExistingGrow} />
 

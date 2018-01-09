@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import forEach from 'lodash/forEach';
 
 import { getPlantRecipeData } from '../utils/api_calls';
-import SiteHeader from './Header.react';
 
 class PlantContainer extends Component {
   static propTypes = {

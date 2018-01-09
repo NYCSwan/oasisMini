@@ -15,3 +15,5 @@ if (module.hot) {
     renderApp();
   });
 }
+
+// changed ./App to routes, ntohing working... go back to s
