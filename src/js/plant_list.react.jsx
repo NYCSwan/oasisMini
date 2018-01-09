@@ -44,7 +44,7 @@ class PlantList extends Component {
     return (
 
       <div>
-        <SiteHeader title='Plant List' auth={auth} match={match} {...this.props} />
+        // <SiteHeader title='Plant List' auth={auth} match={match} {...this.props} />
 
         <div className='plantList'>
           <Grid>
@@ -52,7 +52,7 @@ class PlantList extends Component {
                return (
                 <Row key={plant.r_id}>
                   <Col>
-                    <a href={`plant/${plant.r_id}`}>
+                    <a href={`plants/${plant.r_id}`}>
                       {plant.name}
                     </a>
                   </Col>

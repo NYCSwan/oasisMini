@@ -27,8 +27,8 @@ const authCheck = jwt({
         jwksUri: "https://oasismini.auth0.com/.well-known/jwks.json"
     }),
     // This is the identifier we set when we created the API
-    audience: '{YOUR-API-AUDIENCE-ATTRIBUTE}',
-    issuer: '{YOUR-AUTH0-DOMAIN}',
+    audience: '{https://oasis-mini.auth0.com/userinfo}',
+    issuer: '{oasis-mini.auth0.com}',
     algorithms: ['RS256']
 });
 

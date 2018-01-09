@@ -30,7 +30,6 @@ function getGrowingPlants() {
 
 function getPlantRecipeData() {
   const url = `${BASE_URL}/api/v1/plant_recipes`;
-  // debugger
   return axios.get(url).then(response => response.data);
 }
 

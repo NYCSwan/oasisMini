@@ -31,22 +31,25 @@ class PlantContainer extends Component {
 
   getPlantRecipe = () => {
     console.log('get plant recipes, plant container');
-    const plantId = this.props.match.params.id;
 
     getPlantRecipeData().then((plantRecipes) => {
-      const tempPlant = []
-      forEach(plantRecipes, (plant) => {
-        // debugger;
-        if (plant.r_id === plantId) {
-          console.log(plant);
-          tempPlant.push(plant);
-          console.log(tempPlant);
-          return tempPlant;
-        }
-        this.setState({ plant: tempPlant});
-        return tempPlant;
+      this.setPlant(plantRecipes);
+      return plantRecipes;
       })
+    }
+
+  setPlant = (plantRecipes) => {
+    const plantId = this.props.match.params.id;
+    // const tempPlant = []
+    // debugger;
+    forEach((plantRecipes), plant => {
+          console.log(plant);
+          return (plant.r_id === plantId)
+        //   console.log(tempPlant);
+          // return tempPlant;
     })
+    // tempPlant.push(plant);
+    // this.setState({ plant: tempPlant});
   }
 
   render() {
@@ -56,11 +59,14 @@ class PlantContainer extends Component {
 
     return (
       <div>
-        <SiteHeader title={plant.name} auth={auth} match={match} />
-
+        <img src={`${plant.sortname}.jpg`} alt={plant.ahortname} />
         <div className='plantType'>
-          <img src={`${plant.sortname}.jpg`} alt={plant.ahortname} />
           <h2>{plant.name}</h2>
+          <p>Yield: {plant.yield}</p>
+          <p>{}</p>
+          <p>{}</p>
+          <p>{}</p>
+
         </div>
       </div>
     )

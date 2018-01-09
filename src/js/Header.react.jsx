@@ -9,8 +9,12 @@ class SiteHeader extends Component {
   static propTypes = {
     auth: PropTypes.objectOf(PropTypes.object).isRequired,
     history: PropTypes.shape({
-      replace: PropTypes.func
-    }).isRequired
+      replace: PropTypes.func,
+      length: PropTypes.number,
+      action: PropTypes.string
+    }).isRequired,
+    match: PropTypes.arrayOf(PropTypes.object).isRequired
+
   }
 
   handleSelect = (eventKey) => {
