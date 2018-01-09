@@ -57,7 +57,7 @@ SiteHeader.propTypes = {
     path: PropTypes.string
   }).isRequired,
   history: PropTypes.shape({
-    replace: PropTypes.object
+    replace: PropTypes.func
   }).isRequired,
   auth: PropTypes.shape({
     login: PropTypes.func,

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Navbar, Button } from 'react-bootstrap';
 // import { Router, Route } from 'react-router-dom';
 // import { withRouter } from 'react-router';
 // import history from './history';
-// import HomePage from './Homepage.react';
+import Homepage from './Homepage.react';
 import SiteHeader from './Header.react';
-import HomePage from './Homepage.react';
 
 // import MonitorSubLayout from './monitor_sublayout.react';
 // import ControlSubLayout from './control_sublayout.react';
@@ -44,47 +43,58 @@ class AppLayout extends Component {
   }
 
   render() {
-   const {match, auth} = this.props;
-
+   const {match} = this.props;
+   const {isAuthenticated} = this.props.auth;
       // const handleAuthentication = ({location}) => {
       //   if (/access_token|id_token|error/.test(location.hash)) {
       //     auth.handleAuthentication();
       //   }
       // }
 
-    return (
-        <div className="appContainer">
-          <SiteHeader title="" auth={auth} match={match} {...this.props} />
-          {
-               !auth.isAuthenticated() && (
-                 <div className="appLayout">
-                   <Button
-                     id="qsLoginBtn"
-                     bsStyle="info"
-                     className="btn-margin"
-                     onClick={this.login}
-                   >
-                     Log In
-                   </Button>
-                   <HomePage {...this.props} />
-                 </div>
-                )
-             }
-             {
-               auth.isAuthenticated() && (
-                   <Button
-                     id="qsLogoutBtn"
-                     bsStyle="info"
-                     className="btn-margin"
-                     onClick={this.logout}
-                   >
-                     Log Out
-                   </Button>
-                 )
-             }
-        </div>
-    )
-  }
+      return (
+         <div>
+           <Navbar fluid>
+             <Navbar.Header>
+               <Navbar.Brand>
+                 <a href="#">Auth0 - React</a>
+               </Navbar.Brand>
+               <Button
+                 bsStyle="primary"
+                 className="btn-margin"
+                 onClick={this.goTo}
+               >
+                 Home
+               </Button>
+               {
+                 !isAuthenticated() && (
+                     <Button
+                       id="qsLoginBtn"
+                       bsStyle="primary"
+                       className="btn-margin"
+                       onClick={this.login}
+                     >
+                       Log In
+                     </Button>
+                   )
+               }
+               {
+                 isAuthenticated() && (
+                     <Button
+                       id="qsLogoutBtn"
+                       bsStyle="primary"
+                       className="btn-margin"
+                       onClick={this.logout}
+                     >
+                       Log Out
+                     </Button>
+                   )
+               }
+             </Navbar.Header>
+           </Navbar>
+           <Homepage {...this.props} />
+         </div>
+       )
+     }
 }
 // const AppLayoutWithRouter = withRouter(AppLayout);
 

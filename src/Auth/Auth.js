@@ -2,15 +2,16 @@
 
 import auth0 from 'auth0-js';
 import history from '../js/history';
+import { AUTH_CONFIG } from './auth0_variables';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
-    domain: 'oasis-mini.auth0.com',
-    clientID: 'ymiw5gyQidgNQ524q9Rr18BuWDqbX6PC',
-    redirectUri: 'http://localhost:8080/callback',
-    audience: 'https://oasis-mini.auth0.com/userinfo',
+    domain: AUTH_CONFIG.domain,
+    clientID: AUTH_CONFIG.clientId,
+    redirectUri: AUTH_CONFIG.callbackUrl,
+    audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   login = () => {
@@ -21,9 +22,9 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        history.replace('/home');
+        history.replace('/');
       } else if (err) {
-        history.replace('/home');
+        history.replace('/');
         console.log(err);
       }
     });
@@ -36,7 +37,7 @@ export default class Auth {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     // navigate to the home route
-    history.replace('/home');
+    history.replace('/');
   }
 
   logout = () => {
@@ -45,7 +46,7 @@ export default class Auth {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     // navigate to the home route
-    history.replace('/home');
+    history.replace('/');
   }
 
   isAuthenticated = () => {
