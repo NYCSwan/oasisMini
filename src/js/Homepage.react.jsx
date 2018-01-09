@@ -1,40 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
-import SiteHeader from './Header.react';
-
-class Homepage extends Component {
-  static propTypes = {
-    auth: PropTypes.arrayOf(PropTypes.object).isRequired
-  }
-
-  // state = {
-  //   users: []
-  // }
-  // 
-  // // get data from db with axios
-  // handleOpen = () => {
-  //  fetch('/api/v1/sensor_measurements', {
-  //   method: 'GET',
-  //   headers: {
-  //    'Content-Type': 'application/json',
-  //    'Accept': 'application/json',
-  //   }
-  // }).then(res => res.json())
-  // // .then(this.setState({ data: res }));
-  // }
-  //
-  // login = () => {
-  //   this.props.auth.login();
-  // }
-
-  render() {
-    const { isAuthenticated } = this.props.auth;
-
-    return (
+const Homepage = (props) => (
       <div>
-        {isAuthenticated() && (
+        {props.auth.isAuthenticated() && (
           <div>
             <p> Notifications would appear here. </p>
             <div className="monitorOrGrow container">
@@ -46,7 +16,7 @@ class Homepage extends Component {
               </Button>
               <Button
                 bsStyle="primary"
-                className="homepage link Futura-Lig" href="/monitor">
+                className="homepage link Futura-Lig" href="/controls">
                 Grow Something
               </Button>
             </div>
@@ -54,13 +24,12 @@ class Homepage extends Component {
         )}
       </div>
     )
-  }
-}
 
 Homepage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.object
-  }).isRequired,
+    auth: PropTypes.shape({
+      isAuthenticated: PropTypes.func,
+      auth0: PropTypes.object
+    }).isRequired
 }
 
 export default Homepage;

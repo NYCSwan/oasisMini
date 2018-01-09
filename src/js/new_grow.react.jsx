@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { form, Button } from 'react-bootstrap';
+import { form } from 'react-bootstrap';
 import pickBy from 'lodash/pickBy';
 
-import SiteHeader from './Header.react';
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import CustomizeSensors from './customize_sensors.react';
@@ -11,18 +9,18 @@ import PlantFormGroup from './planttype_form_group.react';
 import ChamberFormGroup from './chamber_options_form.react';
 import Directions from './directions.react';
 import PlantingDirections from './planting_directions.react';
-import { getPlantRecipeData, getChamberData, getClimateData } from '../utils/api_calls';
+import { getPlantRecipeData, getChamberData, getClimateData, postNewGrowingPlant } from '../utils/api_calls';
 
 class NewGrow extends Component {
-  static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.object
-    }).isRequired,
-    auth: PropTypes.shape({
-      isAuthenticated: PropTypes.func,
-      auth0: PropTypes.object
-    }).isRequired
-  }
+  // static propTypes = {
+  //   match: PropTypes.shape({
+  //     params: PropTypes.object
+  //   }).isRequired,
+  //   auth: PropTypes.shape({
+  //     isAuthenticated: PropTypes.func,
+  //     auth0: PropTypes.object
+  //   }).isRequired
+  // }
 
   state = {
     plantTypes: [],
@@ -92,11 +90,10 @@ class NewGrow extends Component {
     this.setState({ newGrowPlant: currentPlantType });
   }
 
-  updatePhBalance = (e) => {
+  updatePhBalance = () => {
     console.log('timeout 0');
     setTimeout(20000);
     console.log('timeout 20000');
-    console.log(e);
     this.setState({ isBalanced: true });
   }
 
@@ -109,9 +106,20 @@ class NewGrow extends Component {
 
   showGrowDirections = () => {
     this.setState({
-      showDirections: true,
-      isBalanced: false
+      showDirections: true
      })
+  }
+
+  submitGrowChange = () => {
+    console.log('submit new grow plant -- device_id hardcoded');
+    const response = {};
+    response.chamber_id = this.state.chamberId;
+    response.plant_recipe_id = this.state.newGrowPlant.r_id;
+    response.climate_id = this.state.newGrowPlant.climate_id;
+    response.device_id = 1;
+    response.user_id = 1;
+
+    postNewGrowingPlant(response);
   }
 
   render() {
@@ -119,7 +127,6 @@ class NewGrow extends Component {
 
     return (
       <div className="newGrow container">
-        <SiteHeader title="New Grow" auth={this.props.auth} match={this.props.match} />
 
         <form className='new_grow_form'>
           { (this.state.selectedPlant === '') && (
@@ -132,7 +139,6 @@ class NewGrow extends Component {
                 />
               </div>
         )}
-
           { (this.state.selectedPlant === 'customize' && this.state.selectedChamber === '') && (
             <CustomizeSensors
               climates={this.state.climates}
@@ -142,7 +148,7 @@ class NewGrow extends Component {
               updateSlider={this.updateSliderVal}
             />
           )}
-          { (this.state.selectedChamber === '' && this.state.selectedPlant !== '' && this.showDirections === false) && (
+          { (this.state.selectedChamber === '' && this.state.selectedPlant !== '' && this.state.showDirections === false) && (
             <div className="chamberOptions">
               <div className="chamberImage">
                 <ChamberFormGroup
@@ -157,26 +163,24 @@ class NewGrow extends Component {
           )}
         </form>
 
-        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '') && (
+        { (this.state.selectedChamber !== '' && this.state.selectedPlant !== '' && this.state.isBalanced === false) && (
           <Directions
             newGrowPlant={this.state.newGrowPlant}
             climates={this.state.climates}
             handleClick={this.updatePhBalance}
             isBalanced={this.state.isBalanced}
             selectedChamber={this.state.selectedChamber}
+            onClick={this.showGrowDirections}
           />
         )}
 
-        { (this.state.isBalanced === true) && (this.state.showDirections === false) && (
-          <Button
-            onClick={this.showGrowDirections}>Next</Button>
-          )}
         { (this.state.showDirections === true) && (
           <PlantingDirections
             newGrowPlant={this.state.newGrowPlant}
             climates={this.state.climates}
             isBalanced={this.state.isBalanced}
-            handleClick={this.submitGrowChange}
+            selectedChamber={this.state.selectedChamber}
+
           />
         )}
           <PagerBack

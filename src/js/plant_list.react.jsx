@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import { getPlantRecipeData } from '../utils/api_calls';
-import SiteHeader from './Header.react';
 
 class PlantList extends Component {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.object
-    }).isRequired,
-    auth: PropTypes.shape({
-      isAuthenticated: PropTypes.func,
-      auth0: PropTypes.object
     }).isRequired
+  //   auth: PropTypes.shape({
+  //     isAuthenticated: PropTypes.func,
+  //     auth0: PropTypes.object
+  //   }).isRequired
   }
 
   state = {
@@ -40,12 +39,9 @@ class PlantList extends Component {
   render() {
     console.log('render plant list');
     const { plantTypes } = this.state;
-    const { match, auth } = this.props;
     return (
 
       <div>
-        // <SiteHeader title='Plant List' auth={auth} match={match} {...this.props} />
-
         <div className='plantList'>
           <Grid>
             {plantTypes.map(plant => { // eslint-disable-line

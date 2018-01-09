@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import upperFirst from 'lodash/upperFirst';
 import { Row, Col } from 'react-bootstrap';
 
-import SiteHeader from './Header.react';
 import LineGraph from '../D3/lineGraph';
 import FilterButtonGroup from './filter_button.react';
 
@@ -56,7 +54,6 @@ class Sensor extends Component {
 
         return (
           <div className="sensor container">
-            <SiteHeader title={upperFirst(this.props.match.params.id)} />
             <div className="filter">
               <FilterButtonGroup
                 onChange={this.handleChamberIdChange} chamberId={this.state.chamberId}

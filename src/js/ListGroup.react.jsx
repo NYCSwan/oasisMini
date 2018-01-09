@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 const ListGroupContainer = (props) => (
   <ul>
     { props.items.map(item => { // eslint-disable-line
-       return <li className="Futura-Lig">{item}</li>
+       return <li key={item} className="Futura-Lig">{item}</li>
     })}
    </ul>
 )
 
 ListGroupContainer.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default ListGroupContainer;

@@ -8,11 +8,7 @@ class PlantContainer extends Component {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.object
-    }).isRequired,
-    auth: PropTypes.shape({
-      isAuthenticated: PropTypes.func,
-      auth0: PropTypes.object
-    }).isRequired,
+    }).isRequired
   }
 
   state = {
@@ -54,11 +50,10 @@ class PlantContainer extends Component {
   render() {
     console.log('render plant container');
     const { plant } = this.state;
-    const { auth, match } = this.props;
-
+debugger
     return (
       <div>
-        <img src={`${plant.sortname}.jpg`} alt={plant.ahortname} />
+        <img src={`../public/img/${plant.shortname}.jpg`} alt={plant.shortname} />
         <div className='plantType'>
           <h2>{plant.name}</h2>
           <p>Yield: {plant.yield}</p>

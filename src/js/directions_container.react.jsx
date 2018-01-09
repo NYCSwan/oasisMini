@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SiteHeader from './Header.react';
 
 class DirectionsContainer extends Component {
   static propTypes = {
@@ -20,8 +19,6 @@ class DirectionsContainer extends Component {
   render() {
     return (
     <div className="directions container">
-      <SiteHeader title="" match={this.props.match} />
-
         <Directions
           settings={this.state.settings}
           directions={this.state.directions}

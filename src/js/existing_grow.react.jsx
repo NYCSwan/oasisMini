@@ -5,7 +5,6 @@ import upperFirst from 'lodash/upperFirst';
 import pickBy from 'lodash/pickBy';
 import findKey from 'lodash/findKey';
 
-import SiteHeader from './Header.react';
 import Directions from './directions.react';
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
@@ -165,7 +164,6 @@ class ExistingGrow extends Component {
 
     return (
       <div className="existingGrow container">
-        <SiteHeader title="Existing Gardens" />
 
         {/* chamber selection */}
         { (this.state.showChambers === true)

@@ -11,7 +11,8 @@ class SiteHeader extends Component {
     history: PropTypes.shape({
       replace: PropTypes.func,
       length: PropTypes.number,
-      action: PropTypes.string
+      action: PropTypes.string,
+      isAuthenticated: PropTypes.func
     }).isRequired,
     match: PropTypes.arrayOf(PropTypes.object).isRequired
 
@@ -21,8 +22,21 @@ class SiteHeader extends Component {
     console.log(`selected ${eventKey}`);
   }
 
+  goTo = (route) => {
+    this.props.history.replace(`/${route}`);
+  }
+
+  login = () => {
+    this.props.auth.login();
+  }
+
+  logout = () => {
+    this.props.auth.logout();
+  }
+
   render() {
-    const { title, match, auth } = this.props;
+    const { title, match } = this.props;
+    const {isAuthenticated } = this.props.auth;
     // debugger;
     return (
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
@@ -44,7 +58,33 @@ class SiteHeader extends Component {
             <NavItem className="navItem" eventKey={2} href="#">Support</NavItem>
           </Nav>
         </Navbar.Collapse>
-        <h1 className="title Futura-Lig">{title}</h1>
+        <Nav>
+          <h1 className="title Futura-Lig">{title}</h1>
+          {
+            !isAuthenticated() && (
+                <Button
+                  id="qsLoginBtn"
+                  bsStyle="primary"
+                  className="btn-margin"
+                  onClick={this.login}
+                >
+                  Log In
+                </Button>
+              )
+          }
+          {
+            isAuthenticated() && (
+                <Button
+                  id="qsLogoutBtn"
+                  bsStyle="primary"
+                  className="btn-margin"
+                  onClick={this.logout}
+                >
+                  Log Out
+                </Button>
+              )
+          }
+        </Nav>
       </Navbar>
     )
   }

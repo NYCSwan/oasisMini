@@ -7,20 +7,22 @@ import SettingsList from './settings_list.react';
 
 class Directions extends Component {
   static propTypes = {
-    newGrowPlant: PropTypes.arrayOf(PropTypes.object).isRequired,
+    newGrowPlant: PropTypes.objectOf(PropTypes.object).isRequired,
     climates: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleClick: PropTypes.func.isRequired,
     isBalanced: PropTypes.bool.isRequired,
-    selectedChamber: PropTypes.string.isRequired
+    selectedChamber: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired
+
   }
 
-  // state = {
-  //   // balancing: false
+  state = {
+    balancing: false
+  }
+
+  // componentDidMount() {
+  //   this.updateSettings();
   // }
-
-  componentDidMount() {
-    this.updateSettings();
-  }
 
   shouldComponentUpdate(newProps, newState) {
     return this.props.newGrowPlant !== newProps.newGrowPlant || this.props.isBalanced !== newProps.isBalanced || this.state.displaySettings !== newState.displaySettings
@@ -28,15 +30,18 @@ class Directions extends Component {
 
   handleClickUpdate = (e) => {
     this.props.handleClick(e);
+    this.setState({ balancing: true });
   }
 
+  handleNextClick = () => {
+    this.props.onClick();
+  }
   render() {
     console.log('render directions');
     const { newGrowPlant, climates, selectedChamber } = this.props;
 
     const currKey = findKey(newGrowPlant);
     const directions = newGrowPlant[currKey].chamber_directions;
-    // debugger;
 
     return (
       <div className="directions container">
@@ -51,23 +56,28 @@ class Directions extends Component {
                 <Col className="Futura-Lig" xs={5} md={6}>This may take about 5 minutes...</Col>
               </Row>
           </Grid>
+        </div>
           { (this.props.isBalanced === true)
             ?
-            <img className="check_mark" alt="check mark pH is balanced!" src="../public/img/check_mark_icon.png" />
+            <div>
+              <img className="check_mark" alt="check mark pH is balanced!" src="../public/img/check_mark_icon.png" />
+              <Button
+                onClick={this.handleNextClick}
+                >Next</Button>
+            </div>
             :
             ''
           }
           <Button
             className="balanced Futura-Lig"
             onClick={this.handleClickUpdate}>
-            { (this.props.isBalanced === true)
+            { (this.state.balancing === true)
               ?
-                "pH Balanced"
+                "Balancing..."
               :
                 "pH Balance Water"
               }
           </Button>
-        </div>
       </div>
     )
   }
