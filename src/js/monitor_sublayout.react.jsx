@@ -15,7 +15,8 @@ const MonitorSubLayout = (props) => (
 )
 
 MonitorSubLayout.propTypes = {
-  match: PropTypes.arrayOf(PropTypes.object).isRequired
+  match: PropTypes.shape({
+    path: PropTypes.string}).isRequired
 }
 
 export default MonitorSubLayout;

@@ -111,6 +111,26 @@ and (max-device-width : 480px) {
     }
 }
 
+/* Monitor Page */
+.bubble.temperature {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+}
+
+.bubble.ph, .bubble.ppm, .bubble.dayOfCycle {
+    padding: 10px;
+    width: 10px;
+    height: 10px;
+    position: fixed;
+}
+.bubble.empty.small {
+  padding: 10px;
+  width: 2px;
+  height: 2px;
+  position: absolute;
+}
+
 /* Smartphones (landscape) ----------- */
 @media only screen
 and (min-width : 321px) {

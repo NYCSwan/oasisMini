@@ -12,32 +12,32 @@ class PlantContainer extends Component {
   }
 
   state = {
-    plant: []
+    plantTpes: []
   }
 
   componentDidMount() {
     console.log('componentDidMount plant container');
-    this.getPlantRecipe();
+    this.getPlantRecipes();
   }
 
   shouldComponentUpdate(newState) {
     return this.state.plant !== newState.plant
   }
 
-  getPlantRecipe = () => {
+  getPlantRecipes = () => {
     console.log('get plant recipes, plant container');
 
     getPlantRecipeData().then((plantRecipes) => {
-      this.setPlant(plantRecipes);
+      this.setState({plantTpes: plantRecipes});
       return plantRecipes;
       })
     }
 
-  setPlant = (plantRecipes) => {
+  setPlant = () => {
     const plantId = this.props.match.params.id;
     // const tempPlant = []
-    // debugger;
-    forEach((plantRecipes), plant => {
+    debugger;
+    forEach((this.state.plantRecipes), plant => {
           console.log(plant);
           return (plant.r_id === plantId)
         //   console.log(tempPlant);
@@ -57,9 +57,9 @@ debugger
         <div className='plantType'>
           <h2>{plant.name}</h2>
           <p>Yield: {plant.yield}</p>
-          <p>{}</p>
-          <p>{}</p>
-          <p>{}</p>
+          <p>Maturity: {plant.days_to_maturity}</p>
+          <p>${plant.market_price}</p>
+          <p>{plant.uses}</p>
 
         </div>
       </div>

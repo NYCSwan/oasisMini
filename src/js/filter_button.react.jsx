@@ -1,40 +1,50 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { ButtonGroup, Button } from 'react-bootstrap';
 
 
-const FilterButtonGroup = (props) => (
-        <ButtonGroup justified
-          type="radio"
-          name="filterById"
-          className="filterById filter flex-row row"
-          options={props.options}
-          onChange={props.onChange}
-          sm={12} md={12} lg={12}
-        >
-        { props.options.map(option => { // eslint-disable-line
+class FilterButtonGroup extends Component {
+  static propTypes = {
+    chamberId: PropTypes.number.isRequired,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onChange: PropTypes.func.isRequired,
+    // filledChambers: PropTypes.arrayOf(PropTypes.object).isRequired
+  }
+  handleClick = (e) => {
+    console.log(`handle filter click: ${e.target}`);
+    this.props.onChange(e)
+  }
 
-          return ( // eslint-disable-line
-            <Button
-              key={option.id}
-              value={option.id}
-              className={`chamber-${option.id}`}
-              checked={props.chamberId === option.id}
-              onClick={props.onChange}
-              disabled={!option.filled}
-            >
-                Chamber {option.id}
-            </Button>
+  render() {
+    console.log('render filter buttons');
+    return (
+
+      <ButtonGroup justified
+      type="radio"
+      name="filterById"
+      className="filterById filter flex-row row"
+      options={this.props.options}
+      onChange={this.props.onChange}
+      sm={12} md={12} lg={12}
+      >
+      { this.props.options.map(option => { // eslint-disable-line
+
+        return ( // eslint-disable-line
+          <Button
+          key={option.c_id}
+          value={option.name}
+          className={`chamber-${option.c_id}`}
+          checked={this.props.chamberId === option.c_id}
+          onClick={this.handleClick}
+          disabled={option.filled}
+          >
+          {option.name}
+          </Button>
         );
       })}
-        </ButtonGroup>
+      </ButtonGroup>
     )
-
-FilterButtonGroup.propTypes = {
-  chamberId: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.number).isRequired,
-  onChange: PropTypes.func.isRequired,
-  // filledChambers: PropTypes.arrayOf(PropTypes.object).isRequired
-
+  }
 }
+
 export default FilterButtonGroup;

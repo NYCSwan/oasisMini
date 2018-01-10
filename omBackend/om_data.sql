@@ -115,10 +115,10 @@ VALUES('humidity'),
 ('camera'),
 ('water');
 
-INSERT INTO chambers(name)
-VALUES('Chamber 1'),
-('Chamber 2'),
-('Chamber 3');
+INSERT INTO chambers(name, is_filled)
+VALUES('Chamber 1', true),
+('Chamber 2', true),
+('Chamber 3', false);
 
 INSERT INTO climates(type, temperatureMin, temperatureMax, humidityMin, humidityMax, phMin, phMax )
 VALUES('tropical', 75.00, 95.00, 55.00, 70.00, 5.40, 6.00),

@@ -141,11 +141,7 @@ class NewGrow extends Component {
         )}
           { (this.state.selectedPlant === 'customize' && this.state.selectedChamber === '') && (
             <CustomizeSensors
-              climates={this.state.climates}
-              plantTypes={this.state.plantTypes}
-              selectedPlant={this.state.selectedPlant}
-              selectedPreset={this.state.selectedPreset}
-              updateSlider={this.updateSliderVal}
+              {...this.props}
             />
           )}
           { (this.state.selectedChamber === '' && this.state.selectedPlant !== '' && this.state.showDirections === false) && (

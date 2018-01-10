@@ -8,10 +8,10 @@ import FilterButtonGroup from './filter_button.react';
 
 class Sensor extends Component {
     state = {
-        chamberId: '2',
+        chamberId: 1,
         graphWidth: 300,
         graphHeight: 200,
-        optionsForFilter: [1,2,3]
+        optionsForFilter: []
     }
     componentDidMount(){
       console.log('componentDidMount sensor');

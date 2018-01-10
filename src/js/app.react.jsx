@@ -13,9 +13,31 @@ class App extends Component {
       login: PropTypes.func,
       logout: PropTypes.func
     }).isRequired,
+    history: PropTypes.shape({
+      replace: PropTypes.func,
+      length: PropTypes.number,
+      action: PropTypes.string,
+      isAuthenticated: PropTypes.func
+    }).isRequired,
     match: PropTypes.shape({
       path: PropTypes.string}).isRequired
   }
+
+    handleSelect = (eventKey) => {
+      console.log(`selected ${eventKey}`);
+    }
+
+    goTo = (route) => {
+      this.props.history.replace(`/${route}`);
+    }
+
+    login = () => {
+      this.props.auth.login();
+    }
+
+    logout = () => {
+      this.props.auth.logout();
+    }
 
   render() {
     const { match } = this.props;
@@ -36,7 +58,7 @@ class App extends Component {
            </Navbar.Header>
            <Navbar.Collapse className="bs-navbar-collapse">
              <Nav bsStyle="pills" pullRight onSelect={this.handleSelect}>
-               <NavItem className="navItem" EventKey={3} href="/monitor">Monitor</NavItem>
+               <NavItem className="navItem" eventKey={3} href="/monitor">Monitor</NavItem>
                <NavItem className="navItem" eventKey={4} href="/controls">Controls</NavItem>
                <NavItem className="navItem" eventKey={1} href="#">My Account</NavItem>
                <NavItem className="navItem" eventKey={2} href="#">Support</NavItem>
