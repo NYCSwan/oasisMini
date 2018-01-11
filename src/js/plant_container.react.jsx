@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import forEach from 'lodash/forEach';
+import pickBy from 'lodash/pickBy';
 
 import { getPlantRecipeData } from '../utils/api_calls';
 
@@ -30,7 +30,7 @@ class PlantContainer extends Component {
 
     getPlantRecipeData().then((plantRecipes) => {
       this.setState({plantTypes: plantRecipes});
-      return plantRecipes;
+      // return plantRecipes;
       })
     }
 
@@ -43,18 +43,21 @@ class PlantContainer extends Component {
 
   render() {
     console.log('render plant container');
-    const { plant } = this.state;
+    const { plant, plantTypes } = this.state;
 
+    const currentPlant = pickBy(plantTypes, (recipe) => {
+      recipe.name === plant
+    })
 
     return (
       <div>
-        <img src={`../public/img/${plant.shortname}.jpg`} alt={plant.shortname} />
+        <img src={`../public/img/${currentPlant.shortname}.jpg`} alt={currentPlant.shortname} />
         <div className='plantType'>
-          <h2>{plant.name}</h2>
-          <p>Yield: {plant.yield}</p>
-          <p>Maturity: {plant.days_to_maturity}</p>
-          <p>${plant.market_price}</p>
-          <p>{plant.uses}</p>
+          <h2>{currentPlant.name}</h2>
+          <p>Yield: {currentPlant.yield}</p>
+          <p>Maturity: {currentPlant.days_to_maturity}</p>
+          <p>${currentPlant.market_price}</p>
+          <p>{currentPlant.uses}</p>
 
         </div>
       </div>

@@ -75,17 +75,17 @@ class Sensor extends Component {
         } else if (sensor === 'temperature' && chamberId === 3) {
             getAllSensorMeasurementsTemperatureChamber3().then((sensorMeasurements) => {
                 this.setState({ sensorData: sensorMeasurements });
-                return sensorMeasurements;
+                // return sensorMeasurements;
               })
         } else if (sensor === 'humidity' && chamberId === 1) {
             getAllSensorMeasurementsHumidityChamber1().then((sensorMeasurements) => {
                 this.setState({ sensorData: sensorMeasurements });
-                return sensorMeasurements;
+                // return sensorMeasurements;
               })
         } else if (sensor === 'humidity' && chamberId === 2) {
             getAllSensorMeasurementsHumidityChamber2().then((sensorMeasurements) => {
                 this.setState({ sensorData: sensorMeasurements });
-                return sensorMeasurements;
+                // return sensorMeasurements;
               })
         } else if (sensor === 'humidity' && chamberId === 3) {
             getAllSensorMeasurementsHumidityChamber3().then((sensorMeasurements) => {

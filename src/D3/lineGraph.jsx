@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { max, min } from 'd3-array';
-
 import isEmpty from 'lodash/isEmpty';
-import forIn from 'lodash/forIn';
-import pickBy from 'lodash/pickBy';
-import get from 'lodash/get';
-
 import ChartArea from './AreaChart.react';
 
 class LineGraph extends Component {
@@ -33,7 +27,6 @@ class LineGraph extends Component {
   }
 
   state = {
-    // currentData: [],
     maxY: 0,
     minY: 0,
     minX: 0,
@@ -45,7 +38,7 @@ class LineGraph extends Component {
       this.extractMaxMin();
   }
 
-  componentWillReceiveProps({ margin, graphWidth, graphHeight, sensorData, chamberId, endDate, startDate, sensor }) {
+  componentWillReceiveProps({ sensorData, chamberId, sensor }) {
     console.log('componentWillReceiveProps linegraph');
 
     if (sensorData !== this.props.sensorData && this.props.sensorData.length >0 || sensor !== this.props.sensor || chamberId !== this.props.chamberId) {
@@ -53,15 +46,6 @@ class LineGraph extends Component {
       this.extractMaxMin()
     }
   }
-    // if (endDate !== this.props.endDate || startDate !== this.props.startDate) {
-    //   console.log('change data, dates changed');
-    //   // this.updateData();
-    //
-    // }
-    // if (margin !== this.props.margin || graphWidth !== this.props.graphWidth || graphHeight !== this.props.graphHeight) {
-    //  console.log('change size');
-    // }
-  // }
 
   shouldComponentUpdate (newProps, newState) {
     console.log('shouldComponentUpdate lineGraph');
@@ -71,36 +55,6 @@ class LineGraph extends Component {
   componentDidUpdate() {
     this.extractMaxMin();
   }
-  // updateData = () => {
-  //   console.log('updateData');
-  //   // this.updateCurrentData();
-  //   this.extractMaxMin();
-  // }
-
-  // updateCurrentData = () => {
-  //   console.log('updateCurrentData');
-  //   const { sensor } = this.props;
-  //   // const dataByChamber = pickBy(this.props.sensorData,
-  //   //   (data) => data.chamber_id === this.props.chamberId);
-  //   // const tempData = [];
-  //
-  //   forIn(dataByChamber, (value) => {
-  //     // pick out sensor vals
-  //       const tempValue = get(value.sensors, sensor)
-  //       if (tempValue !== 'na') {
-  //       tempData.push({time: new Date(value.time).toString(), value: parseFloat(tempValue, 10), key: value.id , formattedDate: moment(value.time).format('YYYY-MM-DD')});
-  //     }
-  //   })
-  //   // to array of objects [{time, sensor}]
-  //   this.setState({
-  //     currentData: tempData
-  //   }, () => {
-  //     this.extractMaxMin();
-  //   });
-  // }
-
-
-
 
   extractMaxMin = () => {
     console.log('extractMaxMin');
@@ -110,7 +64,6 @@ class LineGraph extends Component {
     dates.push(startDate);
     dates.push(endDate);
 
-    debugger
     if(isEmpty(sensorData) === false) {
       const tempMaxY = max(sensorData, (d) => d.value);
       const tempMinY = min(sensorData, (d) => d.value);
@@ -131,18 +84,13 @@ class LineGraph extends Component {
     }
   }
 
-  // calls to db for data (per sensor by 1 week, 1 day, 1 month // all & avg chunked in 7 groups) pass to area chart
-
-
   render() {
     console.log('render lineGraph');
     const { graphHeight, graphWidth, sensorData, match, margin, sensor, startDate, endDate } = this.props;
 
-console.log(sensorData);
-debugger
     return (
       <div className="areaChart container">
-        <a href={`/${match.path}/${sensor}`} alt={`${sensor} details`}>
+        <a href={`${match.url}`} alt={`${sensor} details`}>
           <ChartArea
             graphWidth={graphWidth}
             graphHeight={graphHeight}
