@@ -63,8 +63,108 @@ router.get('/v1/sensor_measurements_imgs', async (req, res, next) => {
  res.send(rows);
 });
 
-router.get('/v1/sensor_measurements_water', async (req, res, next) => {
- const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6;");
+router.get('/v1/sensor_measurements_water_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_humidity_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 1 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_temperature_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 2 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_ph_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 3 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_ppm_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 4 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_imgs_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 5 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_water_c1', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6 AND chamber_id = 1;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_water_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_humidity_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 1 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_temperature_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 2 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_ph_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 3 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_ppm_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 4 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_imgs_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 5 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_water_c2', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6 AND chamber_id = 2;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_water_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6 AND chamber_id = 3;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_humidity_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 1 AND chamber_id = 3;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_temperature_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 2 AND chamber_id = 3;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_ph_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 3 AND chamber_id = 3;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_ppm_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 4 AND chamber_id = 3;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_imgs_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 5 AND chamber_id = 3;");
+ res.send(rows);
+});
+
+router.get('/v1/sensor_measurements_water_c3', async (req, res, next) => {
+ const { rows } = await db.query("SELECT * FROM sensor_measurements WHERE sensor_id = 6 AND chamber_id = 3;");
  res.send(rows);
 });
 
@@ -72,7 +172,7 @@ router.post('/v1/growing_plants', async (req, res, next) => {
   const params = req.body;
 
   const q = 'INSERT INTO growing_plants(started_datetime, updated_datetime, chamber_id, plant_recipe_id, user_id, climate_id) values($1, $2, $3, $4)';
-  const data = [ 'NOW()', 'NOW()', params.chamber_id, params.plant_recipe_id, params.device_id, params.user_id, climate_id];
+  const data = [ 'NOW()', 'NOW()', params.chamber_id, params.plant_recipe_id, params.device_id, params.user_id, parmas.climate_id];
 
   const {rows} = await db.query(q, data);
   res.send('done'+ JSON.stringify(params));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import findKey from 'lodash/findKey';
 import findLastIndex from 'lodash/findLastIndex';
@@ -12,6 +12,11 @@ import FilterButtonGroup from './filter_button.react';
 import { getAllSensorMeasurementsChamber1, getAllSensorMeasurementsChamber3, getAllSensorMeasurementsChamber2, getGrowingPlants, getChamberData } from '../utils/api_calls';
 
 class Monitor extends Component {
+  static propTypes = {
+    match: PropTypes.shape({
+      path: PropTypes.string}).isRequired
+  }
+
   state = {
     chamberId: 1,
     chamberData: [],
@@ -56,19 +61,6 @@ class Monitor extends Component {
       this.setState({ chambers });
     })
   }
-  //
-  // setPlantInChamber = (plants) => {
-  //   console.log('set plant data with default chamber 1 -- necessary???');
-  //   const plantKey = findKey(plants);
-  //   const tempPlantData = pickBy(plants, (plant) => plant[plantKey].chamber_id === this.state.chamberId);
-  //   debugger
-  //       // const plantDataArray = [];
-  //       //
-  //       // forEach(tempPlantData, (entry) => {
-  //       //   plantDataArray.push(entry);
-  //       // })
-  //       this.setState({ plantInChamber: tempPlantData })
-  // }
 
   getSensorMeasurementData = () => {
     console.log('get sensor measurents by chamber id');
@@ -145,7 +137,7 @@ class Monitor extends Component {
         ?
         <Row className="readings">
           <Col className="bubble ph" xs={12} md={10} mdOffset={2}>
-            <a href="/sensors/ph">
+            <a href={`${this.props.match.path}/ph`}>
               <h2 className="xBigFont" key={currentPlantDataByChamber[phReadingIdx].time}>
                 {currentPlantDataByChamber[phReadingIdx].value}
               </h2>
@@ -154,7 +146,7 @@ class Monitor extends Component {
           </Col>
           <Col className="bubble empty small" />
           <Col className="bubble ppm" xs={6} xsOffset={6} md={6}>
-            <a href="/sensors/ppm">
+            <a href={`${this.props.match.path}/ppm`}>
               <h2 className="xBigFont">
                 {currentPlantDataByChamber[ppmReadingIdx].value}
               </h2>
@@ -162,7 +154,7 @@ class Monitor extends Component {
             </a>
           </Col>
           <Col className="bubble temperature" xs={4} md={4} mdOffset={8} xsOffset={8}>
-            <a href="/sensors/temperature">
+            <a href={`${this.props.match.path}/temperature`}>
               <h2 className="xBigFont">{currentPlantDataByChamber[temperatureReadingIdx].value}*</h2>
               <h4>F</h4>
             </a>
@@ -170,7 +162,7 @@ class Monitor extends Component {
           <Col className="bubble empty md" />
           <Col className="bubble empty small" />
           <Col className="bubble humidity" xs={8} md={8} xsOffset={4} mdOffset={4}>
-            <a href="/sensors/humidity">
+            <a href={`${this.props.match.path}/humidity`}>
               <h2 className="xBigFont">
                 {currentPlantDataByChamber[humidityReadingIdx].value}%
               </h2>

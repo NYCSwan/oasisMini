@@ -23,7 +23,7 @@ class ChartArea extends Component {
   componentWillReceiveProps({ margin, graphWidth, graphHeight, currentData, endDate, startDate, sensor, maxY, minY }) {
     console.log('componentWillReceiveProps area chart');
 
-    if (currentData !== this.props.currentData|| sensor !== this.props.sensor || maxY !== this.props.maxY || minY !== this.props.minY) {
+    if (currentData !== this.props.currentData || sensor !== this.props.sensor || maxY !== this.props.maxY || minY !== this.props.minY) {
       console.log('change data, data, sensor or chamber changed');
       this.updateAreaChartData();
     } else if (endDate !== this.props.endDate || startDate !== this.props.startDate) {
@@ -36,163 +36,165 @@ class ChartArea extends Component {
 
   shouldComponentUpdate (newProps, newState) {
     console.log('shouldComponentUpdate lineGraph');
-    return this.props.endDate !== newProps.endDate || this.props.currentData !== newProps.currentData ||  this.state.oneDay !== newState.oneDay || this.state.dataSeries !== newState.dataSeries || this.state.oneWeek !== newState.oneWeek || this.state.oneMonth !== newState.oneMonth
+    return this.props.endDate !== newProps.endDate || this.props.minY !== newProps.minY || this.props.sensor !== newProps.sensor || this.props.currentData !== newProps.currentData ||  this.state.oneDay !== newState.oneDay || this.state.dataSeries !== newState.dataSeries || this.state.oneWeek !== newState.oneWeek || this.state.oneMonth !== newState.oneMonth || this.props.maxY !== newProps.maxY
+
   }
 
   updateAreaChartData = () => {
     console.log('updateAreaChart data');
-    this.extractOneDayOfData();
-    this.extractOneWeekOfData();
-    this.extractOneMonthOfData();
+    this.getOneDayOfData();
+    this.getOneWeekOfData();
+    this.getOneMonthOfData();
     // this.updateDataSeries();
   }
 
-  extractOneDayOfData = () => {
-    console.log('extractOneDayOfData');
+  getOneDayOfData = () => {
+    console.log('getOneDayOfData');
     const { startDate, sensor, currentData } = this.props;
-    let oneDayOfDataPoints = [];
-    if (sensor === 'humidity' && currentData.length > 0 || sensor === 'temperature' && currentData.length > 0) {
-      // narrow currentData to the past 24 hours
-      const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-      const oneDateData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate === modifiedStartDate}); // eslint-disable-line
-      // slice by 7 data points
-      const chunkedData = chunk(oneDateData, 7);
-      // select 7 from 52 data points
-      if (chunkedData.length !== 0) {
-        oneDayOfDataPoints.push(chunkedData[0][0]);
-        oneDayOfDataPoints.push(chunkedData[1][0]);
-        oneDayOfDataPoints.push(chunkedData[2][0]);
-        oneDayOfDataPoints.push(chunkedData[3][0]);
-        oneDayOfDataPoints.push(chunkedData[4][0]);
-        oneDayOfDataPoints.push(chunkedData[5][0]);
-        oneDayOfDataPoints.push(chunkedData[6][0]);
-        this.setState({
-          oneDay: oneDayOfDataPoints,
-          dataSeries: oneDayOfDataPoints
-        });
-      }
-    } else if (sensor === 'pH') {
-      const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-      const oneDateData = takeRightWhile(this.props.currentData, (dataEntry) => { return dataEntry.formattedDate === modifiedStartDate }); // eslint-disable-line
-      oneDayOfDataPoints = oneDateData;
-      this.setState({
-        oneDay: oneDayOfDataPoints,
-        dataSeries: oneDayOfDataPoints
-      });
-    } else {
-      console.log('currentData empty');
-    }
+  // debugger
+  //   let oneDayOfDataPoints = [];
+  //   if (sensor === 'humidity' && currentData.length > 0 || sensor === 'temperature' && currentData.length > 0) {
+  //     // narrow currentData to the past 24 hours
+  //     const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //     const oneDateData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate === modifiedStartDate}); // eslint-disable-line
+  //     // slice by 7 data points
+  //     const chunkedData = chunk(oneDateData, 7);
+  //     // select 7 from 52 data points
+  //     if (chunkedData.length !== 0) {
+  //       oneDayOfDataPoints.push(chunkedData[0][0]);
+  //       oneDayOfDataPoints.push(chunkedData[1][0]);
+  //       oneDayOfDataPoints.push(chunkedData[2][0]);
+  //       oneDayOfDataPoints.push(chunkedData[3][0]);
+  //       oneDayOfDataPoints.push(chunkedData[4][0]);
+  //       oneDayOfDataPoints.push(chunkedData[5][0]);
+  //       oneDayOfDataPoints.push(chunkedData[6][0]);
+  //       this.setState({
+  //         oneDay: oneDayOfDataPoints,
+  //         dataSeries: oneDayOfDataPoints
+  //       });
+  //     }
+  //   } else if (sensor === 'pH') {
+  //     const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //     const oneDateData = takeRightWhile(this.props.currentData, (dataEntry) => { return dataEntry.formattedDate === modifiedStartDate }); // eslint-disable-line
+  //     oneDayOfDataPoints = oneDateData;
+  //     this.setState({
+  //       oneDay: oneDayOfDataPoints,
+  //       dataSeries: oneDayOfDataPoints
+  //     });
+  //   } else {
+  //     console.log('currentData empty');
+  //   }
   }
 
-  extractOneWeekOfData = () => {
-    console.log('extractWeekOfData');
+  getOneWeekOfData = () => {
+    console.log('getWeekOfData');
     const { startDate, endDate, sensor, currentData } = this.props;
-    let oneWeekOfDataPoints = [];
-    if (sensor === 'humidity' && endDate - startDate === 604800000 || sensor === 'temperature' && endDate - startDate === 604800000) {
-      // narrow currentData to the past 24 hours
-      const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-      const sevenDaysData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
-      console.log(sevenDaysData);
-      // slice by 7 data points
-      const chunkedData = chunk(sevenDaysData, 7);
-      // select 7 from 364 data points
-      if (chunkedData.length !== 0) {
-        oneWeekOfDataPoints.push(chunkedData[0][0]);
-        oneWeekOfDataPoints.push(chunkedData[1][0]);
-        oneWeekOfDataPoints.push(chunkedData[2][0]);
-        oneWeekOfDataPoints.push(chunkedData[3][0]);
-        oneWeekOfDataPoints.push(chunkedData[4][0]);
-        oneWeekOfDataPoints.push(chunkedData[5][0]);
-        oneWeekOfDataPoints.push(chunkedData[6][0]);
-        this.setState({
-          oneWeek: oneWeekOfDataPoints,
-          dataSeries: oneWeekOfDataPoints
-        });
-      }
-    } else if (sensor === 'pH' && endDate - startDate === 604800000) {
-      const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-      const oneWeekData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
-      const chunkedData = chunk(oneWeekData, 2);
-      // select 7 from 364 data points
-      if (chunkedData.length !== 0) {
-        oneWeekOfDataPoints.push(chunkedData[0][0]);
-        oneWeekOfDataPoints.push(chunkedData[1][0]);
-        oneWeekOfDataPoints.push(chunkedData[2][0]);
-        oneWeekOfDataPoints.push(chunkedData[3][0]);
-        oneWeekOfDataPoints.push(chunkedData[4][0]);
-        oneWeekOfDataPoints.push(chunkedData[5][0]);
-        oneWeekOfDataPoints.push(chunkedData[6][0]);
-        this.setState({
-          oneWeek: oneWeekOfDataPoints,
-          dataSeries: oneWeekOfDataPoints
-        });
-      }
-    } else if (sensor === 'PPM' && endDate - startDate === 604800000 || sensor === 'water' && endDate - startDate === 604800000 || sensor === 'height' && endDate - startDate === 604800000) {
-      const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-      const oneWeekData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
-      oneWeekOfDataPoints = oneWeekData;
-      this.setState({
-        oneWeek: oneWeekOfDataPoints,
-        dataSeries: oneWeekOfDataPoints
-       });
-    } else {
-      console.log('currentData empty');
-    }
+  //   let oneWeekOfDataPoints = [];
+  //   if (sensor === 'humidity' && endDate - startDate === 604800000 || sensor === 'temperature' && endDate - startDate === 604800000) {
+  //     // narrow currentData to the past 24 hours
+  //     const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //     const sevenDaysData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
+  //     console.log(sevenDaysData);
+  //     // slice by 7 data points
+  //     const chunkedData = chunk(sevenDaysData, 7);
+  //     // select 7 from 364 data points
+  //     if (chunkedData.length !== 0) {
+  //       oneWeekOfDataPoints.push(chunkedData[0][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[1][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[2][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[3][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[4][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[5][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[6][0]);
+  //       this.setState({
+  //         oneWeek: oneWeekOfDataPoints,
+  //         dataSeries: oneWeekOfDataPoints
+  //       });
+  //     }
+  //   } else if (sensor === 'pH' && endDate - startDate === 604800000) {
+  //     const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //     const oneWeekData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
+  //     const chunkedData = chunk(oneWeekData, 2);
+  //     // select 7 from 364 data points
+  //     if (chunkedData.length !== 0) {
+  //       oneWeekOfDataPoints.push(chunkedData[0][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[1][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[2][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[3][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[4][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[5][0]);
+  //       oneWeekOfDataPoints.push(chunkedData[6][0]);
+  //       this.setState({
+  //         oneWeek: oneWeekOfDataPoints,
+  //         dataSeries: oneWeekOfDataPoints
+  //       });
+  //     }
+  //   } else if (sensor === 'PPM' && endDate - startDate === 604800000 || sensor === 'water' && endDate - startDate === 604800000 || sensor === 'height' && endDate - startDate === 604800000) {
+  //     const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //     const oneWeekData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
+  //     oneWeekOfDataPoints = oneWeekData;
+  //     this.setState({
+  //       oneWeek: oneWeekOfDataPoints,
+  //       dataSeries: oneWeekOfDataPoints
+  //      });
+  //   } else {
+  //     console.log('currentData empty');
+  //   }
   }
 
-  extractOneMonthOfData = () => {
-    console.log('extractMonthOfData');
+  getOneMonthOfData = () => {
+    console.log('getMonthOfData');
     const { startDate, endDate, sensor, currentData } = this.props;
-    let oneMonthOfDataPoints = [];
-      if (sensor === 'humidity' && endDate - startDate > 604800000 || sensor === 'temperature' && endDate - startDate > 604800000) {
-        // narrow currentData to the past 24 hours
-        const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-        const oneMonthData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate }); // eslint-disable-line
-        // slice by 7 data points
-        const chunkedData = chunk(oneMonthData, 7);
-        // select 7 from 52 data points
-        if (chunkedData.length !== 0) {
-          oneMonthOfDataPoints.push(chunkedData[0][0]);
-          oneMonthOfDataPoints.push(chunkedData[1][0]);
-          oneMonthOfDataPoints.push(chunkedData[2][0]);
-          oneMonthOfDataPoints.push(chunkedData[3][0]);
-          oneMonthOfDataPoints.push(chunkedData[4][0]);
-          oneMonthOfDataPoints.push(chunkedData[5][0]);
-          oneMonthOfDataPoints.push(chunkedData[6][0]);
-          this.setState({
-            oneMonth: oneMonthOfDataPoints,
-            dataSeries: oneMonthOfDataPoints
-          });
-        }
-      } else if (sensor === 'pH' && endDate - startDate > 604800000) {
-        const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-        const oneMonthData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
-        const chunkedData = chunk(oneMonthData, 2);
-        // select 7 from 364 data points
-        if (chunkedData.length !== 0) {
-          oneMonthOfDataPoints.push(chunkedData[0][0]);
-          oneMonthOfDataPoints.push(chunkedData[1][0]);
-          oneMonthOfDataPoints.push(chunkedData[2][0]);
-          oneMonthOfDataPoints.push(chunkedData[3][0]);
-          oneMonthOfDataPoints.push(chunkedData[4][0]);
-          oneMonthOfDataPoints.push(chunkedData[5][0]);
-          oneMonthOfDataPoints.push(chunkedData[6][0]);
-          this.setState({
-            oneMonth: oneMonthOfDataPoints,
-            dataSeries: oneMonthOfDataPoints
-          });
-        }
-      } else if (sensor === 'PPM' && endDate - startDate > 604800000 || sensor === 'water' && endDate - startDate > 604800000 || sensor === 'height' && endDate - startDate > 604800000) {
-        const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
-        const oneMonthData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
-        oneMonthOfDataPoints = oneMonthData;
-        this.setState({
-          oneMonth: oneMonthOfDataPoints,
-          dataSeries: oneMonthOfDataPoints
-        });
-      } else {
-        console.log('currentData empty');
-      }
+  //   let oneMonthOfDataPoints = [];
+  //     if (sensor === 'humidity' && endDate - startDate > 604800000 || sensor === 'temperature' && endDate - startDate > 604800000) {
+  //       // narrow currentData to the past 24 hours
+  //       const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //       const oneMonthData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate }); // eslint-disable-line
+  //       // slice by 7 data points
+  //       const chunkedData = chunk(oneMonthData, 7);
+  //       // select 7 from 52 data points
+  //       if (chunkedData.length !== 0) {
+  //         oneMonthOfDataPoints.push(chunkedData[0][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[1][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[2][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[3][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[4][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[5][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[6][0]);
+  //         this.setState({
+  //           oneMonth: oneMonthOfDataPoints,
+  //           dataSeries: oneMonthOfDataPoints
+  //         });
+  //       }
+  //     } else if (sensor === 'pH' && endDate - startDate > 604800000) {
+  //       const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //       const oneMonthData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
+  //       const chunkedData = chunk(oneMonthData, 2);
+  //       // select 7 from 364 data points
+  //       if (chunkedData.length !== 0) {
+  //         oneMonthOfDataPoints.push(chunkedData[0][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[1][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[2][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[3][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[4][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[5][0]);
+  //         oneMonthOfDataPoints.push(chunkedData[6][0]);
+  //         this.setState({
+  //           oneMonth: oneMonthOfDataPoints,
+  //           dataSeries: oneMonthOfDataPoints
+  //         });
+  //       }
+  //     } else if (sensor === 'PPM' && endDate - startDate > 604800000 || sensor === 'water' && endDate - startDate > 604800000 || sensor === 'height' && endDate - startDate > 604800000) {
+  //       const modifiedStartDate = moment(startDate).format('YYYY-MM-DD');
+  //       const oneMonthData = takeRightWhile(currentData, (dataEntry) => { return dataEntry.formattedDate >= modifiedStartDate}); // eslint-disable-line
+  //       oneMonthOfDataPoints = oneMonthData;
+  //       this.setState({
+  //         oneMonth: oneMonthOfDataPoints,
+  //         dataSeries: oneMonthOfDataPoints
+  //       });
+  //     } else {
+  //       console.log('currentData empty');
+  //     }
   }
 
 
@@ -210,11 +212,11 @@ class ChartArea extends Component {
 
   render() {
     console.log('render areaChart');
-    const { graphHeight, graphWidth, margin, minY, maxY } = this.props;
+    const { graphHeight, graphWidth, margin, minY, maxY, currentData } = this.props;
 
     const dataMinRound = (Math.round(minY / 10) * 10);
     const dataMaxRound = (Math.round(maxY / 10) * 10);
-
+    console.log(currentData);
 
     return (
       <ComposedChart

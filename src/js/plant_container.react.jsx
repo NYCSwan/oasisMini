@@ -12,7 +12,8 @@ class PlantContainer extends Component {
   }
 
   state = {
-    plantTpes: []
+    plantTypes: [],
+    plant: ''
   }
 
   componentDidMount() {
@@ -28,7 +29,7 @@ class PlantContainer extends Component {
     console.log('get plant recipes, plant container');
 
     getPlantRecipeData().then((plantRecipes) => {
-      this.setState({plantTpes: plantRecipes});
+      this.setState({plantTypes: plantRecipes});
       return plantRecipes;
       })
     }
@@ -36,21 +37,15 @@ class PlantContainer extends Component {
   setPlant = () => {
     const plantId = this.props.match.params.id;
     // const tempPlant = []
-    debugger;
-    forEach((this.state.plantRecipes), plant => {
-          console.log(plant);
-          return (plant.r_id === plantId)
-        //   console.log(tempPlant);
-          // return tempPlant;
-    })
-    // tempPlant.push(plant);
-    // this.setState({ plant: tempPlant});
+    debugger
+    this.setState({ plant: plantId });
   }
 
   render() {
     console.log('render plant container');
     const { plant } = this.state;
-debugger
+
+
     return (
       <div>
         <img src={`../public/img/${plant.shortname}.jpg`} alt={plant.shortname} />
