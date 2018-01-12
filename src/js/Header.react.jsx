@@ -1,18 +1,41 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import PagerBack from './pagerBack.react';
 
 class SiteHeader extends Component {
+  static propTypes = {
+    auth: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: PropTypes.shape({
+      replace: PropTypes.func,
+      length: PropTypes.number,
+      action: PropTypes.string
+    }).isRequired,
+    match: PropTypes.arrayOf(PropTypes.object).isRequired
 
-  handleSelect = (event, eventKey) => {
+  }
+
+  handleSelect = (eventKey) => {
     console.log(`selected ${eventKey}`);
   }
 
+  goTo = (route) => {
+    this.props.history.replace(`/${route}`);
+  }
+
+  login = () => {
+    this.props.auth.login();
+  }
+
+  logout = () => {
+    this.props.auth.logout();
+  }
+
   render() {
-    const { title, match } = this.props;
+    const { title, match, auth } = this.props;
+    // debugger;
     return (
       <Navbar inverse collapseOnSelect fluid className="container-fluid">
         <Navbar.Header>
@@ -33,6 +56,30 @@ class SiteHeader extends Component {
             <NavItem className="navItem" eventKey={2} href="#">Support</NavItem>
           </Nav>
         </Navbar.Collapse>
+        {
+             !auth.isAuthenticated() && (
+                 <Button
+                   id="qsLoginBtn"
+                   bsStyle="info"
+                   className="btn-margin"
+                   onClick={this.login}
+                 >
+                   Log In
+                 </Button>
+               )
+           }
+           {
+             auth.isAuthenticated() && (
+                 <Button
+                   id="qsLogoutBtn"
+                   bsStyle="info"
+                   className="btn-margin"
+                   onClick={this.logout}
+                 >
+                   Log Out
+                 </Button>
+               )
+           }
         <h1 className="title Futura-Lig">{title}</h1>
       </Navbar>
     )
@@ -44,6 +91,14 @@ SiteHeader.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.object,
     path: PropTypes.string
+  }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.object
+  }).isRequired,
+  auth: PropTypes.shape({
+    login: PropTypes.func,
+    logout: PropTypes.func,
+    isAuthenticated: PropTypes.func
   }).isRequired
 }
 

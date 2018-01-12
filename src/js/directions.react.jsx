@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
-import ListGroupContainer from './ListGroup.react';
+import findKey from 'lodash/findKey';
+
+import SettingsList from './settings_list.react';
 
 class Directions extends Component {
   static propTypes = {
-    settings: PropTypes.arrayOf(PropTypes.string).isRequired,
-    directions: PropTypes.arrayOf(PropTypes.string).isRequired,
-    // plant: PropTypes.string.isRequired,
+    newGrowPlant: PropTypes.arrayOf(PropTypes.object).isRequired,
+    climates: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleClick: PropTypes.func.isRequired,
-    isBalanced: PropTypes.bool.isRequired
+    isBalanced: PropTypes.bool.isRequired,
+    selectedChamber: PropTypes.string.isRequired
   }
+
   // state = {
-  //   displaySettings: []
+  //   // balancing: false
   // }
 
-  shouldComponentUpdate(newProps) {
-    return this.props.settings !== newProps.settings || this.props.isBalanced !== newProps.isBalanced
+  componentDidMount() {
+    this.updateSettings();
   }
-  //
-  // componentDidUpdate() {
-  // }
+
+  shouldComponentUpdate(newProps, newState) {
+    return this.props.newGrowPlant !== newProps.newGrowPlant || this.props.isBalanced !== newProps.isBalanced || this.state.displaySettings !== newState.displaySettings
+  }
 
   handleClickUpdate = (e) => {
     this.props.handleClick(e);
@@ -28,23 +32,24 @@ class Directions extends Component {
 
   render() {
     console.log('render directions');
-    const phDirections = this.props.directions.slice(0,2);
+    const { newGrowPlant, climates, selectedChamber } = this.props;
+
+    const currKey = findKey(newGrowPlant);
+    const directions = newGrowPlant[currKey].chamber_directions;
+    // debugger;
 
     return (
       <div className="directions container">
-        <div className="directions left">
-          <ListGroupContainer
-            items={this.props.settings} />
-        </div>
+        <SettingsList
+          chamber={selectedChamber}
+          climates={climates}
+          newGrowPlant={newGrowPlant} />
         <div className="directions right" pullRight>
           <Grid>
-          { phDirections.map(direction => { // eslint-disable-line
-            return (
-              <Row key={direction}>
-              <Col className="Futura-Lig" xs={5} md={6}> {direction}</Col>
+              <Row key={1}>
+                <Col className="Futura-Lig" xs={5} md={6}> {directions}</Col>
+                <Col className="Futura-Lig" xs={5} md={6}>This may take about 5 minutes...</Col>
               </Row>
-            )
-          })}
           </Grid>
           { (this.props.isBalanced === true)
             ?

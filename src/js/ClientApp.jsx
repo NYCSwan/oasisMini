@@ -1,14 +1,17 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line
 import { render } from 'react-dom';
-import App from './App.react';
+import { makeMainRoutes } from './routes';
+
+const routes = makeMainRoutes();
 
 const renderApp = () => {
-  render(<App />, document.getElementById('app'));
+  render(routes, document.getElementById('app'));
 }
+
 renderApp();
 
 if (module.hot) {
-  module.hot.accept('./App.react', () => {
+  module.hot.accept('./routes', () => {
     renderApp();
   });
 }
