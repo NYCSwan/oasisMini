@@ -141,3 +141,35 @@ VALUES('kitchen', 1);
 
 INSERT INTO users(username, password, email_address)
 VALUES('test', 'password', 'test@gmail.com');
+
+CREATE OR REPLACE FUNCTION user_notification()
+  RETURNS trigger AS $user_notification$
+BEGIN
+ IF NEW.value >= 
+  || NEW.humidity >= 1000 THEN
+   INSERT INTO error_conditions
+     VALUES(NEW.time, NEW.location, NEW.temperature, NEW.humidity);
+ END IF;
+ RETURN NEW;
+END;
+$record_error$ LANGUAGE plpgsql;
+
+CREATE TRIGGER record_error
+  AFTER INSERT ON sensor_measurements
+  FOR EACH ROW
+  EXECUTE PROCEDURE record_error();
+CREATE OR REPLACE FUNCTION record_error()
+  RETURNS trigger AS $record_error$
+BEGIN
+ IF NEW.temperature >= 1000 OR NEW.humidity >= 1000 THEN
+   INSERT INTO error_conditions
+     VALUES(NEW.time, NEW.location, NEW.temperature, NEW.humidity);
+ END IF;
+ RETURN NEW;
+END;
+$record_error$ LANGUAGE plpgsql;
+
+CREATE TRIGGER record_error
+  AFTER INSERT ON sensor_measurements
+  FOR EACH ROW
+  EXECUTE PROCEDURE record_error();

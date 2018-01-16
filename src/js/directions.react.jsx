@@ -12,12 +12,12 @@ class Directions extends Component {
     handleClick: PropTypes.func.isRequired,
     isBalanced: PropTypes.bool.isRequired,
     selectedChamber: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired
-
+    // onClick: PropTypes.func.isRequired
   }
 
   state = {
-    balancing: false
+    balancing: false,
+    balanced: false
   }
 
   // componentDidMount() {
@@ -25,16 +25,20 @@ class Directions extends Component {
   // }
 
   shouldComponentUpdate(newProps, newState) {
-    return this.props.newGrowPlant !== newProps.newGrowPlant || this.props.isBalanced !== newProps.isBalanced || this.state.displaySettings !== newState.displaySettings
+    return this.props.newGrowPlant !== newProps.newGrowPlant || this.props.isBalanced !== newProps.isBalanced || this.state.balancing !== newState.balancing || this.state.balanced !== newState.balanced
   }
 
-  handleClickUpdate = (e) => {
-    this.props.handleClick(e);
+  handleClickUpdate = () => {
     this.setState({ balancing: true });
+    console.log('timeout 0');
+    setTimeout(() => {
+      this.setState({ balanced: true });
+      console.log('timeout 10000')
+    }, 10000);
   }
 
   handleNextClick = () => {
-    this.props.onClick();
+    this.props.handleClick();
   }
   render() {
     console.log('render directions');
@@ -57,7 +61,7 @@ class Directions extends Component {
               </Row>
           </Grid>
         </div>
-          { (this.props.isBalanced === true)
+          { (this.state.balanced === true)
             ?
             <div>
               <img className="check_mark" alt="check mark pH is balanced!" src="../public/img/check_mark_icon.png" />
@@ -66,18 +70,17 @@ class Directions extends Component {
                 >Next</Button>
             </div>
             :
-            ''
-          }
-          <Button
+            <Button
             className="balanced Futura-Lig"
             onClick={this.handleClickUpdate}>
             { (this.state.balancing === true)
               ?
-                "Balancing..."
+              "Balancing..."
               :
-                "pH Balance Water"
-              }
-          </Button>
+              "pH Balance Water"
+            }
+            </Button>
+          }
       </div>
     )
   }

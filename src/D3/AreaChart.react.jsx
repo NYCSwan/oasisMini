@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { ComposedChart, Area, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import moment from 'moment';
-import remove from 'lodash/remove';
 import forEach from 'lodash/forEach';
+import dropWhile from 'lodash/dropWhile';
 
 class ChartArea extends Component {
   state = {
@@ -34,23 +34,24 @@ class ChartArea extends Component {
   }
 
   shouldComponentUpdate (newProps, newState) {
-    console.log('shouldComponentUpdate lineGraph');
-    return this.props.endDate !== newProps.endDate || this.props.minY !== newProps.minY || this.props.sensor !== newProps.sensor || this.props.currentData !== newProps.currentData ||  this.state.oneDay !== newState.oneDay || this.state.dataSeries !== newState.dataSeries || this.state.oneWeek !== newState.oneWeek || this.state.oneMonth !== newState.oneMonth || this.props.maxY !== newProps.maxY
+    console.log('shouldComponentUpdate areaChart');
+    return this.props.endDate !== newProps.endDate || this.props.minY !== newProps.minY  || this.state.oneMonth !== newState.oneMonth || this.props.maxY !== newProps.maxY || this.props.sensor !== newProps.sensor || this.props.currentData !== newProps.currentData ||  this.state.oneDay !== newState.oneDay || this.state.dataSeries !== newState.dataSeries || this.state.oneWeek !== newState.oneWeek
 
+  }
+
+  componentDidUpdate() {
+    this.getDataSeries();
   }
 
 // NOT COLLECTING RIGHT DATA
   getOneDayOfData = () => {
     console.log('getOneDayOfData');
-    const {currentData } = this.props;
-    let oneDayOfDataPoints = [];
-    const today = new Date();
-    const timeStamp = Math.round(new Date().getTime() / 1000);
-    const timeStampYesterday = timeStamp - (24 * 3600);
-    // const is24 = today >= new Date(timeStampYesterday).getTime();
+    const { currentData, startDate } = this.props;
+    const oneDayOfDataPoints = [];
 
     forEach(currentData, (datum) => {
-      if(( new Date(datum.time).getTime() >= timeStampYesterday) === true) {
+      debugger;
+      if(( new Date(datum.time).getTime() >= startDate.getTime()) === true) {
         oneDayOfDataPoints.push(datum);
       }
       this.setState({oneDay: oneDayOfDataPoints})
@@ -60,15 +61,12 @@ class ChartArea extends Component {
 
   getOneWeekOfData = () => {
     console.log('getWeekOfData');
-    const { endDate, currentData } = this.props;
-    let oneWeekOfDataPoints = [];
-    const today = new Date();
-    const timeStamp = Math.round(new Date().getTime() / 1000);
-    const timeStampWeek = timeStamp - (168 * 3600);
-    const is7 = today >= new Date(timeStampWeek).getTime();
+    const {startDate, currentData } = this.props;
+    const oneWeekOfDataPoints = [];
+
 
     forEach(currentData, (datum) => {
-      if((new Date(datum.time).getTime() >= timeStampWeek) === true) {
+      if((new Date(datum.time).getTime() <= startDate.getTime()) === true) {
         oneWeekOfDataPoints.push(datum);
       }
       this.setState({ oneWeek: oneWeekOfDataPoints });
@@ -78,15 +76,11 @@ class ChartArea extends Component {
 
   getOneMonthOfData = () => {
     console.log('getMonthOfData');
-    const { startDate, endDate, sensor, currentData } = this.props;
-    let oneMonthOfDataPoints = [];
-    // const today = new Date();
-    const timeStamp = Math.round(new Date().getTime() / 1000);
-    const timeStampMonth = timeStamp - (720 * 3600);
-    // const is24 = today >= new Date(timeStampYesterday).getTime();
+    const { startDate, currentData } = this.props;
+    const oneMonthOfDataPoints = [];
 
     forEach(currentData, (datum) => {
-      if((new Date(datum.time).getTime() >= timeStampMonth) === true) {
+      if((new Date(datum.time).getTime() <= startDate.getTime()) === true) {
         oneMonthOfDataPoints.push(datum);
       }
       this.setState({ oneMonth: oneMonthOfDataPoints})
@@ -101,32 +95,20 @@ class ChartArea extends Component {
     const tempOneMonth = oneMonth;
     const tempOneWeek = oneWeek;
     const tempOneDay = oneDay;
-
-    if( endDate - startDate <= 86400000) {
-      forEach(tempOneDay, (data) => {
-        delete data.chamber_id;
-        delete data.device_id;
-        delete data.m_id;
-        delete data.sensor_id;
-        delete data.m_id;
+    if( endDate - startDate >= 86400000) {
+      dropWhile(tempOneDay, (datum) => {
+        // debugger
+        new Date(datum.time).getTime() <= startDate;
       })
       this.setState({ dataSeries: tempOneDay});
     } else if (endDate - startDate <= 604800000 ){
-      forEach(tempOneWeek, (data) => {
-        delete data.chamber_id;
-        delete data.device_id;
-        delete data.m_id;
-        delete data.sensor_id;
-        delete data.m_id;
+      dropWhile(tempOneWeek, (datum) => {
+        new Date(datum.time).getTime() <= startDate;
       })
       this.setState({ dataSeries: tempOneWeek});
     } else if (endDate - startDate > 604800000){
-      forEach(tempOneMonth, (data) => {
-        delete data.chamber_id;
-        delete data.device_id;
-        delete data.m_id;
-        delete data.sensor_id;
-        delete data.m_id;
+      dropWhile(tempOneMonth, (datum) => {
+        new Date(datum.time).getTime() >= startDate;
       })
       this.setState({ dataSeries: tempOneMonth});
     }

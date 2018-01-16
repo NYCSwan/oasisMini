@@ -97,7 +97,7 @@ and (max-device-width : 480px) {
         align-items: flex-start;
     }
     div.directions.right {
-        width: 50%;
+        width: 100%;
         /*float: right;*/
     }
 
@@ -283,6 +283,18 @@ button.btn.btn-default {
     .backImage {
       display: inline;
     }
+    div.chamberImage {
+        max-height: 300px;
+    }
+
+    .directions.left ul {
+        padding-left: 10px;
+    }
+
+    .directions.left li {
+        padding-top: 5px;
+    }
+
 }
 
 /* Portrait */

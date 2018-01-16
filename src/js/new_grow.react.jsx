@@ -12,23 +12,13 @@ import PlantingDirections from './planting_directions.react';
 import { getPlantRecipeData, getChamberData, getClimateData, postNewGrowingPlant } from '../utils/api_calls';
 
 class NewGrow extends Component {
-  // static propTypes = {
-  //   match: PropTypes.shape({
-  //     params: PropTypes.object
-  //   }).isRequired,
-  //   auth: PropTypes.shape({
-  //     isAuthenticated: PropTypes.func,
-  //     auth0: PropTypes.object
-  //   }).isRequired
-  // }
-
   state = {
     plantTypes: [],
     chamberOptions: [],
     climates: [],
-    isBalanced: false,
     selectedPlant:'',
     selectedChamber:'',
+    isBalanced: false,
     showDirections: false,
     newGrowPlant: []
   }
@@ -42,7 +32,7 @@ class NewGrow extends Component {
 
   shouldComponentUpdate (newState) {
     console.log('shouldComponentUpdate new grow');
-    return this.state.selectedChamber !== newState.selectedChamber || this.state.selectedPlant !== newState.selectedPlant || this.state.plantTypes !== newState.plantTypes || this.state.newGrowPlant !== newState.newGrowPlant || this.state.chamberOptions !== newState.chamberOptions
+    return this.state.selectedChamber !== newState.selectedChamber || this.state.selectedPlant !== newState.selectedPlant || this.state.plantTypes !== newState.plantTypes || this.state.newGrowPlant !== newState.newGrowPlant || this.state.chamberOptions !== newState.chamberOptions || this.state.showDirections !== newState.showDirections || this.state.isBalanced !== newState.isBalanced
   }
 
   componentDidUpdate() {
@@ -91,10 +81,18 @@ class NewGrow extends Component {
   }
 
   updatePhBalance = () => {
-    console.log('timeout 0');
-    setTimeout(20000);
-    console.log('timeout 20000');
-    this.setState({ isBalanced: true });
+    console.log('update PH balance');
+    // setTimeout(() => {
+    //   console.log('timeout 10000')
+    // }, 10000);
+      this.setState({ isBalanced: true });
+      this.showPlantingDirections();
+
+  }
+
+  showPlantingDirections = () => {
+    console.log('show planting directions');
+    this.setState({ showDirections: true });
   }
 
   handleChamberRadioClick = (e) => {
@@ -104,14 +102,11 @@ class NewGrow extends Component {
       console.log('handel form shoudl have chamber state');
   }
 
-  showGrowDirections = () => {
-    this.setState({
-      showDirections: true
-     })
-  }
 
   submitGrowChange = () => {
     console.log('submit new grow plant -- device_id hardcoded');
+    window.location = `/plants/${this.state.selectedPlant}`;
+
     const response = {};
     response.chamber_id = this.state.chamberId;
     response.plant_recipe_id = this.state.newGrowPlant.r_id;
@@ -153,7 +148,7 @@ class NewGrow extends Component {
                 />
               </div>
               <h3 id="chamber" className="directions Futura-Lig">Select A Chamber</h3>
-              <a href='/directions' className="btn btn-default">Submit
+              // <a href='/directions' className="btn btn-default">Submit
               </a>
             </div>
           )}
@@ -166,7 +161,7 @@ class NewGrow extends Component {
             handleClick={this.updatePhBalance}
             isBalanced={this.state.isBalanced}
             selectedChamber={this.state.selectedChamber}
-            onClick={this.showGrowDirections}
+            // onClick={this.showPlantingDirections}
           />
         )}
 
@@ -176,7 +171,7 @@ class NewGrow extends Component {
             climates={this.state.climates}
             isBalanced={this.state.isBalanced}
             selectedChamber={this.state.selectedChamber}
-
+            handleClick={this.submitGrowChange}
           />
         )}
           <PagerBack

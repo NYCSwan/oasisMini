@@ -162,7 +162,7 @@ class Sensor extends Component {
         const yesterday = new Date(today - (1000*60*60*24*1));
         const oneWeekAgo = new Date(today - (1000*60*60*24*7));
         const full = new Date(today - (1000*60*60*24*8));
-        let startedOnMonth = '';
+        // let startedOnMonth = 0;
         let startedOn = 0;
         const currentPlantInfo = pickBy(growingPlants, (plant) => plant.chamber_id === chamberId);
         const plantKey = findKey(currentPlantInfo);

@@ -10,7 +10,8 @@ class PlantingDirections extends Component {
     newGrowPlant: PropTypes.arrayOf(PropTypes.object).isRequired,
     climates: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleClick: PropTypes.func.isRequired,
-    selectedChamber: PropTypes.string.isRequired
+    selectedChamber: PropTypes.string.isRequired,
+    isBalanced: PropTypes.bool.isRequired
 
   }
   // state = {
@@ -18,17 +19,21 @@ class PlantingDirections extends Component {
   // }
 
   shouldComponentUpdate(newProps) {
-     this.props.newGrowPlant !== newProps.newGrowPlant || this.props.climates !== newProps.climates
+     this.props.newGrowPlant !== newProps.newGrowPlant || this.props.climates !== newProps.climates || this.props.isBalanced !== newProps.isBalanced
   }
 
-  handleClickUpdate = () => {
-    this.props.handleClick();
+  handleClick = () => {
+    console.log('handle click planting directions');
+    this.props.handleClick()
+    // send message to Plant page saying "Garden started!"
+    // send new grow to db, fill chamber
+
   }
 
   render() {
     console.log('render directions');
     const { newGrowPlant, climates, selectedChamber } = this.props;
-    debugger
+    // debugger
     const plantKey = findKey(newGrowPlant);
     const growingDirections = newGrowPlant[plantKey].planting_directions;
     return (
